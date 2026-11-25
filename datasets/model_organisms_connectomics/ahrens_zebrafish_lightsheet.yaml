@@ -1,0 +1,64 @@
+id: ahrens_zebrafish_lightsheet
+name: "Ahrens Lab Multi-Fish Whole-Brain Single-Neuron Light-Sheet & Fictive Behavior Atlas"
+short_name: "Ahrens Zebrafish Atlas"
+category: model_organisms_connectomics
+species:
+  - zebrafish
+modalities:
+  - Light_Sheet
+  - Behavior
+domains:
+  - decision_making
+  - motor_reaching
+  - spatial_navigation
+  - connectomics
+year: 2018
+summary_en: "Multi-animal whole-brain cellular-resolution light-sheet calcium imaging & fictive motor nerve dataset from HHMI Janelia (Chen, Mu et al. Neuron 2018; N=18 larval zebrafish, ~80,000–100,000 GCaMP6f neurons/fish registered to Z-Brain) spanning phototaxis, optomotor gratings, dark flashes, looming escape, and spontaneous behavioral state transitions."
+summary_zh: "HHMI Janelia 阿伦斯实验室多体斑马鱼幼鱼全脑单细胞光片钙成像与虚拟运动神经电生理图谱（Chen, Mu et al., Neuron, 2018；共 18 条幼鱼，每条约 8 万–10 万个 GCaMP6f 神经元并统一配准至 Z-Brain 标准脑图谱），覆盖趋光、视动反应、暗闪、逼近逃逸及自发脑状态切换。"
+scale:
+  n_subjects: 18
+  hours_per_subject: 0.9
+  total_hours: 16.0
+  n_stimuli: 6
+  n_channels_or_voxels: "~80,000–100,000 segmented nuclear GCaMP6f neurons per larval zebrafish (`~1.5M+` total recorded neurons across N=18 fish registered to 294 Z-Brain anatomical masks)"
+  sampling_rate_or_tr: "2.1 Hz whole-brain volumetric dual-beam light-sheet imaging + 6,000 Hz bilateral ventral motor nerve root fictive swim electrophysiology"
+brain_regions:
+  - Whole-Brain_294_ZBrain_Regions
+  - Optic_Tectum_Pretectum_and_Habenula
+  - Anterior_Hindbrain_Rhombomeres_and_Raphe
+  - Telencephalon_and_Cerebellum
+data_formats:
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: "CC-BY-4.0 (Janelia Figshare Open Data Archive + FishExplorer MATLAB/Python viewer)"
+  primary_portal: "Janelia Figshare"
+  accession_ids:
+    - "Figshare:10.25378/janelia.7272617"
+  urls:
+    homepage: "https://doi.org/10.25378/janelia.7272617"
+    code: "https://github.com/xiuyechen/FishExplorer"
+    paper: "https://doi.org/10.1016/j.neuron.2018.09.042"
+    method_paper: "https://doi.org/10.1038/nmeth.2434"
+  download_cli: "# Browse and download per-fish HDF5/.mat files (`CellResp`, `BrainRegion`, `Behavior`) via Figshare REST API:\ncurl -s https://api.figshare.com/v2/articles/7272617 | python3 -m json.tool | head -n 40"
+modeling:
+  recommended_tasks:
+    - cross_animal_whole_brain_latent_dynamics_alignment
+    - convergent_sensorimotor_transformation_modeling
+    - multi_region_switching_linear_dynamical_systems_rslds
+    - spontaneous_vs_evoked_brain_wide_functional_clustering
+  standard_splits: "Leave-One-Fish-Out (`LOFO` across `N = 18` Z-Brain-registered fish) for cross-individual functional atlas and latent-manifold alignment (`LFADS`, `rSLDS`, `CEBRA`, `POYO`), OR chronological `80/20` trial-block splits within each fish across the cycling multi-stimulus battery."
+  noise_ceiling_or_repeat_structure: "Cycling periodic trials of phototaxis (`left/right` half-field illumination), forward/backward drifting optomotor gratings (`OMR`), whole-field dark flashes, and looming escape stimuli within each fish (`~10–20` repeats per condition) plus `N = 18` biological replicates co-registered into `Z-Brain` (`Randlett et al.`) quantify both trial-wise `FEV` and cross-fish anatomical stereotypy."
+  key_pitfalls:
+    - "NON-ISOMORPHIC NEURON IDENTITY ACROSS VERTEBRATE INDIVIDUALS (`~80k` CELLS ARE NOT `1:1` NAMED!): Unlike *C. elegans* (`302` invariant named cells) or adult *Drosophila* cell types, two larval zebrafish do NOT have `1:1` deterministic soma coordinates—never align neuron index `i` in Fish A directly to index `i` in Fish B; align via the `294` `Z-Brain` anatomical region masks, optimal transport, or shared behavioral/stimulus subspaces!"
+    - "PARALYZED CLOSED-LOOP FICTIVE SWIM PARADIGM: Larvae are neuromuscularly immobilized (`alpha-bungarotoxin`) for sub-micron optical stability while left/right tail motor nerve bursts (`6 kHz` suction electrodes) drive closed-loop visual feedback—proprioceptive/vestibular lateral-line feedback is absent!"
+    - "SLOWER NUCLEAR `H2B-GCaMP6f` KINETICS (`~2.1 Hz`): Nuclear localization cleanly separates densely packed somata (`avoiding neuropil crosstalk`) at the cost of slower rise/decay time constants (`tau_decay ~ 1.5–2.5 s`) relative to cytosolic indicators—account for calcium convolution when inferring millisecond premotor latencies."
+citations:
+  primary_bib_keys:
+    - chen2018zebrafish
+  related_bib_keys:
+    - ahrens2013lightsheet
+  primary_doi_or_arxiv: "10.1016/j.neuron.2018.09.042"
+card_path: "cards/model_organisms_connectomics/ahrens_zebrafish_lightsheet.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,63 @@
+id: pixar_partly_cloudy
+name: "Pixar Partly Cloudy Developmental Theory-of-Mind Movie 3T fMRI"
+short_name: "Partly-Cloudy"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_movies
+  - clinical_lifespan
+  - affective_emotion
+year: 2018
+summary_en: "Landmark pediatric-to-adult developmental movie fMRI dataset (N=155: 122 children ages 3–12 and 33 adults, OpenNeuro ds000228) watching the silent 5.6-minute Pixar short Partly Cloudy to map functional dissociation of the Theory-of-Mind and Pain networks."
+summary_zh: "经典的儿童至成人社会脑发育自然动画电影 3T fMRI 基准（共 155 名被试：122 名 3–12 岁儿童与 33 名成人，OpenNeuro ds000228），通过观看 5.6 分钟无对白皮克斯短片《晴时多云》刻画心理理论（ToM）与疼痛共情网络的发育分化。"
+scale:
+  n_subjects: 155
+  hours_per_subject: 0.1
+  total_hours: 15.0
+  n_stimuli: 1
+  n_channels_or_voxels: "3.0 mm isotropic whole-brain 3T EPI (PACE prospective motion-corrected; MNI152 + group/individual ToM & Pain functional ROIs)"
+  sampling_rate_or_tr: "TR = 2.0 s (168 TRs = 5.6 min continuous single-run scan)"
+brain_regions:
+  - Theory_of_Mind_Network_rTPJ_lTPJ_dmPFC_vmPFC_PC
+  - Pain_Matrix_aINS_dACC_SII_MFG
+  - Early_Visual_and_Lateral_Occipitotemporal
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - TextGrid_TSV
+  - Parquet_CSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds000228"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds000228"
+    saxelab: "https://saxelab.mit.edu/"
+    paper: "https://doi.org/10.1038/s41467-018-03399-2"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds000228.git"
+modeling:
+  recommended_tasks:
+    - developmental_network_segregation_and_isc
+    - reverse_correlation_social_event_encoding
+    - age_prediction_and_pediatric_motion_benchmarking
+  standard_splits: "Stratified 5-fold cross-validation across the 155 subjects balanced by age bracket (3–4 yo, 5 yr, 7 yr, 8–12 yr, and Adults) and framewise displacement (`FD`), or adult-reference (`N = 33`) -> pediatric developmental projection (`N = 122`)."
+  noise_ceiling_or_repeat_structure: "Adult group (`N = 33`) inter-subject time-course correlation provides a high-SNR normative ceiling for evaluating developmental convergence across ages 3–12."
+  key_pitfalls:
+    - "Age-correlated head motion confound: Young children (`ages 3–5`) exhibit substantially higher framewise displacement (`FD`) and artifactual volumes than older children and adults—ALWAYS include mean `FD` and number of scrubbed artifact timepoints as explicit covariates + perform `CompCor` + spike regression before claiming developmental functional connectivity or ISC changes!"
+    - "Exact 168-TR timeline offset: TRs `1–5` (`10 s`) are pre-movie black fixation screen and TRs `6–10` (`10 s`) are Disney/Pixar opening logos—align `mental`, `pain`, `social`, and `control` event regressors accurately to the movie start (`t = 10 s` after scan trigger) using the official BIDS/Nilearn event annotations."
+    - "Pediatric brain template normalization: Normalizing 3-year-old brains directly to adult MNI152 requires careful inspection of `derivatives/preprocessed` registration quality and cortical thickness differences."
+citations:
+  primary_bib_keys:
+    - richardson2018partlycloudy
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41467-018-03399-2"
+card_path: "cards/human_vision_multimodal/pixar_partly_cloudy.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,63 @@
+id: human_cortical_neuropixels
+name: "Intraoperative Human Cortical Neuropixels Single-Unit Recordings"
+short_name: "Human-Neuropixels"
+category: bci_motor_prosthetics
+species:
+  - human
+modalities:
+  - Neuropixels
+  - Behavior
+domains:
+  - natural_speech
+  - speech_bci
+year: 2022
+summary_en: "High-density laminar Neuropixels recordings from awake and anesthetized human cortex in the operating room (384 channels/probe, up to >200 simultaneous isolated single units across cortical layers on Dryad/DANDI:000397, extending to laminar speech perception and production)."
+summary_zh: "人类术中大脑皮层高密度 Neuropixels 硅探针单神经元层状记录基准（单探针 384 通道同步捕获逾 200 个跨皮层细胞类型分选神经元，托管于 Dryad 与 DANDI:000397，涵盖言语感知与发声规划）。"
+scale:
+  n_subjects: 9
+  hours_per_subject: 0.4
+  total_hours: 3.6
+  n_stimuli: null
+  n_channels_or_voxels: "384 active recording channels across a 3.84 mm linear span (20 um vertical pitch; up to >200 spike-sorted pyramidal and fast-spiking interneuron single units per probe insertion)"
+  sampling_rate_or_tr: "30 kHz action-potential band (AP, 0.3-10 kHz) + 2,500 Hz local field potential band (LFP, 0.5-500 Hz)"
+brain_regions:
+  - Dorsolateral_Prefrontal_Cortex_dlPFC
+  - STG_Superior_Temporal_Gyrus
+  - Lateral_Temporal_Cortex
+data_formats:
+  - NWB
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: Dryad
+  accession_ids:
+    - "Dryad:10.5061/dryad.d2547d840"
+    - "DANDI:000397"
+  urls:
+    homepage: "https://doi.org/10.5061/dryad.d2547d840"
+    dandi: "https://dandiarchive.org/dandiset/000397"
+  download_cli: "uvx dandi download DANDI:000397"
+modeling:
+  recommended_tasks:
+    - non_rigid_brain_pulsation_motion_registration
+    - laminar_current_source_density_and_cell_type_classification
+    - single_neuron_speech_phonetic_and_lexical_encoding
+    - pairwise_monosynaptic_cross_correlogram_circuit_inference
+  standard_splits: "Within-participant contiguous recording segments or sentence/utterance cross-validation (separating awake speech/cognitive blocks from anesthetized baseline insertions across participants)."
+  noise_ceiling_or_repeat_structure: "Action-potential waveform spatial footprint stability across >=8-12 adjacent 20 um sites after motion registration + sentence/phoneme repeat reliability in awake intraoperative speech cohorts (`Leonard et al., 2023`; `Khanna et al., 2024`)."
+  key_pitfalls:
+    - "SEVERE CARDIAC & RESPIRATORY BRAIN PULSATION (`50-300+ um` DRIFT): Open craniotomies in humans exhibit far larger cardiac (~1 Hz) and respiratory (~0.25 Hz) vertical tissue motion than head-fixed rodents—applying standard rodent Kilosort without continuous non-rigid LFP/AP motion registration (`DREDge` / `Kilosort4`) splits single neurons into multiple rhythmic ghost units!"
+    - "AWAKE VS. GENERAL ANESTHESIA STATE SEPARATION: In `Paulk et al. (2022)` (`N = 9` total insertions; `3` with high-yield single-unit sorting on Dryad), participants span both awake craniotomies and general anesthesia—never pool firing rates, burstiness, or pairwise noise correlations across anesthetic states."
+    - "ACUTE OR TIME BUDGET (~15-25 MIN): Intraoperative research windows are strictly bounded by clinical safety; prefer data-efficient hierarchical or regularized GLMs/state-space models over data-hungry scratch deep networks."
+citations:
+  primary_bib_keys:
+    - paulk2022neuropixels
+    - coughlin2023neuropixels
+  related_bib_keys:
+    - leonard2023neuropixels
+    - khanna2024neuropixels
+  primary_doi_or_arxiv: "10.1038/s41593-021-00997-0"
+card_path: "cards/bci_motor_prosthetics/human_cortical_neuropixels.md"
+last_verified: "2026-11-25"

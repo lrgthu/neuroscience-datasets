@@ -1,0 +1,70 @@
+id: deep_image_recon
+name: "Kamitani Deep Image Reconstruction (Natural, Geometric, Letter & Imagery 3T fMRI)"
+short_name: "DeepRecon"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - natural_images
+  - object_recognition
+  - synthetic_ood
+  - mental_imagery
+  - retinotopy
+year: 2019
+summary_en: "High-resolution 3T whole-brain fMRI benchmark (N=3, 2.0 mm isotropic, OpenNeuro ds001506) pairing 1,200 ImageNet training images (5 repeats) with 50 natural test images (24 repeats), 40 artificial colored shapes (20 repeats), 10 letters (12 repeats), and cued mental imagery for OOD pixel/latent reconstruction."
+summary_zh: "京都大学神谷之康团队高分辨率深度图像重建 3T fMRI 基准（3 名被试，2.0 mm 各向同性，OpenNeuro ds001506），配对 1,200 张自然训练图（5 次重复）以及跨分布的 50 张自然测试图（24 次重复）、40 张人工彩色几何图形、10 个字母与心理想象任务。"
+scale:
+  n_subjects: 3
+  hours_per_subject: 22.0
+  total_hours: 66.0
+  n_stimuli: 1300
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain 3T multiband-4 EPI (~6,000–8,500 visual cortex voxels/subj across V1, V2, V3, hV4, LOC, FFA, PPA)"
+  sampling_rate_or_tr: "TR = 2.0 s (multiband 4; 8.0 s stimulus flashing at 2 Hz in perception / 8.0 s cued imagery = 4 TRs averaged per trial)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - LOC
+  - FFA
+  - PPA
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds001506"
+    - "Figshare:7033577"
+  urls:
+    homepage: "https://github.com/KamitaniLab/DeepImageReconstruction"
+    openneuro: "https://openneuro.org/datasets/ds001506"
+    figshare: "https://doi.org/10.6084/m9.figshare.7033577"
+    paper: "https://doi.org/10.1371/journal.pcbi.1006633"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds001506.git"
+modeling:
+  recommended_tasks:
+    - image_reconstruction
+    - ood_natural_to_synthetic_transfer
+    - perception_to_imagery_reconstruction
+  standard_splits: "Train decoders strictly on the 1,200 natural ImageNet images (5 repeats = 6,000 trials/subject); evaluate zero-shot pixel/structural/semantic reconstruction on 4 strictly disjoint test regimes: (1) 50 natural ImageNet images (24 repeats), (2) 40 colored geometric shapes (20 repeats), (3) 10 alphabetical letters (12 repeats), and (4) 25 mental imagery shapes/objects (20 repeats)."
+  noise_ceiling_or_repeat_structure: "24 repeats on natural test images, 20 repeats on artificial shapes, and 12 repeats on letters enable both single-trial and multi-trial-averaged SNR scaling curves."
+  key_pitfalls:
+    - "Hallucination vs. faithful low-level geometry trap: Diffusion/GAN priors conditioned only on high-level CLIP semantics often hallucinate photorealistic textures on the **40 artificial geometric shapes** and **10 letters**—always benchmark on `ds001506`'s artificial shapes and letters to test true retinotopic fidelity versus natural-image prior memorization!"
+    - "Distinct from `kamitani_god` (`ds001246`, 3.0 mm, TR=3.0 s, 9 s blocks): `deep_image_recon` (`ds001506`) upgrades spatial/temporal acquisition to `2.0 mm` isotropic multiband-4 (`TR = 2.0 s`, `8 s` blocks) and adds explicit OOD geometric shape + letter + shape-imagery sessions."
+    - "Stimulus images are restricted by ImageNet/copyright distribution terms on OpenNeuro; request/rebuild exact stimulus tensors via KamitaniLab's `StimulusPresentation` / `Figshare` scripts using WordNet synset + frame IDs."
+citations:
+  primary_bib_keys:
+    - shen2019deeprecon
+  related_bib_keys:
+    - horikawa2017god
+  primary_doi_or_arxiv: "10.1371/journal.pcbi.1006633"
+card_path: "cards/human_vision_multimodal/deep_image_recon.md"
+last_verified: "2026-11-25"

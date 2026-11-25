@@ -1,0 +1,64 @@
+id: prime_de_nhp_mri
+name: "PRIMatE Data Exchange (PRIME-DE) Global Non-Human Primate MRI Consortium"
+short_name: "PRIME-DE"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - fMRI_3T
+  - fMRI_7T
+  - Structural_MRI
+  - Diffusion_MRI
+domains:
+  - resting_state
+  - connectomics
+  - natural_movies
+year: 2018
+summary_en: "Global open-science consortium (`AWS:s3://fcp-indi/data/Projects/PRIME-DE`) aggregating >25 international collections and >250 macaques (`217` in initial 22-site release) with BIDS structural T1w/T2w, diffusion dMRI, awake naturalistic movie, and resting-state 3T/7T/9.4T fMRI."
+summary_zh: "全球非人灵长类磁共振开放联盟（`PRIME-DE`，托管于 AWS S3 `fcp-indi`），汇集全球 >25 个研究中心、>250 只恒河猴与食蟹猴（首期 22 站点 217 只）的 BIDS 格式结构像、扩散张量成像及清醒电影观看/麻醉静息态 3T/7T/9.4T fMRI。"
+scale:
+  n_subjects: 250
+  hours_per_subject: 1.5
+  total_hours: 375.0
+  n_stimuli: null
+  n_channels_or_voxels: "Whole-brain macaque isotropic/sub-millimeter structural (0.3–0.8 mm), dMRI, and functional EPI (0.75–2.0 mm across 3T, 7T, and 9.4T scanners; NMT v2 / Yerkes19 surface templates)"
+  sampling_rate_or_tr: "fMRI TR ~ 0.75–2.6 s across multi-site 3T, 7T, and ultra-high-field 9.4T protocols"
+brain_regions:
+  - Macaque_Whole_Brain
+  - Macaque_Cortex_Subcortex
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+access:
+  tier: open
+  license: "CC-BY-NC-SA-4.0 / CC-BY-4.0 (site-specific INDI open sharing)"
+  primary_portal: "FCP-INDI / NITRC / AWS Open Data"
+  accession_ids:
+    - "AWS:s3://fcp-indi/data/Projects/PRIME-DE"
+    - "DOI:10.1016/j.neuron.2018.08.039"
+  urls:
+    homepage: "https://fcon_1000.projects.nitrc.org/indi/indiPRIME.html"
+    paper: "https://doi.org/10.1016/j.neuron.2018.08.039"
+    resource_hub: "https://primatoneuroimaging.gitlab.io/prime-re/"
+  download_cli: "aws s3 ls --no-sign-request s3://fcp-indi/data/Projects/PRIME-DE/"
+modeling:
+  recommended_tasks:
+    - cross_species_macaque_human_connectome_alignment
+    - nhp_cortical_gradient_and_parcellation_discovery
+    - multi_site_scanner_anesthesia_harmonization
+    - awake_naturalistic_movie_intersubject_correlation
+  standard_splits: "Leave-one-site-out (`LOSO`) or site-stratified subject splits across the >25 participating sites (strictly separating **awake fixating/movie** cohorts such as NIMH, Oxford-awake, Rockefeller, NKI from **isoflurane/ketamine anesthetized** cohorts!)."
+  noise_ceiling_or_repeat_structure: "Multi-run within-subject scan-rescan functional connectivity fingerprinting (`I2C2` / geodesic connectome similarity), `PCP-QAP` automated quality metrics, and inter-subject correlation (`ISC`) on awake movie-viewing cohorts."
+  key_pitfalls:
+    - "AWAKE vs. ANESTHETIZED & MION vs. BOLD SITE HETEROGENEITY: `PRIME-DE` intentionally aggregates diverse protocols—some sites scanned **awake** macaques with **MION** contrast (`negative` CBV deflection, high SNR), whereas others scanned **isoflurane/propofol-anesthetized** macaques with native **BOLD** (`positive` deflection, dose-dependent thalamocortical suppression); NEVER pool raw time series across sites without harmonizing contrast polarity (`-1 × MION`), anesthesia state, and ComBat/site covariates!"
+    - "Human MRI Skull-Stripping & Template Tools Fail Catastrophically on Macaques: Thick temporalis muscles, smaller brain volume (`~90 cm^3` vs. `1,300 cm^3`), and sphinx/supine B0 susceptibility distortions break standard `FSL BET` / `fMRIPrep` defaults—use dedicated NHP pipelines (`PREEMACS`, `nhp-abcd-bids-pipeline`, `AFNI @animal_warper`, `U-Net Brain Extraction` on `NMT v2` / `Yerkes19`)!"
+    - "Species Sub-Composition (*Macaca mulatta* vs. *Macaca fascicularis*): Check `participants.tsv` per site—while predominantly rhesus macaque (*M. mulatta*), several cohorts include cynomolgus (*M. fascicularis*) differing in body/brain scaling."
+citations:
+  primary_bib_keys:
+    - milham2018primede
+  related_bib_keys:
+    - milham2020primede
+  primary_doi_or_arxiv: "10.1016/j.neuron.2018.08.039"
+card_path: "cards/nhp_electrophysiology/prime_de_nhp_mri.md"
+last_verified: "2026-11-25"

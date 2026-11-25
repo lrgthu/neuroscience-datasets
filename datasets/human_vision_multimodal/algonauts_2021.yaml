@@ -1,0 +1,71 @@
+id: algonauts_2021
+name: "Algonauts Project 2021 Dynamic Everyday Events 3T Video fMRI Challenge"
+short_name: "Algonauts-2021"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - natural_movies
+  - object_recognition
+year: 2021
+summary_en: "Voxelwise 3T video-encoding benchmark (N=10 subjects, 2.5 mm isotropic) featuring 1,000 training videos (3 repeats) and 102 test videos (10 repeats) of 3-second naturalistic human/object/scene events across 9 visual ROIs (Mini Track) and whole-brain reliable voxels (Full Track)."
+summary_zh: "Algonauts 2021 动态日常事件视频 3T fMRI 体素编码基准（10 名被试，1,000 段 3 秒训练视频 × 3 次重复 + 102 段测试视频 × 10 次重复），覆盖 9 个经典视觉功能区（Mini Track）与全脑高信噪比体素（Full Track）。"
+scale:
+  n_subjects: 10
+  hours_per_subject: 5.0
+  total_hours: 50.0
+  n_stimuli: 1102
+  n_channels_or_voxels: "2.5 mm isotropic 3T EPI (9 visual ROIs: V1–V4, LOC, EBA, FFA, STS, PPA in Mini Track; ~15k–25k reliable whole-brain voxels/subj in Full Track)"
+  sampling_rate_or_tr: "TR = 1.75 s (multiband 2; single-video beta scalars per voxel & repeat)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - LOC
+  - EBA
+  - FFA
+  - STS
+  - PPA
+  - Whole-Brain
+data_formats:
+  - Zarr_NPZ
+  - HDF5_MAT
+  - BIDS
+  - NIfTI
+access:
+  tier: registered
+  license: "CC-BY-4.0 / CC0-1.0 (Full BMD BIDS release on OpenNeuro ds005165)"
+  primary_portal: "Algonauts Project / MIT CSAIL"
+  accession_ids:
+    - "Algonauts:2021"
+    - "OpenNeuro:ds005165"
+  urls:
+    homepage: "http://algonauts.csail.mit.edu/2021/index.html"
+    portal: "https://algonautsproject.com/"
+    paper: "https://arxiv.org/abs/2104.13714"
+    openneuro_full: "https://openneuro.org/datasets/ds005165"
+  download_cli: "git clone https://github.com/Neural-Dynamics-of-Visual-Cognition-FUB/Algonauts2021_devkit.git"
+modeling:
+  recommended_tasks:
+    - spatiotemporal_video_encoding
+    - dorsal_lateral_ventral_stream_dissociation
+    - video_foundation_model_benchmarking
+  standard_splits: "Train voxelwise encoding models on 1,000 3-second videos (3 repeats/video, provided both trial-wise and repeat-averaged); evaluate noise-ceiling-normalized Pearson correlation on the 102 held-out test videos (10 repeats/video)."
+  noise_ceiling_or_repeat_structure: "3 repeats per training video and 10 repeats per test video provide per-voxel split-half / Spearman-Brown reliability masks (voxels filtered by split-half reliability threshold p < 0.05 in Full Track)."
+  key_pitfalls:
+    - "Relationship to BOLD Moments Dataset (`bmd_moments` / `ds005165`): Algonauts 2021 (`Mini-Moments`) released pre-packaged `.pkl`/`.npz` ROI & reliable-voxel betas with withheld test ground truth during the challenge, whereas `Lahner et al. (2024)` (`ds005165`) subsequently released the complete raw BIDS time-series, all 102 test-set `GLMsingle` betas, and semantic annotations—use `ds005165` when full test ground truth or temporal TR dynamics are needed!"
+    - "All 1,102 3-second clips were presented **without audio** during free viewing—do not feed audio tracks from original Moments-in-Time source videos into multimodal encoders, as auditory cortex responses reflect visual/multisensory inference only."
+    - "Lateral stream ROIs (`EBA`, `STS`) strongly weight dynamic biological motion and social interaction cues that static single-frame `ImageNet`/`CLIP` backbones miss unless temporal frame dynamics or optical-flow/3D-video tokens are extracted."
+citations:
+  primary_bib_keys:
+    - cichy2021algonauts
+  related_bib_keys:
+    - lahner2024bmd
+    - gifford2025algonauts
+  primary_doi_or_arxiv: "arXiv:2104.13714"
+card_path: "cards/human_vision_multimodal/algonauts_2021.md"
+last_verified: "2026-11-25"

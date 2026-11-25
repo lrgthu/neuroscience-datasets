@@ -1,0 +1,70 @@
+id: hcp_lifespan
+name: "Human Connectome Project Lifespan (HCP-Development & HCP-Aging Release 2.0)"
+short_name: "HCP-Lifespan"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - clinical_lifespan
+  - resting_state
+  - connectomics
+  - decision_making
+  - affective_emotion
+year: 2018
+summary_en: "Harmonized 3T Siemens Prisma lifespan extension of HCP spanning ages 5–100+ across HCP-Development (N=652, ages 5–21) and HCP-Aging (N=725, ages 36–100+), with multiband TR=0.80 s rs-fMRI, task fMRI, multi-shell dMRI, T1w/T2w myelin maps, ASL, and CIFTI grayordinates."
+summary_zh: "将 HCP 高清连接组协议扩展至 5–100+ 岁全生命周期的双队列基准（Lifespan 2.0 发布版含 HCP-Development 儿童青少年 N=652 与 HCP-Aging 中老年 N=725，共 1,377 人），统一采用 3T Prisma 多频带 TR=0.80 s 静息态/任务态 fMRI、多壳层 dMRI、动脉自旋标记灌注成像及 CIFTI 灰质坐标处理。"
+scale:
+  n_subjects: 1377
+  hours_per_subject: 1.5
+  total_hours: 2065.0
+  n_stimuli: 5
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain (`91,282` CIFTI 32k fsLR grayordinates + Glasser 360 MMP1.0 + 0.8 mm T1w/T2w + 1.5 mm multi-shell dMRI)"
+  sampling_rate_or_tr: "3T Siemens Prisma multiband 8 fMRI TR = 0.80 s (TE = 37 ms; AP and PA phase-encoding pairs; up to 4 × 6.5 min rest)"
+brain_regions:
+  - Whole-Brain_91k_Grayordinates
+  - Glasser_360_Cortical_Areas
+  - Subcortical_19_Structures
+  - Hippocampus_HighRes_TSE
+data_formats:
+  - CIFTI_GIfTI
+  - NIfTI
+access:
+  tier: credentialed
+  license: "NIMH Data Archive (NDA) Data Use Certification (institutional signing official required)"
+  primary_portal: "NIMH Data Archive (NDA) / Connectome Coordination Facility"
+  accession_ids:
+    - "NDA:2846"
+    - "NDA:2847"
+  urls:
+    homepage: "https://www.humanconnectome.org/study/hcp-lifespan-development"
+    aging_portal: "https://www.humanconnectome.org/study/hcp-lifespan-aging"
+    nda_dev: "https://nda.nih.gov/edit_collection.html?id=2846"
+    nda_aging: "https://nda.nih.gov/edit_collection.html?id=2847"
+    paper: "https://doi.org/10.1016/j.neuroimage.2018.09.060"
+  download_cli: "uvx --from nda-tools downloadcmd -dp 1226499 -u <NDA_USERNAME>"
+modeling:
+  recommended_tasks:
+    - normative_brain_age_and_lifespan_trajectory_modeling
+    - developmental_and_aging_connectome_cognition_prediction
+    - cross_cohort_foundation_model_transfer_with_hcp_ya
+    - neurovascular_coupling_asl_confound_control
+  standard_splits: "Site- and family-stratified 10-fold cross-validation across the 4 acquisition sites (`Harvard`, `MGH`, `UCLA`, `UMinn` / `WashU`), keeping siblings (`HCP-D` family subsets) and longitudinal Visit 1 / Visit 2 sessions of the same participant strictly within the same fold."
+  noise_ceiling_or_repeat_structure: "4 resting-state runs (`26 min` total; `2 × AP` + `2 × PA` across two split sessions; `22 min` in ages 5–7) plus longitudinal Visit 2 follow-ups in `HCP-D` (`5–18` year sub-cohort) and `HCP-A` (`~55%` longitudinal subset) for developmental/aging trajectory reliability."
+  key_pitfalls:
+    - "PROTOCOL SHIFT VS. HCP-YA (`AP/PA` `TR=0.80s` vs. `LR/RL` `TR=0.72s`): Unlike `HCP-YA` (`Custom Skyra`, `LR/RL` phase encoding, `TR=0.72 s`), `HCP-D` and `HCP-A` were acquired on `3T Siemens Prisma` (`80 mT/m`) with `Anterior-Posterior (AP)` and `Posterior-Anterior (PA)` phase encoding (`TR=0.80 s`, `26 min` rest vs `60 min` in `HCP-YA`)—never pool `HCP-YA` (`ages 22–35`) with `HCP-D`/`HCP-A` to fit continuous `5–100` lifespan curves without explicit scanner/PE harmonization (`ComBat` / `CovBat`), or the `22–35` age trough will reflect protocol shift rather than biology!"
+    - "AGE-COUPLED HEAD MOTION & NEUROVASCULAR CONFOUNDS: Framewise displacement rises steeply at both tails (`ages 5–9` and `ages 75+`), while cerebral blood flow and vascular reactivity decline across `HCP-A`—always control for `FD`, use `sICA+FIX` / `MSMAll` cleaned grayordinates, and leverage the companion pseudo-continuous `ASL` perfusion maps in `HCP-A` before interpreting BOLD amplitude drops as neural!"
+    - "DIFFERENT TASK BATTERIES ACROSS COHORTS (`5–7 yr` vs `8–21 yr` vs `HCP-A`): `HCP-D` includes `CARIT` (inhibitory Go/No-Go), `Emotion` (Hariri faces/shapes), and `Guessing` (reward), whereas `HCP-A` replaces `Guessing` with `VISMOTOR` and `FACENAME` associative memory; children aged `5–7` follow a shortened protocol (`6 × 3.5 min` rest runs)."
+citations:
+  primary_bib_keys:
+    - harms2018hcplifespan
+    - bookheimer2019hcpaging
+  related_bib_keys:
+    - somerville2018hcpdev
+  primary_doi_or_arxiv: "10.1016/j.neuroimage.2018.09.060"
+card_path: "cards/human_resting_connectomics/hcp_lifespan.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,56 @@
+id: cadena_macaque_v1
+name: "Cadena-Tolias-Ecker Macaque V1 Deep-ConvNet vs. Gabor Natural Image Dataset"
+short_name: "Cadena-V1"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Silicon_Probe
+  - Eye_Tracking
+domains:
+  - natural_images
+  - synthetic_ood
+year: 2019
+summary_en: "Awake fixating macaque V1 laminar silicon-probe recordings (166 well-isolated neurons across 2 monkeys) viewing 7,250 grayscale ImageNet photographs and ConvNet texture/feature metamers, establishing deep features over classical Gabor banks."
+summary_zh: "清醒注视猕猴初级视觉皮层 V1 线性硅探针数据集（2 只恒河猴共 166 个高信噪比神经元，观看 7,250 张 ImageNet 自然图像与深度卷积纹理合成图像），奠定了深度网络特征超越经典 Gabor 能量模型的定量基准。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 8.0
+  total_hours: 16.0
+  n_stimuli: 7250
+  n_channels_or_voxels: "166 well-isolated V1 single/multi-units recorded via 32-channel linear silicon probes across 17 sessions"
+  sampling_rate_or_tr: "30 kHz broadband electrophysiology; spike counts integrated in [40, 100] ms post-onset window (60 ms presentation)"
+brain_regions:
+  - Macaque_V1
+data_formats:
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "G-Node GIN / GitHub"
+  accession_ids:
+    - "GIN:10.12751/g-node.2e31e3"
+  urls:
+    homepage: "https://github.com/sacadena/Cadena2019PlosCB"
+    doi: "https://doi.org/10.12751/g-node.2e31e3"
+  download_cli: "git clone https://github.com/sacadena/Cadena2019PlosCB.git"
+modeling:
+  recommended_tasks:
+    - v1_system_identification_encoding
+    - gabor_wavelet_vs_deep_convnet_comparison
+    - texture_metamer_invariance_probing
+    - spatial_feature_factorized_readout
+  standard_splits: "80% training /validation split on single-/few-repeat images (`5,800` images) + fixed held-out `20%` test split (`1,450` images = 290 seed ImageNet frames × 5 conditions) with high-repeat reliability."
+  noise_ceiling_or_repeat_structure: "Fraction of explainable variance explained (`FEV`), computed by subtracting trial-to-trial Poisson/neural observation noise estimated across 20–40 test-set repetitions and filtering units with `FEV >= 0.15`."
+  key_pitfalls:
+    - "IMAGE-FAMILY LEAKAGE ACROSS SYNTHETIC METAMERS: The 7,250 stimuli consist of 1,450 source ImageNet patches plus 4 Gatys-style ConvNet synthetic variants (`conv1_1`, `conv2_1`, `conv3_1`, `conv4_1` Gram-matrix reconstructions) derived from those exact 1,450 seeds—always group train/val/test splits by source seed ID so original and synthesized twins never straddle train and test!"
+    - "Short `60 ms` flash without inter-stimulus blank (`~16.7 Hz` continuous RSVP stream during `2.1 s` fixation trials): late sustained or surround-feedback components beyond `+100 ms` overlap with the next flashed frame—align strictly to the canonical `[40, 100] ms` transient V1 integration window or fit temporal deconvolution kernels!"
+    - "Microsaccade & small fixation eye drifts (`<0.5°` radius window) shift small parafoveal V1 receptive fields (`~0.3°–0.8°` diameter at `1°–3°` eccentricity); enforce spatial L1-sparse / Gaussian readout masks centered on each unit's receptive field."
+citations:
+  primary_bib_keys:
+    - cadena2019v1
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1371/journal.pcbi.1006897"
+card_path: "cards/nhp_electrophysiology/cadena_macaque_v1.md"
+last_verified: "2026-11-25"

@@ -25,16 +25,18 @@ CATEGORY_TITLES_EN: Mapping[str, str] = {
     "nhp_electrophysiology": "Non-Human Primate Multi-Area Electrophysiology",
     "rodent_circuits_population": "Rodent Large-Scale Circuits & Population Recordings",
     "human_resting_connectomics": "Human Foundation Corpora, Connectomics & Cohorts",
-    "bci_motor_prosthetics": "Brain-Computer Interfaces & Motor/Speech Prosthetics",
+    "bci_motor_prosthetics": "Brain-Computer Interfaces, Single-Neuron & Motor/Speech Prosthetics",
+    "model_organisms_connectomics": "Whole-Brain Model Organisms & Nanoscale Connectomics (Drosophila / Zebrafish / C. elegans)",
 }
 
 CATEGORY_TITLES_ZH: Mapping[str, str] = {
     "human_vision_multimodal": "人类自然视觉与多模态视频（fMRI / MEG / EEG）",
     "human_language_speech": "人类自然语言、语音与颅内记录（fMRI / MEG / EEG / iEEG-ECoG）",
-    "nhp_electrophysiology": "非人灵长类多脑区阵列电生理（NHP Arrays）",
-    "rodent_circuits_population": "啮齿类大规模神经环路与群体记录（Neuropixels / 2P）",
+    "nhp_electrophysiology": "非人灵长类多脑区阵列电生理与灵长类影像（NHP）",
+    "rodent_circuits_population": "啮齿类大规模神经环路与群体记录（Neuropixels / 2P / Widefield）",
     "human_resting_connectomics": "人类脑基础模型语料库、连接组与群体队列",
-    "bci_motor_prosthetics": "脑机接口与运动/语音神经假体",
+    "bci_motor_prosthetics": "脑机接口、人类单神经元与运动/语音神经假体",
+    "model_organisms_connectomics": "模式生物全脑成像与纳米级连接组（果蝇 / 斑马鱼 / 线虫）",
 }
 
 CSV_COLUMNS: tuple[str, ...] = (

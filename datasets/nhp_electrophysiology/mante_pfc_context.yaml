@@ -1,0 +1,56 @@
+id: mante_pfc_context
+name: "Mante-Sussillo-Newsome Macaque PFC Context-Dependent Integration Dataset"
+short_name: "Mante2013-PFC"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Microwire_Single_Unit
+  - Behavior
+  - Eye_Tracking
+domains:
+  - decision_making
+year: 2013
+summary_en: "Single-unit recordings of 762 prefrontal/arcuate sulcus neurons across 2 macaques (`Monkey A` & `Monkey F`) during context-dependent sensory integration of noisy motion and color cues—the foundational Targeted Dimensionality Reduction (TDR) and task-trained RNN benchmark."
+summary_zh: "猕猴前额叶弓状沟皮层（PFC/FEF）762 个单神经元上下文依赖多感官证据累积数据集（2 只恒河猴 `Monkey A` 与 `Monkey F`），开创了靶向降维（TDR）与任务训练循环神经网络（RNN）动力学对齐范式。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 40.0
+  total_hours: 80.0
+  n_stimuli: 72
+  n_channels_or_voxels: "762 isolated single units in peri-arcuate PFC/FEF across 2 rhesus macaques (Monkey A & Monkey F)"
+  sampling_rate_or_tr: "1 ms spike timestamps smoothed into 50 ms causal/Gaussian bins across 750 ms random-dot integration epoch"
+brain_regions:
+  - Macaque_PFC
+  - Macaque_FEF
+data_formats:
+  - HDF5_MAT
+access:
+  tier: open
+  license: "Open Academic Attribution (INI UZH Mante Lab Release)"
+  primary_portal: "INI UZH Mante Lab"
+  accession_ids:
+    - "DOI:10.1038/nature12742"
+  urls:
+    homepage: "https://www.ini.uzh.ch/en/research/groups/mante/data.html"
+    paper: "https://doi.org/10.1038/nature12742"
+  download_cli: "curl -sL https://www.ini.uzh.ch/en/research/groups/mante/data.html -o mante_data_index.html"
+modeling:
+  recommended_tasks:
+    - targeted_dimensionality_reduction_tdr
+    - line_attractor_selection_vector_dynamics
+    - task_trained_rnn_mechanistic_alignment
+    - pseudopopulation_trial_condition_modeling
+  standard_splits: "Stratified trial-level splits per neuron before constructing condition-averaged pseudopopulations across the `72` factorial task conditions (`2` contexts × `2` choices × `6` signed motion coherences / `6` signed color coherences)."
+  noise_ceiling_or_repeat_structure: "Split-half pseudopopulation trajectory `R^2`, Procrustes / dynamical similarity (`DSA`), and subspace angle consistency across hundreds of sequentially recorded single-unit sessions."
+  key_pitfalls:
+    - "SEQUENTIAL SINGLE-UNIT PSEUDOPOPULATION (NOT SIMULTANEOUS ARRAYS!): Most of the 762 neurons were recorded sequentially (1–few units per session), meaning single-trial noise correlations across neurons do NOT exist globally—use Mante2013 for condition-averaged latent dynamics (`TDR` / `DSA` / line-attractor geometry), never for cross-neuron single-trial co-smoothing (`co-bps`)!"
+    - "Choice-Conditioned Selection Bias on High-Coherence Trials: On strong motion/color coherence trials, monkeys rarely make error choices, leaving some `(context, strong_opposing_coherence, error_choice)` cells sparse or empty—weight regressions by inverse trial-count variance or restrict TDR axes to well-sampled condition marginals!"
+    - "Left vs. Right Non-Normal Dynamics (`Selection Vector` vs. `Readout Vector`): Standard PCA conflates choice variance with sensory inputs; reproduce the non-normal line-attractor mechanism by checking *both* right-eigenvector (`readout`) alignment and left-eigenvector (`input selection`) context rotation!"
+citations:
+  primary_bib_keys:
+    - mante2013pfc
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/nature12742"
+card_path: "cards/nhp_electrophysiology/mante_pfc_context.md"
+last_verified: "2026-11-25"

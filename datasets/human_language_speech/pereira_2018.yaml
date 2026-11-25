@@ -1,0 +1,61 @@
+id: pereira_2018
+name: "Pereira Universal Linguistic Decoder Sentences & Passages fMRI Benchmark"
+short_name: "Pereira2018"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - reading
+year: 2018
+summary_en: "Foundational 3T fMRI reading benchmark (N=16 total: 180 single concepts + 384 and 243 multi-topic passage sentences with subject-specific langloc fROIs) powering universal semantic decoding and Brain-Score LLM alignment."
+summary_zh: "经典的自然语言语义解码与大模型脑对齐 3T fMRI 基准（共 16 名被试：180 个核心概念词 + 384 句与 243 句多主题段落逐句阅读，含个体化 langloc 语言功能区定位），是 Schrimpf 等（2021）与 Brain-Score 的核心评测集。"
+scale:
+  n_subjects: 16
+  hours_per_subject: 4.0
+  total_hours: 45.0
+  n_stimuli: 807
+  n_channels_or_voxels: "Whole-brain 3T EPI (2.0 × 2.0 × 4.0 mm) + subject-specific langloc language, MD, and visual network fROIs"
+  sampling_rate_or_tr: "TR = 2.0 s (GLM single-sentence/concept beta activation vectors per stimulus)"
+brain_regions:
+  - Left_IFG_IFGorb_MFG_LangLoc
+  - Left_AntTemp_PostTemp_AngG_LangLoc
+  - Bilateral_Multiple_Demand_Network
+  - Whole-Brain
+data_formats:
+  - HDF5_MAT
+  - NIfTI
+  - Parquet_CSV
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: OSF
+  accession_ids:
+    - "OSF:crwz7"
+  urls:
+    homepage: "https://osf.io/crwz7/"
+    paper: "https://doi.org/10.1038/s41467-018-03068-4"
+    brain_score: "https://github.com/brain-score/language"
+  download_cli: "uvx osfclient -p crwz7 clone ./pereira_2018"
+modeling:
+  recommended_tasks:
+    - llm_brain_encoding_alignment
+    - universal_semantic_vector_decoding
+    - concept_to_sentence_zero_shot_transfer
+    - representational_similarity_analysis
+  standard_splits: "5-fold cross-validation stratified or grouped by passage/topic across Experiment 2 (384 sentences, 96 passages, N=8) and Experiment 3 (243 sentences, 72 passages, N=6), or zero-shot transfer from Experiment 1 (180 concepts, N=16) to Experiments 2 & 3."
+  noise_ceiling_or_repeat_structure: "3 repetitions per sentence across separate scanning runs (averaged into trial-level GLM betas) + cross-subject ridge-prediction ceiling across language-network voxels (`Schrimpf et al., PNAS 2021`)."
+  key_pitfalls:
+    - "PASSAGE & TOPIC AUTOCORRELATION LEAKAGE: Sentences in Exp 2 (96 × 4-sentence passages across 24 topics) and Exp 3 (72 × 3-4 sentence passages across 24 topics) were read sequentially inside topic-coherent passages! Random sentence-level k-fold CV leaks shared passage discourse and slow BOLD baseline drift across train and test—always evaluate passage-disjoint and topic-disjoint splits alongside legacy random-sentence splits."
+    - "Individualized `langloc` fROI geometry: Language-selective voxels vary substantially in anatomical coordinates across individuals; always use the provided subject-specific Sentences > Nonwords functional localizer masks rather than fixed group MNI ROIs."
+    - "Visual word-count and character-length confounds: Longer sentences elicit larger visual and oculomotor responses—control for token count and character length when comparing deep contextual embeddings."
+citations:
+  primary_bib_keys:
+    - pereira2018universal
+  related_bib_keys:
+    - schrimpf2021neural
+  primary_doi_or_arxiv: "10.1038/s41467-018-03068-4"
+card_path: "cards/human_language_speech/pereira_2018.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,57 @@
+id: gardner_moser_toroidal_mec
+name: "Moser Lab Toroidal Topology Grid-Cell Neuropixels Dataset (Gardner et al. 2022)"
+short_name: "Moser-Torus"
+category: rodent_circuits_population
+species:
+  - rat
+modalities:
+  - Neuropixels
+  - Behavior
+domains:
+  - spatial_navigation
+  - resting_state
+year: 2022
+summary_en: "Landmark medial entorhinal cortex (MEC) Neuropixels dataset in freely moving and sleeping rats (Gardner et al., Nature 2022; >2,500 MEC neurons including single-module ensembles of 140–180+ simultaneous grid cells), proving invariant 2D toroidal continuous-attractor topology (Betti numbers 1, 2, 1)."
+summary_zh: "Moser 实验室自由活动与睡眠大鼠内侧内嗅皮层（MEC）Neuropixels 网格细胞经典数据集（Gardner 等 Nature 2022，同模块同步记录逾百个网格细胞），利用持续同调拓扑数据分析首次在群体水平直接证实二维环面（Torus，Betti 数为 1, 2, 1）连续吸引子动力学。"
+scale:
+  n_subjects: 3
+  hours_per_subject: 4.0
+  total_hours: 12.0
+  n_stimuli: 4
+  n_channels_or_voxels: "4-shank Neuropixels 2.0 & 1.0 probes in rat MEC (~2,600+ sorted MEC units across 3 rats; 6 distinct grid modules with ~65–189 co-recorded pure grid cells per module)"
+  sampling_rate_or_tr: "30 kHz Neuropixels spikes (Kilosort) + 100 Hz 3D OptiTrack 6-DOF head position/orientation tracking across Open Field, Wagon-Wheel Track, REM, and SWS"
+brain_regions:
+  - Rat_Medial_Entorhinal_Cortex_MEC_Layers2_3
+  - Rat_Parasubiculum
+data_formats:
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: Figshare
+  accession_ids:
+    - "Figshare:10.6084/m9.figshare.16764508"
+  urls:
+    homepage: "https://doi.org/10.6084/m9.figshare.16764508"
+    code: "https://github.com/erikher/GridCellTorus"
+    paper: "https://doi.org/10.1038/s41586-021-04268-7"
+  download_cli: "git clone https://github.com/erikher/GridCellTorus && curl -sL https://api.figshare.com/v2/articles/16764508 | head -c 400"
+modeling:
+  recommended_tasks:
+    - persistent_cohomology_betti_number_manifold_inference
+    - circular_cohomology_2d_toroidal_angle_decoding
+    - cross_state_wake_rem_sws_attractor_invariance
+    - multi_module_grid_cell_continuous_attractor_rnns
+  standard_splits: "Cross-environment and cross-brain-state generalization on the exact same sorted grid module: fit 2D toroidal coordinates (`theta_1, theta_2`) during `Open Field (OF)` foraging and evaluate manifold preservation and pairwise phase relationships Zero-Shot on the `Wagon-Wheel` track, `REM` sleep, and `Slow-Wave Sleep (SWS)`."
+  noise_ceiling_or_repeat_structure: "Four brain/behavioral states (`Open Field 1.5 × 1.5 m`, `Elevated Wagon-Wheel Track`, `REM`, `SWS`) recorded continuously on identical single units provide internal topological invariance checks (`H_0=1, H_1=2, H_2=1`) against spike-time-shuffled surrogates (`1,000` cyclic/random permutations)."
+  key_pitfalls:
+    - "STRICT SINGLE-MODULE CLUSTERING IS MANDATORY BEFORE TDA: Pooling grid cells from two different spatial-scale modules (`e.g., R1, R2, R3` within the same rat) yields a 4D product manifold (`T^2 × T^2`) whose dimensionality and noise destroy 3D `H_2` toroidal cavity detection—ALWAYS cluster grid cells by spacing/orientation module (`DBSCAN`/`UMAP` on spatial autocorrelograms) first!"
+    - "FIRING-RATE NORMALIZATION & POINT-CLOUD DENOISING: Persistent homology (`Ripser`) on raw spike counts is easily short-circuited by global speed/theta firing-rate modulation and sparse outlier states; follow `Gardner et al. 2022` preprocessing (`Gaussian smoothing`, `L1/cosine` population vector normalization, `PCA` to `6D`, and `k-nearest-neighbor` density subsampling to `~1,200` landmark points) before Vietoris-Rips filtration."
+    - "Species note: subjects (`rat_q`, `rat_r`, `rat_s`) are **Long-Evans rats** (NOT mice!), implanted with 4-shank Neuropixels 2.0 / single-shank Neuropixels 1.0 probes along the dorsoventral MEC axis."
+citations:
+  primary_bib_keys:
+    - gardner2022toroidal
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-021-04268-7"
+card_path: "cards/rodent_circuits_population/gardner_moser_toroidal_mec.md"
+last_verified: "2026-11-25"

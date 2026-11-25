@@ -1,0 +1,58 @@
+id: bao_tsao_it_map
+name: "Bao-Tsao Macaque Whole-IT Topographic Object-Space Map (fMRI + Single-Unit)"
+short_name: "BaoTsao2020"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - fMRI_3T
+  - Microwire_Single_Unit
+  - Silicon_Probe
+  - Eye_Tracking
+domains:
+  - object_recognition
+  - natural_images
+year: 2020
+summary_en: "Combined contrast-enhanced macaque fMRI, microstimulation, and targeted single-unit recordings across 4 repeating triple-stage IT networks (`Face`, `Body`, `Stubby`, `Spiky` — including newly discovered 'No-Man's-Land' zones) viewing 1,224 multi-view object images."
+summary_zh: "结合对比剂增强猕猴全脑 fMRI、微电流刺激与靶向单细胞电生理（覆盖面孔、身体、短粗物体 Stubby 与尖细物体 Spiky 四大三级重复网络，观看 51 个物体的 1,224 张多视角图像），揭示下颞叶皮层低维连续物体空间拓扑图谱。"
+scale:
+  n_subjects: 4
+  hours_per_subject: 20.0
+  total_hours: 80.0
+  n_stimuli: 1224
+  n_channels_or_voxels: "Whole-IT MION-enhanced 3T fMRI maps (Monkeys M1–M4) + ~600+ fMRI-targeted single units across 12 hierarchical IT patches (4 networks × 3 posterior-to-anterior stages)"
+  sampling_rate_or_tr: "fMRI MION block localizers (TR ~ 2.0 s) + extracellular spike trains during 150 ms ON / 150 ms OFF passive fixation"
+brain_regions:
+  - Macaque_IT
+data_formats:
+  - HDF5_MAT
+  - NIfTI
+  - Parquet_CSV
+access:
+  tier: registered
+  license: "Academic Source Data & Institutional Sharing (Nature Source Data + Tsao Lab)"
+  primary_portal: "Nature Source Data / Tsao Lab"
+  accession_ids:
+    - "DOI:10.1038/s41586-020-2350-5"
+  urls:
+    homepage: "https://doi.org/10.1038/s41586-020-2350-5"
+    pmc: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8088388/"
+  download_cli: "curl -sL https://doi.org/10.1038/s41586-020-2350-5 -o bao2020_landing.html"
+modeling:
+  recommended_tasks:
+    - topographic_vision_models_tdann_som
+    - low_dimensional_object_space_axis_coding
+    - hierarchical_3stage_view_invariance_progression
+  standard_splits: "Object-identity holdout across the `51` 3D/isolated objects (`51` objects × `24` views = `1,224` main multi-view stimuli, plus independent `1,593` broad natural object validation set) so all `24` in-depth rotation views of a held-out object stay in the same fold."
+  noise_ceiling_or_repeat_structure: "Split-half trial consistency across `~8–15` repetitions per image; single neurons project linearly onto the top 2–25 principal components of deep network (`AlexNet fc6`) object space with high explainable variance."
+  key_pitfalls:
+    - "MULTI-VIEW OBJECT LEAKAGE (`51` Objects × `24` Angles = `1,224` Images): Random image splits across the `1,224`-stimulus set leak exact object identity across neighboring `15°` rotation views—always group CV folds by the `51` object IDs when testing view invariance across posterior, middle, and anterior IT stages!"
+    - "MION Contrast-Agent Sign Inversion in Macaque fMRI: Macaque `3T` fMRI localizers use monocrystalline iron oxide nanoparticles (`MION`, blood-volume CBV contrast), whose hemodynamic deflection is **negative** for increased neural activity (`-ΔS/S`) and exhibits a distinct impulse response from human BOLD!"
+    - "Isolated Foreground Objects on White/Blank Backgrounds: The core `1,224` and `1,593` stimulus sets present background-segmented objects (`aspect-ratio / stubby-vs-spiky` PC1-PC2 geometry); account for silhouette/aspect-ratio energy in V1/V4 controls before attributing PC1/PC2 tuning purely to high-level semantics."
+citations:
+  primary_bib_keys:
+    - bao2020itmap
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-020-2350-5"
+card_path: "cards/nhp_electrophysiology/bao_tsao_it_map.md"
+last_verified: "2026-11-25"

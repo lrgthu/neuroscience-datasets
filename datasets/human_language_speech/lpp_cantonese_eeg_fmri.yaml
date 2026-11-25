@@ -1,0 +1,68 @@
+id: lpp_cantonese_eeg_fmri
+name: "Le Petit Prince Hong Kong (LPPHK) Older-Adult Cantonese fMRI & 64-Ch EEG"
+short_name: "LPPHK"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - EEG
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_speech
+  - multilingual
+  - clinical_lifespan
+  - resting_state
+year: 2024
+summary_en: "Lifespan tonal-language neurolinguistics benchmark pairing 3T task + resting-state fMRI, 64-channel scalp EEG, and cognitive batteries in N=52 healthy older Hong Kong Cantonese speakers (mean age 69.1 yr) listening to The Little Prince."
+summary_zh: "粤语声调语言老龄化自然叙事双模态基准（OpenNeuro ds004718）：52 名香港健康老年粤语母语者（平均年龄 69.1 岁）先后完成《小王子》粤语有声书收听的 3T 任务态/静息态 fMRI、64 通道头皮 EEG 及全面认知语言测验。"
+scale:
+  n_subjects: 52
+  hours_per_subject: 0.9
+  total_hours: 46.8
+  n_stimuli: 4
+  n_channels_or_voxels: "3T Siemens Prisma whole-brain EPI + resting-state + T1w MRI + 64-channel scalp EEG (all inside the same N=52 older-adult cohort)"
+  sampling_rate_or_tr: "3T fMRI TR = 2.0 s (~20 min across 4 Cantonese story runs + resting state) + continuous 64-ch EEG + behavioral battery"
+brain_regions:
+  - Bilateral_STG_STS_Tonal_Auditory
+  - Left_IFG_and_Angular_Gyrus
+  - Default_Mode_and_Executive_Aging_Networks
+  - Whole-Brain_and_64Ch_Scalp
+data_formats:
+  - BIDS
+  - NIfTI
+  - BrainVision_EDF
+  - TextGrid_TSV
+  - Parquet_CSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds004718"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds004718"
+    paper: "https://doi.org/10.1038/s41597-024-03745-8"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds004718.git"
+modeling:
+  recommended_tasks:
+    - healthy_aging_language_comprehension_lifespan_comparison
+    - cantonese_six_lexical_tone_pitch_and_prosody_encoding
+    - within_subject_eeg_to_fmri_multimodal_fusion
+    - cross_sinitic_cantonese_vs_mandarin_lpp_alignment
+  standard_splits: "4-fold leave-one-section-out cross-validation across the 4 Cantonese Little Prince narrative runs (~5 min each), or cross-dataset lifespan/typological transfer against `OpenNeuro:ds003643` (young Mandarin/English/French LPP)."
+  noise_ceiling_or_repeat_structure: "Within-cohort leave-one-subject-out ISC across N=52 older Cantonese adults in both 3T fMRI and 64-ch EEG, anchored by individual cognitive reserve covariates (digit span, Flanker, verbal fluency)."
+  key_pitfalls:
+    - "AGING HEMODYNAMIC LAG & VASCULAR VARIABILITY (`Mean Age = 69.1 yr`): Older adults exhibit delayed, dispersed, and higher-variance neurovascular `HRF` shapes compared to young 20-year-old cohorts (`ds003643`)! Never interpret lower raw canonical-HRF correlation in `LPPHK` as neural dedifferentiation without fitting flexible `FIR` lags or canonical `HRF + temporal/dispersion derivatives` (and validating against the paired lag-free 64-ch EEG!)."
+    - "SIX-TONE CANTONESE `F0` LEXICAL-PROSODIC ENTANGLEMENT: Hong Kong Cantonese encodes 6 contrastive lexical tones on almost every syllable; `F0` contour simultaneously carries lexical identity and sentence intonation—always include continuous `F0`, `|\\Delta F0|`, intensity, and syllable-onset regressors."
+    - "Sequential `fMRI` and `EEG` sessions on the same 4 story sections: Because participants heard the story in both modalities on separate visits, model visit-order / repetition familiarity effects explicitly."
+citations:
+  primary_bib_keys:
+    - momenian2024lpphk
+  related_bib_keys:
+    - li2022lpp
+    - brennan2019hierarchical
+  primary_doi_or_arxiv: "10.1038/s41597-024-03745-8"
+card_path: "cards/human_language_speech/lpp_cantonese_eeg_fmri.md"
+last_verified: "2026-11-25"

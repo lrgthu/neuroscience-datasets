@@ -1,0 +1,58 @@
+id: freeman_ziemba_v1_v2
+name: "Freeman-Ziemba-Movshon Macaque V1 vs. V2 Naturalistic Texture Benchmark"
+short_name: "FreemanZiemba2013"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Microwire_Single_Unit
+domains:
+  - natural_images
+  - synthetic_ood
+year: 2013
+summary_en: "Single-unit recordings of 102 V1 and 103 V2 neurons across 13 macaques viewing Portilla-Simoncelli naturalistic textures vs. spectrally matched phase-scrambled noise (`BrainScore:FreemanZiemba2013`), isolating higher-order V2 correlation sensitivity."
+summary_zh: "猕猴 V1（102 个单神经元）与 V2（103 个单神经元）自然纹理对比频谱匹配噪声基准（Brain-Score `FreemanZiemba2013`），定量分离出次级视觉皮层 V2 对高阶局部相位/尺度统计量的特异敏感性。"
+scale:
+  n_subjects: 13
+  hours_per_subject: 6.0
+  total_hours: 78.0
+  n_stimuli: 300
+  n_channels_or_voxels: "205 isolated single units (102 V1 neurons + 103 V2 neurons; public Brain-Score assembly exposes 300 stimuli × 20 repeats)"
+  sampling_rate_or_tr: "1 ms spike timestamps; standard Brain-Score rate window [50, 200] ms during 100 ms ON / 100 ms OFF presentation"
+brain_regions:
+  - Macaque_V1
+  - Macaque_V2
+data_formats:
+  - NWB
+  - Zarr_NPZ
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Brain-Score"
+  accession_ids:
+    - "BrainScore:FreemanZiemba2013.public"
+    - "BrainScore:movshon.FreemanZiemba2013.V1-pls"
+    - "BrainScore:movshon.FreemanZiemba2013.V2-pls"
+  urls:
+    homepage: "https://www.brain-score.org/"
+    code: "https://github.com/brain-score/vision"
+  download_cli: "uv run python -c \"import brainscore_vision; print(brainscore_vision.load_dataset('FreemanZiemba2013.public'))\""
+modeling:
+  recommended_tasks:
+    - v1_vs_v2_functional_dissociation
+    - higher_order_texture_modulation_index
+    - early_ventral_stream_brainscore_alignment
+  standard_splits: "Stratified 10-fold cross-validation grouped by the `15` Portilla-Simoncelli texture families (`15` families × `2` types [naturalistic vs. spectrally matched noise] × `10` stochastic samples = `300` images; public subset `135` / full `300`)."
+  noise_ceiling_or_repeat_structure: "20 pseudorandom trial repetitions per unique texture/noise sample, yielding high single-unit internal consistency (~0.85–0.92 Spearman-Brown ceiling)."
+  key_pitfalls:
+    - "TEXTURE-FAMILY LEAKAGE ACROSS STOCHASTIC SAMPLES: Each of the 15 base texture families contributes 10 independent Portilla-Simoncelli synthesis samples and 10 spectrally matched noise samples—random image splits leak exact power spectra and Gram statistics across folds; always group splits by `texture_family`!"
+    - "Aggregate PLS/Ridge `R` vs. Texture Modulation Index (`TMI`): A linear V1-like filter bank can achieve moderate raw `R` on both V1 and V2 via shared spectral energy while completely failing to reproduce the sharp V1 (`TMI ~ 0.0`) vs. V2 (`TMI > 0.2`) dissociation—evaluate both raw encoding `R` and the naturalistic-minus-noise modulation contrast!"
+    - "Aperture & eccentricity matching (`4°` circular raised-cosine window centered on each single unit's mapped RF in anesthetized macaques): Match model field-of-view (`4°`) to the stimulus subtense before pooling spatial activations."
+citations:
+  primary_bib_keys:
+    - freeman2013v2
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/nn.3402"
+card_path: "cards/nhp_electrophysiology/freeman_ziemba_v1_v2.md"
+last_verified: "2026-11-25"

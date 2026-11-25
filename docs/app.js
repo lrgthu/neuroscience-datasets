@@ -12,16 +12,18 @@
       nhp_electrophysiology: "NHP Multi-Area Electrophysiology",
       rodent_circuits_population: "Rodent Circuits & Population",
       human_resting_connectomics: "Human Foundation Corpora & Cohorts",
-      bci_motor_prosthetics: "BCI & Motor/Speech Prosthetics",
+      bci_motor_prosthetics: "BCI, Human Single-Unit & Prosthetics",
+      model_organisms_connectomics: "Whole-Brain Model Organisms & EM",
     },
     zh: {
       all: "全部分类",
       human_vision_multimodal: "人类视觉与多模态视频",
       human_language_speech: "人类语言、语音与颅内脑电",
-      nhp_electrophysiology: "非人灵长类多脑区电生理",
+      nhp_electrophysiology: "非人灵长类电生理与影像",
       rodent_circuits_population: "啮齿类大规模神经环路",
       human_resting_connectomics: "人类脑基础模型语料与群体队列",
-      bci_motor_prosthetics: "脑机接口与神经假体",
+      bci_motor_prosthetics: "脑机接口与人类单神经元",
+      model_organisms_connectomics: "模式生物全脑成像与连接组",
     },
   };
 
@@ -32,6 +34,8 @@
     category: "all",
     species: "all",
     modality: "all",
+    domain: "all",
+    format: "all",
     access: "all",
     sort: "year_desc",
     selectedIds: new Set(),
@@ -57,6 +61,8 @@
     const categories = ["all", ...new Set(datasets.map((d) => d.category))];
     const species = ["all", ...new Set(datasets.flatMap((d) => d.species))].sort();
     const modalities = ["all", ...new Set(datasets.flatMap((d) => d.modalities))].sort();
+    const domains = ["all", ...new Set(datasets.flatMap((d) => d.domains || []))].sort();
+    const formats = ["all", ...new Set(datasets.flatMap((d) => d.data_formats || []))].sort();
     const access = ["all", "open", "registered", "credentialed"];
 
     populateSelect(
@@ -76,6 +82,16 @@
     );
     document.getElementById("modality-select").value = state.modality;
 
+    populateSelect(document.getElementById("domain-select"), domains, (v) =>
+      v === "all" ? (state.lang === "zh" ? "全部任务域" : "All Domains") : v
+    );
+    document.getElementById("domain-select").value = state.domain;
+
+    populateSelect(document.getElementById("format-select"), formats, (v) =>
+      v === "all" ? (state.lang === "zh" ? "全部数据格式" : "All Formats") : v
+    );
+    document.getElementById("format-select").value = state.format;
+
     populateSelect(document.getElementById("access-select"), access, (v) =>
       v === "all" ? (state.lang === "zh" ? "全部开放级别" : "All Access Tiers") : v
     );
@@ -88,6 +104,8 @@
       if (state.category !== "all" && d.category !== state.category) return false;
       if (state.species !== "all" && !d.species.includes(state.species)) return false;
       if (state.modality !== "all" && !d.modalities.includes(state.modality)) return false;
+      if (state.domain !== "all" && !(d.domains || []).includes(state.domain)) return false;
+      if (state.format !== "all" && !(d.data_formats || []).includes(state.format)) return false;
       if (state.access !== "all" && d.access.tier !== state.access) return false;
       if (q) {
         const blob = [
@@ -346,6 +364,14 @@
     state.modality = e.target.value;
     refreshAll();
   });
+  document.getElementById("domain-select").addEventListener("change", (e) => {
+    state.domain = e.target.value;
+    refreshAll();
+  });
+  document.getElementById("format-select").addEventListener("change", (e) => {
+    state.format = e.target.value;
+    refreshAll();
+  });
   document.getElementById("access-select").addEventListener("change", (e) => {
     state.access = e.target.value;
     refreshAll();
@@ -359,6 +385,8 @@
     state.category = "all";
     state.species = "all";
     state.modality = "all";
+    state.domain = "all";
+    state.format = "all";
     state.access = "all";
     state.sort = "year_desc";
     document.getElementById("search-input").value = "";

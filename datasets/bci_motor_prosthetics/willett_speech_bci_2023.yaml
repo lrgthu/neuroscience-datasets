@@ -1,0 +1,56 @@
+id: willett_speech_bci_2023
+name: "Stanford Intracortical Speech Neuroprosthesis & Brain-to-Text Benchmark"
+short_name: "Willett-Speech-BCI"
+category: bci_motor_prosthetics
+species:
+  - human
+modalities:
+  - Utah_Array
+  - Behavior
+domains:
+  - speech_bci
+  - natural_speech
+year: 2023
+summary_en: "Multi-session intracortical speech BCI dataset from BrainGate2 participant T12 (256-channel Utah arrays across ventral premotor area 6v and Broca's area 44, 12,100 attempted sentences) enabling 62 wpm open-vocabulary decoding across a 125,000-word lexicon and powering the Brain-to-Text Benchmark."
+summary_zh: "斯坦福颅内言语脑机接口里程碑数据集（ALS 受试者 T12 腹侧前运动皮层 6v 区与 Broca 44 区共 256 通道 Utah 微电极阵列，含 12,100 句尝试发音记录），在 12.5 万词表上实现 62 词/分钟解码并构成 Brain-to-Text 评测基准。"
+scale:
+  n_subjects: 1
+  hours_per_subject: 18.0
+  total_hours: 18.0
+  n_stimuli: 12100
+  n_channels_or_voxels: "256 intracortical microelectrodes (four 64-channel Utah arrays across ventral premotor area 6v and IFG area 44)"
+  sampling_rate_or_tr: "50 Hz decoder frames (20 ms bins of threshold crossings and spike-band power extracted from 30 kHz raw broadband)"
+brain_regions:
+  - Ventral_Premotor_Cortex_Area6v
+  - IFG_Broca_Area44
+data_formats:
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: Dryad
+  accession_ids:
+    - "Dryad:10.5061/dryad.x69p8czpq"
+  urls:
+    homepage: "https://doi.org/10.5061/dryad.x69p8czpq"
+    code: "https://github.com/fwillett/speechBCI"
+  download_cli: "curl -L 'https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.x69p8czpq/download' -o willett_speech_bci_2023.zip"
+modeling:
+  recommended_tasks:
+    - ctc_phoneme_and_word_sequence_decoding
+    - neural_to_llm_rescoring_beam_search
+    - cross_day_nonstationarity_input_adaptation
+    - articulatory_somatotopy_area6v_vs_area44_analysis
+  standard_splits: "Official Brain-to-Text chronological multi-day split across 24 competition sessions (~10,850 train/val/test sentences partitioned into per-session train, held-out validation, and blind competition test blocks; never shuffle trials within the same block across splits)."
+  noise_ceiling_or_repeat_structure: "Phoneme Error Rate (PER) before language-model decoding + Word Error Rate (WER) after n-gram + neural LLM rescoring (9.1% WER on 50-word vocabulary; 23.8% baseline WER reduced below 10% on 125,000-word vocabulary by modern architectures), plus cross-validated articulatory tuning across repeated phoneme/orofacial sweeps."
+  key_pitfalls:
+    - "DAY-SPECIFIC LINEAR INPUT LAYERS ARE CRITICAL: Chronic Utah array recordings exhibit substantial day-to-day baseline firing-rate and SNR drift; omitting per-session affine/day-specific input layers or block-wise z-scoring causes severe cross-day WER degradation."
+    - "AREA 44 VS. AREA 6v SIGNAL ASYMMETRY: In participant T12, ventral premotor cortex (area 6v) carries dense articulatory representations whereas area 44 arrays exhibited virtually zero speech-informative tuning—models applying uniform spatial pooling across all 256 channels ingest 128 near-noise channels unless regularized."
+    - "SEPARATE ACOUSTIC/NEURAL PER FROM LLM RESCORING GAINS: When claiming improved neural encoders (RNN/Conformer/SSM), always report raw CTC Phoneme Error Rate (PER) alongside post-LM Word Error Rate (WER) so language-model size differences (3-gram vs. 5-gram vs. OPT/Llama rescoring) do not confound neural feature extraction."
+citations:
+  primary_bib_keys:
+    - willett2023speechbci
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-023-06377-x"
+card_path: "cards/bci_motor_prosthetics/willett_speech_bci_2023.md"
+last_verified: "2026-11-25"

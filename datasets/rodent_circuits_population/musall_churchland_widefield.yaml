@@ -1,0 +1,64 @@
+id: musall_churchland_widefield
+name: "Musall & Churchland Cortex-Wide Widefield Calcium, 2P & Neuropixels Movement Dataset"
+short_name: "Musall-2019"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Widefield_Calcium
+  - Two_Photon
+  - Neuropixels
+  - Eye_Tracking
+  - Behavior
+domains:
+  - decision_making
+  - multimodal
+  - motor_reaching
+year: 2019
+summary_en: "Seminal dorsal-cortex widefield calcium, cellular 2-photon, and multi-area Neuropixels dataset (Musall et al., Nature Neuroscience 2019; DOI:10.14224/1.38599) demonstrating that uninstructed movements dominate single-trial cortical dynamics during audiovisual 2AFC decision-making."
+summary_zh: "皮层全视野宽场钙成像、双光子与 Neuropixels 决策动作解耦经典数据集（Musall 等 Nature Neuroscience 2019；CSHL DOI:10.14224/1.38599）：证实小鼠在视听延迟决策任务中的单试次全脑神经涨落主要由非指令性精细躯体/面部动作主导。"
+scale:
+  n_subjects: 22
+  hours_per_subject: 3.0
+  total_hours: 66.0
+  n_stimuli: 8
+  n_channels_or_voxels: "Dorsal cortex widefield GCaMP6s/f across 10 transgenic cell-type lines (540 × 640 px reduced to 200 spatiotemporal SVD components) + 2P L2/3 somata + cortical/subcortical Neuropixels + 2-camera video & analog movement sensors"
+  sampling_rate_or_tr: "Widefield 30 Hz (15 Hz alternating 473 nm blue GCaMP + 405 nm violet hemodynamic control); 2P ~30 Hz; Neuropixels 30 kHz; 30 Hz dual infrared behavioral cameras"
+brain_regions:
+  - Mouse_Dorsal_Cortex_Widefield_CCFv3
+  - Mouse_ALM_MOs_MOp_SSp_Retrosplenial
+  - Mouse_VISp_HVAs_Parietal_Cortex
+  - Mouse_Subcortical_Neuropixels_Control
+data_formats:
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Cold Spring Harbor Laboratory (CSHL) Repository"
+  accession_ids:
+    - "CSHL:10.14224/1.38599"
+  urls:
+    homepage: "https://doi.org/10.14224/1.38599"
+    lab_portal: "https://churchlandlab.dgsom.ucla.edu/pages/code/"
+    code: "https://github.com/musall/ridgeModel"
+    paper: "https://doi.org/10.1038/s41593-019-0502-4"
+  download_cli: "git clone https://github.com/musall/ridgeModel && curl -sLI https://doi.org/10.14224/1.38599 | head -n 10"
+modeling:
+  recommended_tasks:
+    - unique_variance_delta_r2_cognitive_vs_movement_encoding
+    - spatiotemporal_svd_widefield_linear_encoding
+    - hemodynamic_violet_405nm_artifact_regression
+    - cell_type_specific_excitatory_inhibitory_widefield_maps
+  standard_splits: "10-fold trial-stratified cross-validation fitting time-expanded ridge regression design matrices (`task` variables + `instructed` movements + `uninstructed` video/sensor movements) directly onto `200`-rank widefield SVD temporal components `V(t)`, comparing **full-model `cvR²`**, **single-variable marginal `cvR²`**, and **unique variance `ΔR² = R²_full − R²_{full \\ X}`**."
+  noise_ceiling_or_repeat_structure: "Delayed 2AFC visual/auditory flash/click rate discrimination trials (`Stimulus -> 1.0 s Delay -> Go Cue -> Left/Right Spout Lick`) repeated hundreds of times per session across `10` genetically defined Cre driver lines (`Emx1`, `Cux2`, `Fezf2`, `PlxnD1`, `CSP`, `Pvalb`, `SST`, `VIP`, etc.)."
+  key_pitfalls:
+    - "MARGINAL `cvR²` VS. UNIQUE `ΔR²` COLLINEARITY TRAP: Task events (stimulus onset, delay, reward) trigger stereotype-locked uninstructed movements (whisking, nose twitching, hindpaw bracing); fitting a task-only encoding model yields high `cvR²` that actually reflects movement! ALWAYS compute **unique variance (`ΔR²`)** by comparing the full joint model (`task + all movements`) against reduced models dropping each regressor group (`musall/ridgeModel`)."
+    - "HEMODYNAMIC CONTAMINATION IN WIDEFIELD `473 nm` FLUORESCENCE: Blood volume and oxygenation changes strongly absorb blue/green light across dorsal cortex—never model raw single-wavelength `dF/F` without regressing out the quasi-simultaneous `405 nm` violet isosbestic control channel!"
+    - "Work directly in the compressed `U (spatial) × V (temporal)` 200-component SVD basis (`V` has shape `200 × T`): ridge regression with L2 penalty commutes linearly with orthonormal spatial basis `U`, speeding up pixelwise cortex-wide fitting by `>1,000×` without approximation loss."
+citations:
+  primary_bib_keys:
+    - musall2019single
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41593-019-0502-4"
+card_path: "cards/rodent_circuits_population/musall_churchland_widefield.md"
+last_verified: "2026-11-25"

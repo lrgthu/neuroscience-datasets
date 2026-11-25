@@ -1,0 +1,71 @@
+id: bmd_moments
+name: "BOLD Moments Dataset (BMD — 1,102 Short Visual Events 3T Video fMRI & Metadata)"
+short_name: "BMD"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_movies
+  - object_recognition
+year: 2024
+summary_en: "Comprehensive open-access 3T video fMRI resource (N=10, OpenNeuro ds005165) releasing raw BIDS, fMRIPrep surfaces, single-trial GLMsingle betas, and rich human-annotated action/object/scene/caption metadata across 1,102 3-second Moments-in-Time clips (4,020 trials/subject)."
+summary_zh: "全开放短事件自然视频 3T fMRI 旗舰数据集（10 名被试，OpenNeuro ds005165，覆盖 1,102 段 3 秒 Moments-in-Time 视频共 4,020 试次/人），完整释出原始 BIDS、fMRIPrep 皮层表面、GLMsingle 单试次 beta 与动作/物体/场景/自然语言标注。"
+scale:
+  n_subjects: 10
+  hours_per_subject: 5.5
+  total_hours: 55.0
+  n_stimuli: 1102
+  n_channels_or_voxels: "2.5 mm isotropic whole-brain 3T EPI + fsLR 32k / fsaverage CIFTI surfaces + 11 functional/retinotopic visual ROIs"
+  sampling_rate_or_tr: "TR = 1.75 s (GLMsingle Type-B/C/D single-trial betas + FIR time-courses spanning TRs 1–9 post-onset)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - LOC
+  - OFA_FFA
+  - EBA
+  - PPA_RSC_TOS
+  - STS
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+  - HDF5_MAT
+  - Parquet_CSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds005165"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds005165"
+    github: "https://github.com/blahner/BOLDMomentsDataset"
+    paper: "https://doi.org/10.1038/s41467-024-50310-3"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds005165.git"
+modeling:
+  recommended_tasks:
+    - spatiotemporal_video_encoding
+    - video_reconstruction_and_retrieval
+    - semantic_variance_partitioning
+    - event_dynamics_and_memorability_modeling
+  standard_splits: "Official split locks 1,000 training videos (3 repeats = 3,000 trials/subject) and 102 test videos (10 repeats = 1,020 trials/subject), fully unblinded in ds005165 with matched GLMsingle beta estimates."
+  noise_ceiling_or_repeat_structure: "3 repeats on the 1,000 training clips and 10 repeats on the 102 test clips yield official per-voxel `ncsnr` maps (`NC = ncsnr^2 / (ncsnr^2 + 1/n)`) directly analogous to NSD."
+  key_pitfalls:
+    - "Always prefer `GLMsingle` Type-D betas (`TYPED_FITHRF_GLMDENOISE_RR`) and z-score voxel responses **within each scanning session/run** before concatenating the 1,000-train and 102-test pools (train and test clips were acquired in separate functional runs within sessions 2–5)."
+    - "Because train (`3` repeats) and test (`10` repeats) were collected in distinct run blocks (`task-train` vs. `task-test`), session/run mean-centering separately on train and test runs is essential to prevent baseline offset artifacts."
+    - "Videos are silent `3.0 s` clips (`45–90` frames) paired with crowdsourced human sentence descriptions, object/scene/action labels, and behavioural memorability scores—verify whether VLM captions leak ground-truth human annotations when testing purely visual encoders."
+citations:
+  primary_bib_keys:
+    - lahner2024bmd
+  related_bib_keys:
+    - cichy2021algonauts
+  primary_doi_or_arxiv: "10.1038/s41467-024-50310-3"
+card_path: "cards/human_vision_multimodal/bmd_moments.md"
+last_verified: "2026-11-25"

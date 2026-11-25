@@ -1,0 +1,72 @@
+id: lemon_mind_brain_body
+name: "MPI-Leipzig Mind-Brain-Body Dataset (LEMON — Paired 3T rs-fMRI, 62-Ch EEG & Autonomic Physiology)"
+short_name: "MPI-LEMON"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - EEG
+  - Eye_Tracking
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - resting_state
+  - clinical_lifespan
+  - affective_emotion
+  - connectomics
+  - multimodal
+year: 2019
+summary_en: "Rich multimodal mind-brain-body cohort from MPI-Leipzig (N=227 in LEMON aged 20–35 & 59–77; embedded in the N=318 MPI-MBB phenotyping study) pairing 3T quantitative MP2RAGE, multiband TR=1.4 s rs-fMRI, 62-ch 2,500 Hz resting EEG, eye-tracking, continuous blood pressure/ECG/respiration, and extensive cognitive/affective batteries."
+summary_zh: "马克斯·普朗克研究所莱比锡身心脑（MPI-LEMON）多模态开放数据集（LEMON 含 227 名青年 20–35 岁与老年 59–77 岁受试者，隶属 N=318 MPI-MBB 队列），在同一批被试上配对采集 3T MP2RAGE 定量结构像、TR=1.4 s 静息态 fMRI、62 导 2500 Hz 静息脑电、眼动、连续心电/血压/呼吸生理信号与认知情绪量表。"
+scale:
+  n_subjects: 227
+  hours_per_subject: 0.8
+  total_hours: 180.0
+  n_stimuli: 2
+  n_channels_or_voxels: "3T 2.3 mm isotropic whole-brain EPI + 1.0 mm quantitative MP2RAGE + 62-ch BrainAmp ActiCAP EEG (plus VEOG + ECG + pulse/BP/respiration)"
+  sampling_rate_or_tr: "3T fMRI TR = 1.40 s (multiband 4, 657 volumes = 15.3 min); 62-ch EEG 2,500 Hz (16 × 1 min interleaved Eyes-Closed / Eyes-Open blocks)"
+brain_regions:
+  - Whole-Brain
+  - Whole-Scalp_62Ch_ActiCAP
+  - Central_Autonomic_Network
+data_formats:
+  - BIDS
+  - NIfTI
+  - BrainVision_EDF
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC0-1.0 / Open FCP-INDI & GWDG Public Imaging/EEG Release (5-year age bins open; exact medical/drug records restricted via MPI DUA)"
+  primary_portal: "FCP-INDI / AWS Open Data / OpenNeuro / GWDG FTP"
+  accession_ids:
+    - "OpenNeuro:ds000221"
+    - "AWS:s3://fcp-indi/data/Projects/INDI/MPI-LEMON"
+  urls:
+    homepage: "https://fcon_1000.projects.nitrc.org/indi/retro/MPI_LEMON.html"
+    openneuro: "https://openneuro.org/datasets/ds000221"
+    gwdg_archive: "https://ftp.gwdg.de/pub/misc/MPI-Leipzig_Mind-Brain-Body-LEMON/"
+    paper: "https://doi.org/10.1038/sdata.2018.308"
+    companion_mpimbb: "https://doi.org/10.1038/sdata.2018.307"
+  download_cli: "aws s3 ls --no-sign-request s3://fcp-indi/data/Projects/INDI/MPI-LEMON/Compressed_tar/ && uvx datalad install https://github.com/OpenNeuroDatasets/ds000221.git"
+modeling:
+  recommended_tasks:
+    - cross_modal_eeg_to_fmri_connectome_alignment
+    - heart_brain_autonomic_and_arousal_coupling
+    - bimodal_young_vs_older_adult_aging_biomarkers
+    - resting_eeg_alpha_oscillation_and_aperiodic_1_f_modeling
+  standard_splits: "Stratified 5-fold or 10-fold subject cross-validation balanced across the two discrete age cohorts (`Young`: `20–35 yr`, `N = 154` vs. `Older`: `59–77 yr`, `N = 73`) and biological sex; never split interleaved `EO`/`EC` EEG blocks of the same subject across folds!"
+  noise_ceiling_or_repeat_structure: "`16` alternating `60 s` EEG blocks (`8 × Eyes-Closed` + `8 × Eyes-Open` = `16 min` total) permit high split-half spectral reliability (`alpha peak / 1/f exponent ICC > 0.90`), paired with a single `15.3 min` (`657` TRs) eyes-open low-illumination fixation `rfMRI` run (+ `4 × 15 min` multi-session `rfMRI` in the overlapping `N = 318` `MPI-MBB` cohort of `Mendes et al., 2019`)."
+  key_pitfalls:
+    - "NON-SIMULTANEOUS EEG AND fMRI ACQUISITION: Although `LEMON` pairs `62-ch EEG` (`N = 216` available) and `3T rs-fMRI` (`N = 227`) in the exact same individuals, EEG was recorded in a sound-attenuated shielded cabin on a separate day—NOT simultaneously inside the MRI bore! Align modalities at the subject/trait/connectome level, never TR-by-TR."
+    - "BIMODAL AGE GAP (`36–58 yr` MISSING BY DESIGN) & `5-YEAR` ANONYMIZED AGE BINS: `LEMON` intentionally omits middle adulthood (`ages 36–58`) and releases open ages in `5-year` bins (`20-25`, `25-30`, ..., `70-75`) for GDPR privacy—treat open `age` as bimodal classification or interval-censored regression rather than continuous uniform regression!"
+    - "`MP2RAGE` SALT-AND-PEPPER BACKGROUND NOISE: Raw `MP2RAGE` `UNI` uniform T1 images contain intense salt-and-pepper noise in air/skull cavities outside the brain mask that breaks standard `FreeSurfer` / `fMRIPrep` skull-stripping unless masked with `INV2` (`fMRIPrep` `--skull-strip-t1w` or the GWDG/INDI skull-stripped `T1w` derivatives)."
+citations:
+  primary_bib_keys:
+    - babayan2019lemon
+  related_bib_keys:
+    - mendes2019mpimbb
+  primary_doi_or_arxiv: "10.1038/sdata.2018.308"
+card_path: "cards/human_resting_connectomics/lemon_mind_brain_body.md"
+last_verified: "2026-11-25"

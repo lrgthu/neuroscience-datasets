@@ -1,0 +1,61 @@
+id: chang_speech_avatar_ecog
+name: "UCSF High-Density Speech-Motor ECoG Multimodal Avatar Benchmark"
+short_name: "Chang-Speech-Avatar"
+category: bci_motor_prosthetics
+species:
+  - human
+modalities:
+  - ECoG_iEEG
+  - Behavior
+domains:
+  - speech_bci
+  - natural_speech
+  - multimodal
+year: 2023
+summary_en: "Chronic 253-channel high-density speech-motor ECoG neuroprosthesis dataset from UCSF BRAVO3 simultaneously decoding text (78 wpm across 1,024 words via 39 phonemes), intelligible speech audio waveforms, and 3D orofacial avatar animation."
+summary_zh: "UCSF 高密度言语运动皮层脑电（253 通道 ECoG，BRAVO3 受试者）多模态神经假体数据集，同步实现 1,024 词大词表文本解码（78 词/分钟）、个性化语音波形合成与三维面部虚拟形象驱动。"
+scale:
+  n_subjects: 1
+  hours_per_subject: 22.0
+  total_hours: 22.0
+  n_stimuli: 1024
+  n_channels_or_voxels: "253-channel high-density subdural ECoG grid (3 mm inter-electrode pitch) over left ventral sensorimotor cortex and superior temporal gyrus"
+  sampling_rate_or_tr: "200 Hz dual-band features (70-150 Hz high-gamma analytic amplitude + 0.3-17 Hz low-frequency cortical potentials)"
+brain_regions:
+  - Ventral_Sensorimotor_Cortex_vSMC
+  - STG_Superior_Temporal_Gyrus
+  - IFG_Precentral_Speech_Motor
+data_formats:
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: credentialed
+  license: "UCSF Clinical Trial Restricted DUA via Zenodo (Open Source Code)"
+  primary_portal: Zenodo
+  accession_ids:
+    - "Zenodo:8200782"
+    - "NCT03698149"
+  urls:
+    homepage: "https://doi.org/10.5281/zenodo.8200782"
+    code: "https://github.com/UCSF-Chang-Lab-BRAVO/multimodal-decoding"
+  download_cli: "git clone https://github.com/UCSF-Chang-Lab-BRAVO/multimodal-decoding.git # Submit credentialed data access request at https://zenodo.org/records/8200782"
+modeling:
+  recommended_tasks:
+    - multimodal_ecog_to_text_speech_avatar_decoding
+    - ctc_phoneme_decoding_from_surface_ecog
+    - discrete_huBERT_speech_unit_synthesis
+    - articulatory_gesture_to_3d_facial_avatar_control
+  standard_splits: "Chronological session-block holdouts separating offline/online model training blocks from prospective real-time evaluation blocks across 50-phrase, 529-phrase, and 1,024-word General American English sentence sets."
+  noise_ceiling_or_repeat_structure: "25.5% median Word Error Rate at 78 words/min on 1,024-word silent attempted speech (8.2% WER on 50-phrase set), Mel-cepstral distortion / ASR intelligibility on synthesized HuBERT audio, and 85%+ classification accuracy across discrete emotional/orofacial expressions."
+  key_pitfalls:
+    - "CREDENTIALED CLINICAL ACCESS TIER: Because participant BRAVO3 is enrolled in an active FDA IDE clinical trial (NCT03698149), raw neural/clinical files on Zenodo (8200782) require formal investigator DUA approval, whereas full PyTorch multimodal architectures and pipelines are openly available on GitHub."
+    - "COMBINE HIGH-GAMMA AND LOW-FREQUENCY BANDS: Relying on 70-150 Hz high-gamma envelope alone discards critical phase-locked articulatory kinematics carried in 0.3-17 Hz low-frequency ECoG potentials—concatenating both bands (506 features/frame) significantly lowers WER."
+    - "SILENT ATTEMPTED SPEECH LACKS ALIGNED AUDIO GROUND TRUTH: For direct speech synthesis and avatar animation on anarthric trials, align ECoG streams to reference HuBERT discrete speech units and SpeechGraphics articulatory muscle trajectories via CTC/DTW rather than frame-wise MSE against patient microphone audio."
+citations:
+  primary_bib_keys:
+    - metzger2023speechavatar
+  related_bib_keys:
+    - moses2021speechbci
+  primary_doi_or_arxiv: "10.1038/s41586-023-06443-4"
+card_path: "cards/bci_motor_prosthetics/chang_speech_avatar_ecog.md"
+last_verified: "2026-11-25"

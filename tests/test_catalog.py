@@ -71,7 +71,8 @@ def test_tidy_csv_roundtrip_and_missing_values() -> None:
 
 def test_live_repository_catalog_integrity_and_sync() -> None:
     catalog = loader.load_repository_catalog(REPO_ROOT)
-    assert len(catalog.records) >= 39
+    assert len(catalog.records) >= 112
+    assert len({r.category for r in catalog.records}) == 7
     seen_ids = {r.id for r in catalog.records}
     assert {
         "nsd",
@@ -82,21 +83,33 @@ def test_live_repository_catalog_integrity_and_sync() -> None:
         "things_eeg1",
         "cneuromod_things",
         "things_behavior_plus",
-        "nod",
-        "hcp_7t_movie",
+        "vim_1",
+        "vim_2",
+        "bmd_moments",
+        "had",
         "open_fmind",
         "uk_biobank_brain",
         "hcp_ya",
-        "abcd_study",
-        "cam_can",
-        "ibc",
-        "midnight_scan_club",
-        "libribrain",
+        "hcp_lifespan",
+        "abide_i_ii",
         "tuh_eeg",
         "hbn_multimodal",
+        "libribrain",
+        "pereira_2018",
+        "zuco",
+        "willett_speech_bci_2023",
+        "falcon_bci_benchmark",
+        "rutishauser_human_single_unit",
         "tvsd",
+        "siegel_miller_6area",
+        "mante_pfc_context",
         "ibl_brain_wide_map",
         "microns_mm3",
+        "steinmetz_2019",
+        "sensorium_v1",
+        "flywire_connectome",
+        "zapbench_zebrafish",
+        "flavell_zimmer_celegans",
     } <= seen_ids
 
     json_path = REPO_ROOT / "catalog" / "datasets.json"

@@ -1,0 +1,71 @@
+id: buzsaki_hippocampus_databank
+name: "Buzsáki Lab Hippocampal-Entorhinal Silicon-Probe Databank (CellExplorer, hc-3, hc-11 & DANDI)"
+short_name: "Buzsaki-HC"
+category: rodent_circuits_population
+species:
+  - rat
+  - mouse
+modalities:
+  - Silicon_Probe
+  - Neuropixels
+  - Behavior
+domains:
+  - spatial_navigation
+  - working_memory
+  - resting_state
+year: 2021
+summary_en: "Foundational open rodent hippocampal-entorhinal silicon-probe repository (>400 sessions across rats and mice) uniting CRCNS hc-3, the CEBRA benchmark hc-11 novel-track learning dataset (DANDI:000044), septal-cooling theta assemblies (DANDI:000059), and CellExplorer standardized cell-type metrics."
+summary_zh: "Buzsáki 实验室海马—内嗅皮层高密度硅探针开放数据库（覆盖大鼠与小鼠逾 400 个会话）：整合经典的 CRCNS hc-3、CEBRA 表征学习基准 hc-11 新环境跑道序列数据（DANDI:000044）、内侧隔核降温 θ 相位协调数据（DANDI:000059）以及 CellExplorer 标准化单神经元分类特征。"
+scale:
+  n_subjects: 120
+  hours_per_subject: 6.0
+  total_hours: 1200.0
+  n_stimuli: 12
+  n_channels_or_voxels: "Multi-shank 32–256 ch silicon probes & Neuropixels (>35,000 curated pyramidal cells, granule/mossy cells & interneurons across CA1, CA3, DG, Subiculum, and MEC Layers 2–5)"
+  sampling_rate_or_tr: "20–30 kHz broadband extracellular spikes + 1,250 Hz LFP (theta 4–12 Hz & sharp-wave ripples 140–250 Hz) + 30–100 Hz overhead 2D/3D LED/OptiTrack position tracking"
+brain_regions:
+  - Rodent_Hippocampus_CA1_CA3_DG_Subiculum
+  - Rodent_Medial_Entorhinal_Cortex_MEC
+  - Rodent_Medial_Septum_Prefrontal_Cortex
+data_formats:
+  - NWB
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Buzsáki Lab Databank / DANDI / CRCNS"
+  accession_ids:
+    - "DANDI:000044"
+    - "DANDI:000059"
+    - "DANDI:000003"
+    - "CRCNS:hc-11"
+    - "CRCNS:hc-3"
+  urls:
+    homepage: "https://buzsakilab.com/wp/database/"
+    cellexplorer: "https://cellexplorer.org/databank/"
+    dandi_hc11: "https://dandiarchive.org/dandiset/000044"
+    dandi_septum_cooling: "https://dandiarchive.org/dandiset/000059"
+    dandi_dg: "https://dandiarchive.org/dandiset/000003"
+  download_cli: "uvx dandi download DANDI:000044 && uvx dandi ls DANDI:000059 | head -n 5"
+modeling:
+  recommended_tasks:
+    - contrastive_and_nonlinear_manifold_discovery_cebra
+    - place_field_theta_phase_precession_and_bayesian_decoding
+    - awake_to_swr_sleep_sequence_replay_detection
+    - monosynaptic_ccg_excitatory_inhibitory_cell_typing
+  standard_splits: "Contiguous lap-based or block-based splits (`80/20` or `3`-fold contiguous blocks along linear-track running bouts in `hc-11` / `DANDI:000044`, as standardized in `CEBRA`), plus `Pre-Sleep -> Novel Maze Run -> Post-Sleep` cross-state sequence generalization."
+  noise_ceiling_or_repeat_structure: "Dozens of left-to-right and right-to-left linear-track laps (`hc-11`: `~60–120` laps per session across `4` rats, e.g., `Achilles_10252013` with `120` simultaneous bilateral CA1 units) yield centimeter-scale position-decoding error ceilings (`~4–6 cm` median error)."
+  key_pitfalls:
+    - "VELOCITY & DIRECTIONALITY FILTERING ON LINEAR TRACKS (`hc-11` / `CEBRA`): Hippocampal `CA1` place cells are strongly directional (`leftward` vs. `rightward` laps form two distinct manifold branches!) and switch from theta sequences during locomotion (`speed > 5–10 cm/s`) to non-local sharp-wave ripple (`SWR`) replay at reward ports (`speed < 2 cm/s`)—never mix immobile reward-consumption ripples with active running bins when evaluating spatial decoding!"
+    - "FAST-FIRING RIGID VS. SLOW-FIRING PLASTIC PYRAMIDAL SUBSETS (`Grosmark & Buzsáki 2016`): Log-normally distributed `CA1` firing rates span 3 orders of magnitude; high-rate cells exhibit low spatial specificity and rigid pre-existing correlations, whereas low-rate cells acquire novel place fields and post-learning ripple coactivation—separate putative interneurons from pyramidal cells using `CellExplorer` (`troughToPeak`, `acg_tau_rise`, monosynaptic `CCG`s)!"
+    - "EXACT `Neuron 2020` DOI NOTE: Petersen & Buzsáki's medial-septum cooling theta assembly paper (`DANDI:000059`) has DOI `10.1016/j.neuron.2020.05.023` (NOT `.029`), and the `CellExplorer` framework/databank paper (`Petersen et al., Neuron, 2021`) has DOI `10.1016/j.neuron.2021.09.002`."
+citations:
+  primary_bib_keys:
+    - petersen2021cellexplorer
+    - grosmark2016diversity
+    - petersen2020cooling
+    - mizuseki2011hippocampal
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.neuron.2021.09.002"
+card_path: "cards/rodent_circuits_population/buzsaki_hippocampus_databank.md"
+last_verified: "2026-11-25"

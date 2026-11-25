@@ -1,0 +1,53 @@
+id: coen_cagli_v1
+name: "Coen-Cagli-Kohn Macaque V1 Contextual Natural Images & Gratings (CRCNS pvc-8)"
+short_name: "CRCNS-pvc8"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Utah_Array
+domains:
+  - natural_images
+year: 2015
+summary_en: "Utah array population recordings across 10 sessions in 3 anesthetized macaques (`CRCNS:pvc-8`) probing V1 classical-RF vs. surround contextual gating across 270 natural images at multiple aperture sizes plus gratings."
+summary_zh: "麻醉猕猴初级视觉皮层 V1 多电极阵列群体记录（CRCNS `pvc-8`，3 只猕猴 10 个实验场次），通过对比经典感受野窗口（1°）与大视野（3°–6.7°）自然图像及光栅刺激，揭示自然视觉中周边抑制的灵活门控机制。"
+scale:
+  n_subjects: 3
+  hours_per_subject: 6.0
+  total_hours: 18.0
+  n_stimuli: 540
+  n_channels_or_voxels: "96-channel Utah microelectrode arrays across 10 sessions (~20–45 well-tuned V1 neurons per session; ~300+ total units)"
+  sampling_rate_or_tr: "1,000 Hz spike-train bins (1 ms resolution over 100 ms ON + 200 ms OFF flashed presentation)"
+brain_regions:
+  - Macaque_V1
+data_formats:
+  - HDF5_MAT
+access:
+  tier: registered
+  license: "CRCNS Data Sharing Terms (CC-BY-NC-compatible academic attribution)"
+  primary_portal: "CRCNS.org"
+  accession_ids:
+    - "CRCNS:pvc-8"
+    - "DOI:10.6080/K0SB43P8"
+  urls:
+    homepage: "https://crcns.org/data-sets/vc/pvc-8"
+    doi: "https://doi.org/10.6080/K0SB43P8"
+  download_cli: "curl -L -b cookies.txt -O https://portal.nersc.gov/project/crcns/download/pvc-8/01.mat"
+modeling:
+  recommended_tasks:
+    - surround_suppression_divisive_normalization
+    - contextual_probabilistic_gating_models
+    - v1_noise_correlation_and_population_coding
+  standard_splits: "Session-stratified cross-validation holding out disjoint natural scene base images (grouping small `1°` RF-masked and large `3°–6.7°` full-context versions of the same scene into the same fold)."
+  noise_ceiling_or_repeat_structure: "20 trial repetitions per unique image/aperture condition (`270` base natural scenes × `2` aperture sizes = `540` natural conditions + orientation/size-tuning gratings), enabling exact Fano factor, noise-correlation, and Spearman-Brown split-half reliability estimation."
+  key_pitfalls:
+    - "PAIRED APERTURE LEAKAGE (`1°` vs. `3°–6.7°`): Each natural scene appears both cropped to the classical receptive field (`1°` diameter) and uncropped with natural surround (`3°–6.7°`)—always split train/test by base scene ID so center pixel patches never leak across splits!"
+    - "Anesthetized preparation (`sufentanil` paralysis/anesthesia): Eliminates microsaccadic eye drift (ideal for exact pixel-to-RF alignment), but alters cortical state, low-frequency shared fluctuations, and top-down attentional feedback compared with awake V1 (`Cadena-V1`, `TVSD`)."
+    - "Center-alignment heterogeneity across array electrodes: The stimulus aperture was centered on the aggregate array receptive field; include only units whose mapped minimum response field lies strictly inside the `1°` small-aperture window when quantifying pure surround modulation!"
+citations:
+  primary_bib_keys:
+    - coencagli2015v1
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/nn.4128"
+card_path: "cards/nhp_electrophysiology/coen_cagli_v1.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,62 @@
+id: driscoll_marks_drift
+name: "Chronic Multi-Week Representational Drift 2-Photon Benchmarks (Driscoll 2017 PPC & Marks-Goard 2021 V1)"
+short_name: "Drift-2P"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Two_Photon
+  - Eye_Tracking
+  - Behavior
+domains:
+  - spatial_navigation
+  - working_memory
+  - natural_movies
+year: 2021
+summary_en: "Canonical multi-week chronic 2-photon representational drift benchmarks pairing association-cortex virtual T-maze navigation (Driscoll et al., Cell 2017; Dryad:10.5061/dryad.gqnk98sjq) with sensory-cortex natural movie vs. grating stability over 5–7 weeks (Marks & Goard, Nat. Commun. 2021; Dryad:10.25349/D9M606)."
+summary_zh: "跨数周慢性双光子“表征漂移（Representational Drift）”双经典基准：联合后顶叶联合皮层（PPC）虚拟 T 迷宫导航跨月追踪数据（Driscoll 等 Cell 2017）与初级视觉皮层（V1）自然视频对比人工光栅的 5–7 周刺激依赖型漂移数据（Marks & Goard 2021）。"
+scale:
+  n_subjects: 18
+  hours_per_subject: 8.0
+  total_hours: 140.0
+  n_stimuli: 14
+  n_channels_or_voxels: "Driscoll 2017: ~300–600 chronically tracked PPC L2/3 GCaMP6s neurons/mouse across up to 4–8 weeks; Marks & Goard 2021: ~2,900+ chronically tracked V1 L2/3 GCaMP6s neurons across 12 mice over 5–7 weekly sessions"
+  sampling_rate_or_tr: "Driscoll PPC: ~5.3–15 Hz 2P ΔF/F & deconvolved events + spherical treadmill VR kinematics; Marks & Goard V1: 10 Hz 2P GCaMP6s + pupil & running wheel"
+brain_regions:
+  - Mouse_Posterior_Parietal_Cortex_PPC_Layer2_3
+  - Mouse_VISp_V1_Layer2_3
+data_formats:
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: "Dryad Digital Repository"
+  accession_ids:
+    - "Dryad:10.5061/dryad.gqnk98sjq"
+    - "Dryad:10.25349/D9M606"
+  urls:
+    homepage: "https://doi.org/10.5061/dryad.gqnk98sjq"
+    marks_goard_dryad: "https://doi.org/10.25349/D9M606"
+    paper_driscoll: "https://doi.org/10.1016/j.cell.2017.07.021"
+    paper_marks: "https://doi.org/10.1038/s41467-021-25436-3"
+  download_cli: "# Open CC0 Dryad archives: Driscoll 2017 PPC (https://doi.org/10.5061/dryad.gqnk98sjq) & Marks-Goard 2021 V1 (https://doi.org/10.25349/D9M606)"
+modeling:
+  recommended_tasks:
+    - cross_day_decoder_degradation_and_manifold_alignment
+    - gratings_vs_natural_movies_stimulus_dependent_drift
+    - adaptive_homeostatic_readout_and_bci_recalibration
+    - single_cell_turnover_vs_population_geometry_invariance
+  standard_splits: "Train linear/nonlinear decoders or latent subspaces on `Day t_0` (within-day `5`-fold trial CV baseline) and evaluate zero-shot transfer across increasing lag `Δt ∈ {1, 2, ..., 30–49}` days (`Decoder(t_0 -> t_0 + Δt)` vs. within-day `Decoder(t_0 + Δt -> t_0 + Δt)` ceiling)."
+  noise_ceiling_or_repeat_structure: "Within-session split-half tuning reliability (`even` vs. `odd` trials of virtual T-maze left/right runs or `20–30` repeats of `30 s` natural movies & `12`-direction gratings) normalizes raw cross-week correlation decay against single-day measurement noise!"
+  key_pitfalls:
+    - "ARCHIVE ID VERIFICATION (`Dryad:10.25349/D9M606`, NOT `DANDI:000049`): Marks & Goard (2021) is archived on **Dryad (`10.25349/D9M606`)**, and Driscoll et al. (2017) is archived on **Dryad (`10.5061/dryad.gqnk98sjq`)**; `DANDI:000049` is an unrelated single-session Allen Institute `TF × SF` grating dataset—do not confuse them!"
+    - "Z-PLANE REGISTRATION DRIFT & NUCLEAR-FILLED EXCLUSION ARTIFACTS: Apparent multi-week 'representational drift' can be severely inflated by subtle (`2–5 µm`) axial focal-plane tilt, GCaMP6s cytomorbid nuclear filling, or ROI segmentation mismatch—always verify stable structural morphology/correlation metrics and compare **within-neuron grating stability vs. natural-movie drift recorded in the EXACT same session** (`Marks & Goard 2021` internal control!)."
+    - "BEHAVIORAL TRAJECTORY DRIFT IN VR (`Driscoll 2017`): Even when task accuracy plateaus (`>85–90%`), subtle week-to-week shifts in running velocity or view angle (`θ_VR`) along the T-maze stem can mimic neural tuning drift—condition on matched kinematic bins `(y_pos, velocity, view_angle)` before attributing turnover to intrinsic synaptic plasticity."
+citations:
+  primary_bib_keys:
+    - driscoll2017dynamic
+    - marks2021stimulus
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.cell.2017.07.021"
+card_path: "cards/rodent_circuits_population/driscoll_marks_drift.md"
+last_verified: "2026-11-25"

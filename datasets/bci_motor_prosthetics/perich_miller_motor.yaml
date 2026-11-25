@@ -1,0 +1,59 @@
+id: perich_miller_motor
+name: "Miller Lab Multi-Session Macaque M1/PMd/Area2 Reaching & Perturbation Archive"
+short_name: "Perich-Miller"
+category: bci_motor_prosthetics
+species:
+  - macaque
+modalities:
+  - Utah_Array
+  - Behavior
+domains:
+  - motor_reaching
+year: 2018
+summary_en: "Large-scale 100+ session NWB archive on DANDI:000688 of chronic macaque M1, PMd, and somatosensory Area 2 Utah-array recordings (monkeys Chewie, Mihili, Jaco, MrT) across center-out reaching, random pursuit, force-field/rotation learning, and mechanical perturbations."
+summary_zh: "西北大学 Miller 实验室猕猴运动/前运动/躯体感觉皮层（M1/PMd/Area 2）超百场多会话 NWB 权威档案（DANDI:000688，含 Chewie、Mihili 等 4 只猕猴），覆盖中心外周伸手、力场/视觉旋转快速学习及数年群体流形稳定性。"
+scale:
+  n_subjects: 4
+  hours_per_subject: 15.0
+  total_hours: 60.0
+  n_stimuli: 8
+  n_channels_or_voxels: "96- to 192-channel chronic Utah arrays per monkey (~60 to 250 spike-sorted single units per session across M1, PMd, and Area 2)"
+  sampling_rate_or_tr: "30 kHz spike timestamps + 100 Hz / 1,000 Hz planar manipulandum kinematics, handle forces, and EMG in NWB"
+brain_regions:
+  - Macaque_M1_Primary_Motor
+  - Macaque_PMd_Dorsal_Premotor
+  - Macaque_Area2_Somatosensory
+data_formats:
+  - NWB
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: DANDI
+  accession_ids:
+    - "DANDI:000688"
+  urls:
+    homepage: "https://dandiarchive.org/dandiset/000688"
+    code: "https://github.com/neuro-galaxy/poyo"
+  download_cli: "uvx dandi download DANDI:000688"
+modeling:
+  recommended_tasks:
+    - multi_year_neural_manifold_alignment_cca_procrustes
+    - within_session_motor_adaptation_curl_field_visuomotor
+    - cross_subject_multi_session_foundation_pretraining
+    - pmd_preparatory_to_m1_execution_subspace_communication
+  standard_splits: "POYO / DANDI:000688 canonical multi-session splits: trial-stratified 80/10/10 within baseline reaching sessions, baseline -> washout/adaptation chronological epoch splits on learning sessions, and zero/few-shot held-out monkey/session transfer across Chewie, Mihili, Jaco, and MrT."
+  noise_ceiling_or_repeat_structure: "High repeat reliability across 8 radial center-out directions (PSTH R^2 > 0.90) + conserved low-dimensional canonical correlations (CCA > 0.80) across up to 2 years of chronic recording despite complete single-unit turnover."
+  key_pitfalls:
+    - "SEPARATE BASELINE EPOCHS FROM CURL-FIELD / VISUOMOTOR ADAPTATION EPOCHS: Many sessions in `Perich et al. (2018)` contain `Baseline -> Adaptation (Force Field or Visuomotor Rotation) -> Washout` epochs—pooling all trials blindly trains decoders across non-stationary sensorimotor mappings!"
+    - "PMd PREPARATORY VS. M1 EXECUTION DYNAMICS: `PMd` exhibits strong target-tuned preparatory activity during the instructed delay before the Go cue while arm velocity is zero; naive frame-wise linear regression without state dynamics will hallucinate pre-movement cursor drift unless delay periods are included."
+    - "MULTI-YEAR SINGLE-UNIT TURNOVER (`Gallego et al., 2020`): Across weeks to years on `Chewie`, `Jaco`, and `Mihili`, individual sorted neurons disappear and appear, yet a ~10-12D latent cortical manifold remains stable—align latent subspaces (`CCA`, `Procrustes`, or learned unit tokens) rather than matching channel IDs directly."
+citations:
+  primary_bib_keys:
+    - perich2018rapid
+    - gallego2020longterm
+  related_bib_keys:
+    - azabou2023poyo
+  primary_doi_or_arxiv: "10.1016/j.neuron.2018.09.030"
+card_path: "cards/bci_motor_prosthetics/perich_miller_motor.md"
+last_verified: "2026-11-25"

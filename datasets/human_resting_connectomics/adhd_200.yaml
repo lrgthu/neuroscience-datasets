@@ -1,0 +1,66 @@
+id: adhd_200
+name: "ADHD-200 Global Multi-Site Pediatric rs-fMRI Benchmark (Neuro Bureau Preprocessed)"
+short_name: "ADHD-200"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - clinical_lifespan
+  - resting_state
+  - connectomics
+year: 2012
+summary_en: "Pioneering 8-site pediatric clinical rs-fMRI & anatomical MRI competition benchmark (N=973 ages 7–21: 776 training + 197 held-out test across typically developing controls and ADHD-Combined, ADHD-Inattentive, and ADHD-Hyperactive subtypes), openly distributed with Athena, Burner, and NIAK preprocessed connectomes."
+summary_zh: "儿科临床神经影像机器学习竞赛的开创性多中心基准（汇聚全球 8 大中心共 973 名 7–21 岁儿童青少年：776 例训练集 + 197 例官方测试集，涵盖典型发育对照与 ADHD 混合型/注意缺陷型亚型），通过 Neuro Bureau 开放提供 Athena、Burner 与 NIAK 预处理连接组。"
+scale:
+  n_subjects: 973
+  hours_per_subject: 0.12
+  total_hours: 115.0
+  n_stimuli: 1
+  n_channels_or_voxels: "Whole-brain 3T (plus 1.5T subgroup) EPI; Neuro Bureau Athena/NIAK parcellations: CC200, CC400, AAL-116, Eickhoff-Zilles, Talairach-Tournoux, BASC"
+  sampling_rate_or_tr: "Site-dependent fMRI TR = 1.5–2.5 s (single or multi-run 5–8.5 min resting-state scan per subject)"
+brain_regions:
+  - Whole-Brain
+  - Fronto_Striatal_Cerebellar_Circuits
+  - Cortical_and_Subcortical_Athena_Atlases
+data_formats:
+  - BIDS
+  - NIfTI
+  - HDF5_MAT
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC-BY-NC-SA-3.0 / Open FCP-INDI & Neuro Bureau Preprocessed Terms"
+  primary_portal: "FCP-INDI / AWS Open Data / Neuro Bureau Preprocessed Connectomes"
+  accession_ids:
+    - "AWS:s3://fcp-indi/data/Projects/ADHD200"
+  urls:
+    homepage: "https://fcon_1000.projects.nitrc.org/indi/adhd200/"
+    preprocessed: "http://preprocessed-connectomes-project.org/adhd200/"
+    paper: "https://doi.org/10.3389/fnsys.2012.00062"
+    preproc_paper: "https://doi.org/10.1016/j.neuroimage.2016.06.034"
+  download_cli: "aws s3 ls --no-sign-request s3://fcp-indi/data/Projects/ADHD200/Outputs/athena/"
+modeling:
+  recommended_tasks:
+    - pediatric_adhd_diagnostic_and_subtype_classification
+    - phenotypic_confound_deconfounding_and_fair_ml_auditing
+    - multi_site_connectome_domain_adaptation
+    - brain_foundation_model_downstream_probing
+  standard_splits: "Official 2011 Global Competition split (`N = 776` training subjects across `PKU`, `KKI`, `NeuroIMAGE`, `NYU`, `OHSU`, `Pittsburgh`, `WashU` vs. `N = 197` official held-out test subjects including an entirely unseen 8th site `Brown University` `N = 26`), OR site-stratified 5/10-fold CV on the QC-passed `Athena` subset (`N ~ 759–922`)."
+  noise_ceiling_or_repeat_structure: "Most sites acquire a single `6–8 min` resting-state scan (`OHSU` acquires `3 × 2.5 min` short runs; `NYU` acquires `2 × 6 min` runs), alongside 3 independent preprocessing pipelines (`Athena` AFNI/FSL, `Burner` SPM8 VBM, `NIAK` multi-scale BASC) to quantify pipeline reproducibility."
+  key_pitfalls:
+    - "FAMOUS BROWN ET AL. (2012) PHENOTYPIC SHORTCUT LESSON: In the official ADHD-200 Global Competition, an SVM using ONLY non-imaging personal characteristics (`site`, `age`, `sex`, `handedness`, `IQ`) achieved higher accuracy (`62.5%`) than EVERY fMRI-based team! Boys and younger/lower-IQ subjects are heavily over-represented among ADHD cases in `NYU`/`PKU` (`Pittsburgh` and `WashU` contributed ONLY controls in the training set!)—always evaluate against a `phenotypic-only` baseline and test on covariate-matched or residualized splits!"
+    - "CONTROL-ONLY SITES IN TRAINING SPLIT (`Pittsburgh` & `WashU`): Two of the 8 sites (`Pittsburgh` `N=89`, `WashU` `N=61`) contributed 100% neurotypical controls and 0 ADHD cases in training—any model learning scanner fingerprints automatically predicts `Control` on those sites, inflating pooled accuracy."
+    - "PEDIATRIC IN-SCANNER HYPERACTIVITY / HEAD MOTION BIAS: Hyperactive/Combined-type children move substantially more during scanning than controls; motion scrubbing/FD regression is mandatory so classifiers do not merely detect head-motion artifacts as 'ADHD connectivity'."
+citations:
+  primary_bib_keys:
+    - milham2012adhd200
+  related_bib_keys:
+    - bellec2017adhd200preproc
+    - brown2012adhd200confound
+  primary_doi_or_arxiv: "10.3389/fnsys.2012.00062"
+card_path: "cards/human_resting_connectomics/adhd_200.md"
+last_verified: "2026-11-25"

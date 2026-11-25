@@ -1,0 +1,63 @@
+id: algonauts_2019
+name: "Algonauts Project 2019 Paired 3T fMRI & 306-Ch MEG Object Recognition Benchmark"
+short_name: "Algonauts-2019"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - MEG
+domains:
+  - natural_images
+  - object_recognition
+  - multimodal
+year: 2019
+summary_en: "Inaugural Algonauts benchmark pairing spatially resolved 3T fMRI (EVC & IT, N=15) and millisecond-resolved 306-channel MEG (early & late windows, N=15) RDMs across 92 silhouette objects, 118 natural-background objects, and 78 challenge test images."
+summary_zh: "首届 Algonauts 视觉脑—模型对齐挑战赛数据集，融合高空间分辨率 3T fMRI（早期视觉皮层 EVC 与下颞叶 IT，N=15）与毫秒级 306 通道 MEG（早期与晚期时间窗，N=15）表征相异性矩阵（92 张孤立物体图 + 118 张自然背景物体图 + 78 张测试图）。"
+scale:
+  n_subjects: 15
+  hours_per_subject: 3.5
+  total_hours: 105.0
+  n_stimuli: 288
+  n_channels_or_voxels: "3T fMRI EVC & IT ROIs (2.0 mm isotropic) + 306-channel Elekta Neuromag Triux MEG (102 magnetometers + 204 planar gradiometers)"
+  sampling_rate_or_tr: "MEG = 1,000 Hz (early 50–70/100 ms & late 140–190 ms RDM windows); fMRI TR = 2.0 s"
+brain_regions:
+  - Early_Visual_Cortex
+  - Inferior_Temporal_Cortex
+  - Whole-Head_MEG_306Ch
+data_formats:
+  - HDF5_MAT
+  - Zarr_NPZ
+  - NIfTI
+access:
+  tier: open
+  license: "CC-BY-4.0"
+  primary_portal: "Algonauts Project / OSF / MIT CSAIL"
+  accession_ids:
+    - "Algonauts:2019"
+  urls:
+    homepage: "http://algonauts.csail.mit.edu/2019/index.html"
+    portal: "https://algonautsproject.com/"
+    paper_2014: "https://doi.org/10.1038/nn.3635"
+    paper_2019: "https://arxiv.org/abs/1905.05675"
+  download_cli: "curl -L -O http://algonauts.csail.mit.edu/2019/data/Training_Data_92_Image_Set.zip && curl -L -O http://algonauts.csail.mit.edu/2019/data/Training_Data_118_Image_Set.zip"
+modeling:
+  recommended_tasks:
+    - rsa_cka_alignment
+    - meg_fmri_spatiotemporal_fusion
+    - feedforward_vs_recurrent_vision_evaluation
+  standard_splits: "Train/select DNN layer mappings and feature reweighting on Training Set 1 (92 isolated silhouette objects; 4,186 RDM pairs) and Training Set 2 (118 objects on natural scenes; 6,903 RDM pairs); evaluate zero-shot RDM Spearman correlation on the 78 held-out natural-background test images (3,003 RDM pairs)."
+  noise_ceiling_or_repeat_structure: "Subject-level 92×92 and 118×118 RDMs across N=15 fMRI and N=15 MEG participants (~20–30 trials/image in MEG; multi-session GLM t-value patterns in fMRI) yield explicit leave-one-subject-out upper and lower RDM noise ceilings."
+  key_pitfalls:
+    - "Domain shift between Training Set 1 (92 segmented objects on uniform gray background, Cichy et al. 2014) and Training Set 2 + Test Set (118 and 78 objects embedded in complex natural backgrounds, Cichy et al. 2016)—background clutter strongly alters EVC and early-MEG RDMs."
+    - "Never fit unconstrained dense linear weights directly on flattened upper-triangular RDM entries without image-disjoint cross-validation; sharing a single image across train/val RDM pairs leaks stimulus identity across N-1 matrix cells."
+    - "Track 1 (fMRI EVC/IT) and Track 2 (MEG early/late intervals) measure second-order pairwise dissimilarities (`1 - Pearson r` or cross-validated SVM decoding accuracy), so models must output geometry-faithful embeddings rather than voxelwise regressors."
+citations:
+  primary_bib_keys:
+    - cichy2014megfmri
+    - cichy2019algonauts
+  related_bib_keys:
+    - cichy2016fusion
+  primary_doi_or_arxiv: "10.1038/nn.3635"
+card_path: "cards/human_vision_multimodal/algonauts_2019.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,58 @@
+id: sparrkulee
+name: "SparrKULee (85-Subject KU Leuven Natural Speech 64-Ch EEG Repository)"
+short_name: "SparrKULee"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - EEG
+domains:
+  - natural_speech
+year: 2024
+summary_en: "Large-scale 85-participant, 168-hour 64-channel BioSemi scalp EEG repository of native Dutch/Flemish listeners hearing 90–150 minutes of natural audiobooks and podcasts, anchoring the ICASSP Auditory EEG Decoding Challenges."
+summary_zh: "大规模自然语音 64 通道 BioSemi 头皮脑电（EEG）语料库（85 名母语被试，每人收听 90–150 分钟荷兰语有声书与播客，总计 168 小时），是 ICASSP 听觉脑电解码挑战赛的核心基准。"
+scale:
+  n_subjects: 85
+  hours_per_subject: 2.0
+  total_hours: 168.0
+  n_stimuli: 60
+  n_channels_or_voxels: "64-channel BioSemi ActiveTwo scalp EEG (10-20 montage)"
+  sampling_rate_or_tr: "1,024 Hz BIDS BrainVision/BDF release (downsampled from 8,192 Hz hardware acquisition; 48 kHz audio)"
+brain_regions:
+  - Fronto_Central_Auditory_Scalp
+  - Bilateral_Temporal_Scalp
+  - Whole-Scalp_64Ch
+data_formats:
+  - BIDS
+  - BrainVision_EDF
+access:
+  tier: registered
+  license: CC-BY-NC-4.0
+  primary_portal: "KU Leuven RDR"
+  accession_ids:
+    - "RDR:10.48804/K3VSND"
+  urls:
+    homepage: "https://doi.org/10.48804/K3VSND"
+    paper: "https://doi.org/10.3390/data9080094"
+    challenge_code: "https://github.com/exporl/auditory-eeg-challenge-2024-code"
+  download_cli: "# Request free academic credentials via KU Leuven RDR (https://doi.org/10.48804/K3VSND) and download via Dataverse API / challenge scripts"
+modeling:
+  recommended_tasks:
+    - speech_eeg_match_mismatch_contrastive_retrieval
+    - speech_envelope_and_mel_spectrogram_reconstruction
+    - cross_subject_zero_shot_auditory_eeg_generalization
+    - temporal_response_function_trf
+  standard_splits: "Official ICASSP Auditory EEG Challenge dual-test protocol: Task 1 / Split A evaluates unseen speech stimuli on seen training subjects (`sub-001`..`sub-071`), while Split B evaluates strictly unseen held-out subjects (`sub-072`..`sub-085`) on unseen stimuli."
+  noise_ceiling_or_repeat_structure: "Multi-subject responses to shared Dutch podcast/audiobook stories across subsets of the 85 normal-hearing listeners enable inter-subject correlation (ISC) and population TRF ceilings."
+  key_pitfalls:
+    - "BIOSEMI UNREFERENCED RAW COMMON-MODE VOLTAGE: Raw BioSemi ActiveTwo BIDS files record relative to the active `CMS/DRL` loop rather than a physiological reference—ALWAYS re-reference (e.g., common average, `Cz`, or mastoids) and high-pass filter (`>=0.5 Hz`) before epoching or computing spatial covariances!"
+    - "MATCH-MISMATCH NEGATIVE SAMPLING LEAKAGE: In `3–5 s` speech-EEG match-mismatch classification, imposter negative audio segments MUST be drawn from the exact same continuous story at a deterministic temporal offset (e.g., `+1 s` after the positive window end) rather than from different stories/speakers, otherwise models cheat via speaker prosody or recording gain!"
+    - "Report Seen-Subject and Unseen-Subject generalization separately: Cross-subject zero-shot EEG accuracy drops sharply relative to subject-calibrated adapters; never average the two test subsets into a single headline number."
+citations:
+  primary_bib_keys:
+    - accou2024sparrkulee
+  related_bib_keys:
+    - broderick2018speech
+  primary_doi_or_arxiv: "10.3390/data9080094"
+card_path: "cards/human_language_speech/sparrkulee.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,67 @@
+id: alice_brennan
+name: "Alice in Wonderland Naturalistic Audiobook 3T fMRI & 61-Ch EEG Corpus"
+short_name: "Alice-fMRI-EEG"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - EEG
+  - Structural_MRI
+domains:
+  - natural_speech
+year: 2019
+summary_en: "Paired naturalistic neurolinguistics benchmark of listeners hearing Chapter 1 of Alice in Wonderland (2,129 words, ~12.4 min) across 3T fMRI (OpenNeuro ds002322, N=26) and 61-channel scalp EEG (Deep Blue Data, N=49 raw / N=33 clean) with hierarchical syntactic grammar predictors."
+summary_zh: "《爱丽丝梦游仙境》第一章自然听觉理解双模态基准（共 2,129 词，约 12.4 分钟），配对提供全脑 3T fMRI（OpenNeuro ds002322，N=26）与 61 通道头皮 EEG（密歇根大学 Deep Blue，N=49 原始 / N=33 洁净），内置短语结构与最简方案（MG）层级句法标注。"
+scale:
+  n_subjects: 59
+  hours_per_subject: 0.21
+  total_hours: 15.5
+  n_stimuli: 1
+  n_channels_or_voxels: "3T GE MR750 whole-brain EPI (N=26 fMRI) + 61-channel active actiCHamp scalp EEG (N=33 clean / 49 raw)"
+  sampling_rate_or_tr: "fMRI TR = 2.0 s (372 volumes) + EEG 500 Hz (time-aligned to 2,129 word & phoneme boundaries)"
+brain_regions:
+  - Anterior_Temporal_Lobe_ATL
+  - Posterior_STG_STS
+  - Left_IFG_Inferior_Parietal
+  - Whole-Brain_and_61Ch_Scalp
+data_formats:
+  - BIDS
+  - NIfTI
+  - HDF5_MAT
+  - Parquet_CSV
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: "OpenNeuro / UMich Deep Blue"
+  accession_ids:
+    - "OpenNeuro:ds002322"
+    - "DeepBlue:10.7302/746w-g237"
+    - "DeepBlue:10.7302/Z29C6VNH"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds002322"
+    eeg_deepblue: "https://doi.org/10.7302/746w-g237"
+    annotations_github: "https://github.com/chrishale/alice-eeg"
+    lrec_paper: "https://aclanthology.org/2020.lrec-1.15/"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds002322.git"
+modeling:
+  recommended_tasks:
+    - hierarchical_syntactic_structure_vs_ngram_surprisal
+    - cross_modal_fmri_eeg_speech_encoding
+    - temporal_response_function_trf
+  standard_splits: "Contiguous multi-minute temporal block cross-validation across the ~12.4 min story (84 sentences / 2,129 words) with >=20 s hemodynamic guard bands for fMRI, or leave-one-subject-out mixed-effects / ridge evaluation."
+  noise_ceiling_or_repeat_structure: "Inter-subject correlation (ISC) across N=26 fMRI listeners and N=33/49 EEG listeners hearing the identical PSOLA-paced narration."
+  key_pitfalls:
+    - "TWO EPI SEQUENCE SUBGROUPS IN `ds002322`: Part of the fMRI cohort was acquired with single-echo EPI (`3 × 3 × 3 mm`, `TE = 27 ms`) and part with 3-echo EPI (`3.75 × 3.75 × 3.8 mm`, `TE2 = 27.5 ms`)! Follow `Bhattasali et al. (LREC 2020)` by extracting exclusively `echo-2` (`TE = 27.5 ms`) from the multi-echo subgroup, resampling to a uniform MNI grid, and including an acquisition-group covariate."
+    - "SYNTACTIC vs. ACOUSTIC/LEXICAL COLLINEARITY: Hierarchical `CFG` and Minimalist Grammar (`MG`) node counts correlate strongly with word frequency, prosodic `F0`/intensity, and sequential n-gram/RNN surprisal—always test nested partial $\\Delta R^2$ above acoustic envelope + word onset + lexical baseline regressors (`Brennan & Hale 2019`)."
+    - "Slowed audio pacing (`-20%` PSOLA): Note when extracting raw speech model (`Wav2Vec2`/`Whisper`) embeddings that the stimulus audio was slowed by 20% without pitch shift to aid comprehension in scanner noise."
+citations:
+  primary_bib_keys:
+    - brennan2016abstract
+    - brennan2019hierarchical
+  related_bib_keys:
+    - li2022lpp
+  primary_doi_or_arxiv: "10.1371/journal.pone.0207741"
+card_path: "cards/human_language_speech/alice_brennan.md"
+last_verified: "2026-11-25"

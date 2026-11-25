@@ -1,0 +1,64 @@
+id: sensorium_v1
+name: "SENSORIUM & Dynamic SENSORIUM Mouse V1 Digital-Twin Benchmarks (2022 & 2023)"
+short_name: "SENSORIUM"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Two_Photon
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_images
+  - natural_movies
+  - synthetic_ood
+year: 2023
+summary_en: "Standardized NeurIPS mouse V1 neural system identification benchmarks combining SENSORIUM 2022 (7 mice, 28,068 L2/3 neurons, static natural images + gaze/pupil/locomotion) and Dynamic SENSORIUM 2023 (10 mice, 78,853 neurons, natural & OOD dynamic videos)."
+summary_zh: "NeurIPS 小鼠初级视觉皮层（V1）“数字孪生”系统辨识双旗舰基准：整合 SENSORIUM 2022（7 只小鼠、28,068 个神经元对自然静态图像的响应）与 Dynamic SENSORIUM 2023（10 只小鼠、78,853 个神经元对自然视频及分布外刺激的动态响应，含瞳孔、注视点与跑动速度）。"
+scale:
+  n_subjects: 17
+  hours_per_subject: 2.0
+  total_hours: 34.0
+  n_stimuli: 35000
+  n_channels_or_voxels: "SENSORIUM 2022: 28,068 V1 L2/3 neurons across 7 mice (~4,000/mouse); Dynamic SENSORIUM 2023: 78,853 V1 L2–L5 neurons across 10 mice (~7,885/mouse)"
+  sampling_rate_or_tr: "Multi-plane 2-Photon ~8 Hz volume scan (deconvolved activity resampled/aligned with 30 Hz video, treadmill velocity, pupil dilation, and 2D gaze coordinates)"
+brain_regions:
+  - Mouse_VISp_V1_Layer2_3
+  - Mouse_VISp_V1_Layers2_to_5
+data_formats:
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "G-Node GIN"
+  accession_ids:
+    - "GIN:cajal/Sensorium2022"
+    - "GIN:pollytur/Sensorium2023Data"
+  urls:
+    homepage: "https://sensorium-competition.net/"
+    gin_2022: "https://gin.g-node.org/cajal/Sensorium2022"
+    gin_2023: "https://gin.g-node.org/pollytur/Sensorium2023Data"
+    code_2022: "https://github.com/sinzlab/sensorium"
+    code_2023: "https://github.com/ecker-lab/sensorium_2023"
+  download_cli: "git clone https://github.com/ecker-lab/sensorium_2023 && curl -L -I https://gin.g-node.org/pollytur/Sensorium2023Data"
+modeling:
+  recommended_tasks:
+    - shared_core_readout_digital_twin_encoding
+    - gaze_shifter_and_behavioral_gain_modulation
+    - out_of_distribution_video_generalization
+    - in_silico_maximally_exciting_inputs_mei
+  standard_splits: "Official competition splits: single-repeat natural images (`~5,000`/mouse in 2022) or `~60 min` single-repeat cinematic/natural video clips (`2023`) for training/validation, evaluated on held-out multi-repeat `Live Test` and `Final Test` Oracle clips plus 5 OOD stimulus domains (`Gaussian dots`, `drifting gratings`, `pink noise`, `Monet`, `Trippy`) in Dynamic SENSORIUM 2023."
+  noise_ceiling_or_repeat_structure: "Dedicated `Oracle` test images/video clips presented `10` times per session define per-neuron `Leave-One-Trial-Out Oracle Correlation` and `Fraction of Explainable Variance Explained (FEVE)` ceilings."
+  key_pitfalls:
+    - "SENSORIUM vs. SENSORIUM+ TRACKS (`2D Gaze Shifter` Is Crucial): In both 2022 and 2023, free eye movements shift V1 receptive fields across the screen by `5–15°`; omitting the `2D pupil center (x, y)` shifter MLP or behavioral state channels (`pupil_size`, `dilation_derivative`, `locomotion_speed`) causes dramatic drops in single-trial correlation!"
+    - "NON-NEGATIVITY & POISSON-LIKE NOISE OF DECONVOLVED CALCIUM: Responses are non-negative deconvolved `GCaMP6s` traces with variance scaling roughly with mean rate—train with **Poisson negative log-likelihood** (`ELU + 1` or `Softplus` output) rather than unweighted MSE, which overfits high-firing bursts!"
+    - "Filter out low-reliability neurons (`FEV < 0.15`) strictly when computing normalized `FEVE` (`dividing by near-zero explainable variance explodes`), while keeping raw `Single-Trial Correlation` and `Correlation-to-Average` across all neurons per the official Sinz/Ecker competition metrics."
+citations:
+  primary_bib_keys:
+    - willeke2022sensorium
+    - turishcheva2023dynamicsensorium
+    - turishcheva2024retrospective
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.52202/079017-3777"
+card_path: "cards/rodent_circuits_population/sensorium_v1.md"
+last_verified: "2026-11-25"

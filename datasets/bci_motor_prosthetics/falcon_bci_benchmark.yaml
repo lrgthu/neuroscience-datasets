@@ -1,0 +1,67 @@
+id: falcon_bci_benchmark
+name: "FALCON Benchmark for Few-Shot Long-Term Intracortical BCI Stability"
+short_name: "FALCON-BCI"
+category: bci_motor_prosthetics
+species:
+  - human
+  - macaque
+modalities:
+  - Utah_Array
+  - Silicon_Probe
+  - Neuropixels
+  - Behavior
+domains:
+  - motor_reaching
+  - speech_bci
+year: 2024
+summary_en: "Standardized NWB benchmark of 5 multi-session intracortical datasets on DANDI (human 7-DoF arm H1, human handwriting H2, macaque reach-to-grasp M1 & finger M2, and songbird vocalization B1) evaluating zero-shot and few-shot decoder stability across months of neural drift."
+summary_zh: "颅内脑机接口跨天稳定性与少样本校准权威基准（DANDI 托管 5 套标准 NWB 数据集：人类七自由度机械臂 H1、手写通信 H2、猕猴抓握 M1 / 手指运动 M2 及鸣禽发声 B1），评测数月神经漂移下的解码鲁棒性。"
+scale:
+  n_subjects: 6
+  hours_per_subject: 5.5
+  total_hours: 33.0
+  n_stimuli: null
+  n_channels_or_voxels: "64 to 256 intracortical channels per dataset (Utah arrays in H1/H2/M2, floating microelectrode arrays in M1, Neuropixels in B1)"
+  sampling_rate_or_tr: "50 Hz standardized multi-unit spike bins (20 ms NWB resolution) paired with kinematics, character strings, or vocal spectrograms"
+brain_regions:
+  - Human_M1_S1_Hand_Arm
+  - Macaque_M1_PMd
+  - Songbird_RA_Vocal_Motor
+data_formats:
+  - NWB
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: DANDI
+  accession_ids:
+    - "DANDI:000954"
+    - "DANDI:000950"
+    - "DANDI:000941"
+    - "DANDI:000953"
+    - "DANDI:001046"
+  urls:
+    homepage: "https://snel-repo.github.io/falcon/"
+    code: "https://github.com/snel-repo/falcon-challenge"
+    dandi_h1: "https://dandiarchive.org/dandiset/000954"
+    dandi_h2: "https://dandiarchive.org/dandiset/000950"
+  download_cli: "uvx dandi download DANDI:000954 DANDI:000950 DANDI:000941 DANDI:000953 DANDI:001046"
+modeling:
+  recommended_tasks:
+    - few_shot_cross_day_bci_recalibration
+    - unsupervised_manifold_alignment_under_drift
+    - multi_session_neural_foundation_model_transfer
+    - causal_continuous_kinematic_and_ctc_decoding
+  standard_splits: "Official Held-In vs. Held-Out Day split: full multi-session calibration data on Held-In days + strictly budgeted few-shot calibration slices (<2-5 min of labeled or unlabeled neural activity) on Held-Out future days spanning weeks to months."
+  noise_ceiling_or_repeat_structure: "Within-day oracle supervised ceiling vs. zero-shot frozen decay across longitudinal day gaps: velocity R^2 on H1/M2, EMG R^2 on M1, Word/Character Error Rate on H2, and spectrogram correlation on B1."
+  key_pitfalls:
+    - "STRICT CAUSALITY & CALIBRATION-BUDGET RULES: FALCON models real-world online prosthetic deployment—leaking test-trial neural statistics (e.g., transductive batch/session normalization over private evaluation trials on held-out days) violates online causality unless explicitly framed as causal streaming adaptation."
+    - "ABRIDGE HETEROGENEOUS DRIFT REGIMES: Smooth low-dimensional gain drift in Utah arrays (H1/H2/M2) behaves very differently from acute single-unit turnover in chronic Neuropixels songbird RA recordings (B1); evaluate across all 5 tasks rather than cherry-picking a single array modality."
+    - "RESPECT SPECIES VOCABULARY NOTE: While `species` tags `human` and `macaque` per catalog schema, Dandiset `001046` (`B1`) records zebra finch (*Taeniopygia guttata*) vocal motor nucleus RA—never pool `B1` channels directly with primate `M1` somatotopic priors."
+citations:
+  primary_bib_keys:
+    - karpowicz2024falcon
+  related_bib_keys:
+    - willett2021handwriting
+  primary_doi_or_arxiv: "10.52202/079017-2439"
+card_path: "cards/bci_motor_prosthetics/falcon_bci_benchmark.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,59 @@
+id: kaneshiro_stanford_eeg
+name: "Stanford 128-Ch Randomized Object Category ERP EEG Dataset (Kaneshiro OCED)"
+short_name: "Stanford-OCED"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - EEG
+domains:
+  - natural_images
+  - object_recognition
+year: 2015
+summary_en: "Clean, fully randomized 128-channel visual ERP EEG benchmark (N=10 subjects, 5,184 trials/subject across 72 object exemplars in 6 categories, Stanford SDR bq914sc3730) serving as the canonical confound-free single-trial object-decoding reference."
+summary_zh: "斯坦福大学完全随机化呈现的 128 通道高密度视觉物体识别 ERP 脑电基准（10 名被试，6 大类 72 张图像 × 72 次随机重复 = 5,184 试次/人，SDR bq914sc3730），是规避区组设计（Block-Design）时间漂移伪迹的标准洁净基准。"
+scale:
+  n_subjects: 10
+  hours_per_subject: 1.5
+  total_hours: 15.0
+  n_stimuli: 72
+  n_channels_or_voxels: "128-channel EGI HydroCel Geodesic Sensor Net (124 clean scalp electrodes retained in released MAT tensors)"
+  sampling_rate_or_tr: "1,000 Hz raw acquisition; 62.5 Hz preprocessed single-trial epochs (-112 ms to +512 ms; 32 time samples/trial)"
+brain_regions:
+  - Occipitotemporal_Visual_Scalp
+  - Whole-Scalp_128Ch_EGI
+data_formats:
+  - HDF5_MAT
+access:
+  tier: open
+  license: "CC-BY-3.0 / Stanford Digital Repository Open Access"
+  primary_portal: "Stanford Digital Repository (SDR)"
+  accession_ids:
+    - "SDR:bq914sc3730"
+    - "DOI:10.25740/bq914sc3730"
+  urls:
+    homepage: "https://purl.stanford.edu/bq914sc3730"
+    paper: "https://doi.org/10.1371/journal.pone.0135697"
+    block_confound_audit: "https://doi.org/10.1109/TPAMI.2020.2973153"
+  download_cli: "curl -L -O https://stacks.stanford.edu/file/druid:bq914sc3730/S1.mat"
+modeling:
+  recommended_tasks:
+    - single_trial_visual_eeg_classification
+    - time_resolved_rsa_object_dynamics
+    - confound_free_eeg_decoder_validation
+  standard_splits: "Stratified 10-fold single-trial cross-validation within each subject across the 5,184 randomized trials (6-way category classification: human body, human face, animal body, animal face, fruit/vegetable, inanimate object; and 72-way exemplar decoding), plus leave-one-subject-out transfer."
+  noise_ceiling_or_repeat_structure: "72 fully interleaved, pseudorandomized presentations per individual image exemplar (`72 images × 72 repeats = 5,184 trials/subj` across 6 blocks of 864 randomized trials) enable high-SNR pseudo-trial averaging (`k = 4, 8, 12` trials) and RDM reliability bounds."
+  key_pitfalls:
+    - "CRITICAL BLOCK-DESIGN CONFOUND WARNING (`Li et al., IEEE TPAMI, 2021`): Never benchmark visual EEG decoders or EEG-to-image generators on `Spampinato et al. (CVPR 2017)` (`EEG-ImageNet40`), where all 50 stimuli of each class were shown consecutively in one contiguous 25-second block—`Li et al. (2021)` proved that purported >80–95% accuracies on `EEG-ImageNet40` classify slow temporal/bandpass drift rather than visual content (collapsing to chance when evaluated across disjoint blocks)! Always use **interleaved randomized designs** like `Stanford-OCED` (`Kaneshiro 2015`), `THINGS-EEG1/2`, or `Alljoined`."
+    - "Released `S1.mat–S10.mat` files are bandpass-filtered (`1–25 Hz`), ocular-artifact cleaned via ICA, subset to `124` scalp channels, and downsampled to `62.5 Hz` (`32` samples spanning `-112 ms` to `+496 ms`)—if high-gamma (`>30 Hz`) features are required, use raw `1,000 Hz` `THINGS-EEG1/2` (`ds003825` / `OSF:3jk45`)."
+    - "Images (`500 ms` ON + `750 ms` gray ISI) were luminance/contrast-normalized segmented objects on a mid-gray background; pair with natural-scene EEG datasets (`THINGS-EEG2`, `Alljoined`) when testing clutter invariance."
+citations:
+  primary_bib_keys:
+    - kaneshiro2015stanfordeeg
+  related_bib_keys:
+    - li2021blockdesign
+    - gifford2022thingseeg
+    - grootswagers2022thingseeg1
+  primary_doi_or_arxiv: "10.1371/journal.pone.0135697"
+card_path: "cards/human_vision_multimodal/kaneshiro_stanford_eeg.md"
+last_verified: "2026-11-25"

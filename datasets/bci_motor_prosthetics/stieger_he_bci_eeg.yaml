@@ -1,0 +1,59 @@
+id: stieger_he_bci_eeg
+name: "Stieger & He 62-Subject Multi-Session Continuous 2D Motor-Imagery BCI EEG"
+short_name: "Stieger-He-BCI"
+category: bci_motor_prosthetics
+species:
+  - human
+modalities:
+  - EEG
+  - Behavior
+domains:
+  - motor_reaching
+  - mental_imagery
+year: 2021
+summary_en: "Massive 600+ hour longitudinal scalp EEG dataset of 62 healthy adults across 598 closed-loop BCI training sessions (7-11 sessions/subject, >250,000 trials at 1,000 Hz) performing continuous 1D and 2D sensorimotor-rhythm cursor control."
+summary_zh: "Stieger 与贺斌团队大规模纵向闭环运动想象脑机接口脑电数据集（62 名受试者各完成 7–11 次纵向训练共 598 场、逾 600 小时与 25 万试次 1,000 Hz 头皮 EEG），支持一维/二维连续光标控制与跨天共同适应研究。"
+scale:
+  n_subjects: 62
+  hours_per_subject: 9.7
+  total_hours: 600.0
+  n_stimuli: 4
+  n_channels_or_voxels: "62 scalp EEG channels (64-channel Neuroscan SynAmps RT 10-10 cap plus EOG/mastoid references)"
+  sampling_rate_or_tr: "1,000 Hz continuous scalp EEG + real-time 2D visual cursor trajectories"
+brain_regions:
+  - Whole_Scalp_Sensorimotor_Rhythm_C3_C4_Cz
+data_formats:
+  - HDF5_MAT
+  - BIDS
+  - FIF_MNE
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: Figshare
+  accession_ids:
+    - "Figshare:13123148"
+    - "DOI:10.6084/m9.figshare.13123148"
+  urls:
+    homepage: "https://doi.org/10.6084/m9.figshare.13123148"
+    code: "https://github.com/bfinl/BCI_Data_Paper"
+  download_cli: "python -c 'from moabb.datasets import Stieger2021; Stieger2021().download()'"
+modeling:
+  recommended_tasks:
+    - longitudinal_human_bci_skill_learning_and_coadaptation
+    - continuous_2d_cursor_velocity_eeg_decoding
+    - multi_session_cross_day_eeg_domain_adaptation
+    - large_scale_scalp_eeg_foundation_pretraining
+  standard_splits: "Chronological multi-session transfer (train on Sessions `1..K-1`, evaluate zero-shot and few-shot on Session `K` up to Session 11) and leave-k-subjects-out cross-subject transfer across the 62 participants (`moabb.datasets.Stieger2021`)."
+  noise_ceiling_or_repeat_structure: "Percent Valid Correct (`PVC`) online target-hit rate + 4-class discrete decoding accuracy (left hand, right hand, both hands, rest) + continuous 2D cursor trajectory correlation across 450 trials/session (`7-11` sessions/subject)."
+  key_pitfalls:
+    - "CLOSED-LOOP VISUAL CURSOR FEEDBACK CONFOUND: Unlike open-loop cue-only motor imagery, participants continuously watched a moving 2D cursor driven by `C3/C4` mu-rhythm power—occipital visual motion/error-related potentials (`ErrP`) co-vary with cursor direction, so whole-scalp decoders can shortcut via visual gaze/pursuit unless EOG/occipital controls are verified!"
+    - "VARIABLE VARIABLE-LENGTH TRIAL DURATIONS (UP TO `6 s` TIMEOUT): Closed-loop trials terminate immediately upon target hit (`~1.5-6.0 s`) or timeout at `6.0 s`; crop fixed post-cue windows (`e.g., [0.5, 2.5] s`) or mask post-hit reward artifacts so trial length itself does not leak target class."
+    - "MINDFULNESS INTERVENTION COHORT STRUCTURE: Half of the 62 participants underwent an 8-week mindfulness-based stress reduction (`MBSR`) course between initial assessment and longitudinal BCI training—check subject metadata (`MBSR` vs. control group) before modeling population learning slopes."
+citations:
+  primary_bib_keys:
+    - stieger2021bci
+  related_bib_keys:
+    - jayaram2018moabb
+  primary_doi_or_arxiv: "10.1038/s41597-021-00883-1"
+card_path: "cards/bci_motor_prosthetics/stieger_he_bci_eeg.md"
+last_verified: "2026-11-25"

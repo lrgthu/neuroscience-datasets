@@ -1,0 +1,62 @@
+id: neurotycho_macaque_ecog
+name: "NeuroTycho Chronic 128-Channel Whole-Hemisphere Macaque ECoG Archive"
+short_name: "NeuroTycho-ECoG"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - ECoG_iEEG
+  - Behavior
+  - Eye_Tracking
+domains:
+  - motor_reaching
+  - resting_state
+  - multimodal
+year: 2011
+summary_en: "Chronic 128-channel subdural whole-hemisphere macaque ECoG open archive (`neurotycho.org`, RIKEN BSI) synchronized with 120 Hz 3D motion capture, eye tracking, sleep, ketamin/propofol/medetomidine anesthesia, and social food-reaching tasks."
+summary_zh: "慢性植入覆盖猕猴单侧全脑半球（外侧面至内侧面，含前额叶、运动、顶叶、颞叶与枕叶）的 128 通道皮层脑电（ECoG）开放数据库（RIKEN `NeuroTycho`），同步采集三维肢体动作捕捉、眼动、全身麻醉意识转换与自然社交觅食行为。"
+scale:
+  n_subjects: 6
+  hours_per_subject: 12.0
+  total_hours: 72.0
+  n_stimuli: null
+  n_channels_or_voxels: "128 chronic subdural/epidural ECoG platinum electrodes (`5 mm` inter-electrode spacing) tiling lateral, medial, and ventral cortical surfaces of an entire hemisphere"
+  sampling_rate_or_tr: "1,000 Hz continuous broadband ECoG + 120 Hz Vicon 3D optical motion capture (`15+` body/hand markers) + 500 Hz eye tracking"
+brain_regions:
+  - Macaque_Whole_Hemisphere_Cortex
+  - Macaque_M1_PMd
+  - Macaque_PFC
+  - Macaque_Parietal_Visual_Temporal
+data_formats:
+  - HDF5_MAT
+  - FIF_MNE
+access:
+  tier: open
+  license: CC-BY-NC-SA-3.0
+  primary_portal: "NeuroTycho (RIKEN)"
+  accession_ids:
+    - "DOI:10.1371/journal.pone.0022561"
+  urls:
+    homepage: "https://neurotycho.org/"
+    fieldtrip_tutorial: "https://www.fieldtriptoolbox.org/tutorial/monkey_ecog/"
+    paper: "https://doi.org/10.1371/journal.pone.0022561"
+  download_cli: "curl -sL https://neurotycho.org/ -o neurotycho_index.html"
+modeling:
+  recommended_tasks:
+    - continuous_3d_kinematic_ecog_decoding
+    - conscious_vs_anesthetized_cortical_criticality_and_granger_flow
+    - whole_hemisphere_traveling_waves_and_spatiotemporal_fms
+  standard_splits: "Contiguous chronological block splits within/across chronic months (`e.g., first 10–15 min train, final 5 min test`, plus longitudinal multi-month out-of-session drift evaluation across Monkeys Chibi, George, Su, Kin2, Kuma)."
+  noise_ceiling_or_repeat_structure: "Continuous 3D wrist/shoulder/elbow trajectory Pearson `r` (`~0.75–0.88` asynchronous decoding across months without daily recalibration) and paired awake → loss-of-consciousness → recovery state transitions."
+  key_pitfalls:
+    - "COMMON-REFERENCE LEAKAGE IN WHOLE-HEMISPHERE GRANGER / CONNECTIVITY: Raw 128-channel ECoG shares a single subdural/cranial reference electrode, inducing spurious zero-lag coherence and false long-range Granger causality—always apply **bipolar local re-referencing** (subtracting adjacent grid neighbors, yielding `~64` local dipoles) or Laplacian spatial filtering before directed connectivity analysis!"
+    - "Line Noise (`50 Hz` Eastern Japan AC Mains!): Recordings were acquired at RIKEN Wako (Saitama, Eastern Japan), where power-line interference is **`50 Hz` (`100 Hz`, `150 Hz` harmonics)**—do NOT blindly apply a `60 Hz` US notch filter while leaving `50 Hz` untouched!"
+    - "Autocorrelated Continuous Time-Series Splits: Never randomly shuffle `100 ms` spectrogram windows on continuous food-tracking or anesthesia recordings—use strictly contiguous temporal blocks with `>=10 s` guard gaps!"
+citations:
+  primary_bib_keys:
+    - nagasaka2011neurotycho
+  related_bib_keys:
+    - shimoda2012neurotycho
+  primary_doi_or_arxiv: "10.1371/journal.pone.0022561"
+card_path: "cards/nhp_electrophysiology/neurotycho_macaque_ecog.md"
+last_verified: "2026-11-25"

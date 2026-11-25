@@ -1,0 +1,68 @@
+id: drosophila_panneuronal_2p
+name: "Adult Drosophila Pan-Neuronal Whole-Brain Two-Photon & Fast Volumetric Functional Atlases"
+short_name: "Drosophila Whole-Brain 2P"
+category: model_organisms_connectomics
+species:
+  - drosophila
+modalities:
+  - Two_Photon
+  - Behavior
+domains:
+  - motor_reaching
+  - spatial_navigation
+  - connectomics
+  - decision_making
+year: 2024
+summary_en: "Pan-neuronal whole-brain functional calcium imaging in behaving adult Drosophila—pairing high-resolution volumetric two-photon locomotion dynamics registered to the FDA/FlyWire template (Brezovec et al. Current Biology 2024; DANDI:000727) with high-speed whole-brain walk/groom/sensory recordings (Aimon et al. PLOS Biology 2019; CRCNS:fly-1)—bridging static FlyWire/Hemibrain EM wiring to live adult brain dynamics."
+summary_zh: "行为态成年果蝇全脑泛神经元功能钙成像代表性资源：结合配准至标准脑模板的高分辨率双光子全脑步行运动动力学图谱（Brezovec et al., Current Biology, 2024；DANDI:000727）与高速全脑刺激/行走/理毛状态记录（Aimon et al., PLOS Biology, 2019；CRCNS:fly-1），架起果蝇电镜连接组与活体全脑神经动力学之间的桥梁。"
+scale:
+  n_subjects: 75
+  hours_per_subject: 0.45
+  total_hours: 34.0
+  n_stimuli: 4
+  n_channels_or_voxels: "Whole-central-brain supervoxels / neuropil parcels registered to FDA (`Functional Drosophila Atlas`, ~3.3 × 3.3 × 5 µm³) & JRC2018 / Ito neuropils (~25–80+ flies across cohorts)"
+  sampling_rate_or_tr: "Volumetric Two-Photon ~1.8–2.8 Hz across central brain z-stacks + 50–100 Hz FicTrac spherical-treadmill forward/rotational/lateral velocity (plus 20–200 Hz fast light-field comparison runs in CRCNS:fly-1)"
+brain_regions:
+  - Whole-Central-Brain_FDA_and_JRC2018_Neuropils
+  - Central_Complex_Protocerebral_Bridge_and_Ellipsoid_Body
+  - Lateral_Accessory_Lobe_Wedge_and_VLP
+  - Mushroom_Body_and_Subesophageal_Zone
+data_formats:
+  - NWB
+  - NIfTI
+  - HDF5_MAT
+access:
+  tier: open
+  license: "CC-BY-4.0 (Open NWB on DANDI:000727, Dryad BIFROST/FDA templates, & CRCNS fly-1)"
+  primary_portal: "DANDI Archive / Dryad / CRCNS"
+  accession_ids:
+    - "DANDI:000727"
+    - "CRCNS:fly-1"
+    - "Dryad:10.5061/dryad.8pk0p2nx1"
+  urls:
+    homepage: "https://dandiarchive.org/dandiset/000727"
+    crcns_fly1: "https://crcns.org/data-sets/ia/fly-1/about-fly-1"
+    bifrost_dryad: "https://doi.org/10.5061/dryad.8pk0p2nx1"
+    paper: "https://doi.org/10.1016/j.cub.2023.12.063"
+    aimon_paper: "https://doi.org/10.1371/journal.pbio.2006732"
+  download_cli: "uvx dandi download DANDI:000727"
+modeling:
+  recommended_tasks:
+    - flywire_connectome_to_whole_brain_2p_functional_validation
+    - brain_wide_locomotor_velocity_and_turn_anticipation_decoding
+    - cross_fly_functional_atlas_registration_bifrost_fda
+    - state_dependent_resting_vs_walking_functional_connectivity
+  standard_splits: "Leave-K-Flies-Out (`e.g., 5-fold CV` grouped strictly by individual fly ID across `FDA`-registered supervoxel volumes in `DANDI:000727`), or chronological within-fly session splits (`80%` train / `20%` held-out contiguous walking epochs with `≥15 s` calcium-decay buffer)."
+  noise_ceiling_or_repeat_structure: "Cross-fly anatomical registration via `BIFROST` into the `Functional Drosophila Atlas` (`FDA`, `0.6 µm` precision, `<2–3 µm` inter-fly landmark error) enables voxelwise cross-animal forward/angular velocity tuning consistency maps across dozens of tethered walking flies."
+  key_pitfalls:
+    - "MASSIVE `~40%` BRAIN-WIDE LOCOMOTOR COROLLARY MODULATION (`STRINGER-IN-THE-FLY` EFFECT!): Walking vs. quiescence drives global activity increases across `~40%+` of the adult *Drosophila* brain (`Aimon et al. 2019`; `Brezovec et al. 2024`), with spatially segregated maps for forward velocity vs. left/right angular turning velocity—sensory or cognitive analyses MUST explicitly regress spherical-treadmill `FicTrac` `(v_forward, v_rotation, v_side)` kinematics!"
+    - "SUPERVOXEL / NEUROPIL RESOLUTION (`NOT` SINGLE-CELL SOMA SEPARATION!): Pan-neuronal `nSyb-GCaMP6s/6f` in adult *Drosophila* densely labels intertwined synaptic neuropil processes (since insect cell bodies sit in a passive outer cortex rind away from neurite arbors!)—voxels/supervoxels integrate mixed local neurites rather than isolated cell bodies unless sparse `GAL4/Split-GAL4` lines are imaged."
+    - "HEAD-FIXED CUTICLE DISSECTION HEMOLYMPH & BRAIN MOTION: Adult *Drosophila* breathing/proboscis pumping causes non-rigid brain deformation along the z-axis (`3–8 µm`), requiring dual-channel `tdTomato` structural motion registration (`ANTs` / `BIFROST`) before interpreting rapid intensity transients."
+citations:
+  primary_bib_keys:
+    - brezovec2024drosophila
+    - aimon2019drosophila
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.cub.2023.12.063"
+card_path: "cards/model_organisms_connectomics/drosophila_panneuronal_2p.md"
+last_verified: "2026-11-25"

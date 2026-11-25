@@ -1,0 +1,55 @@
+id: willett_handwriting_bci_2021
+name: "Stanford Imagined Handwriting Brain-to-Text Intracortical BCI"
+short_name: "Willett-Handwriting"
+category: bci_motor_prosthetics
+species:
+  - human
+modalities:
+  - Utah_Array
+  - Behavior
+domains:
+  - speech_bci
+  - motor_reaching
+year: 2021
+summary_en: "Intracortical Utah-array dataset (192 channels in left hand-knob M1, 10.7 hours, 1,000 sentences / ~43,500 characters) from BrainGate2 participant T5 attempting to handwrite letters and sentences at 90 characters/min."
+summary_zh: "斯坦福想象手写脑转文本颅内 BCI 数据集（高位截瘫受试者 T5 左侧初级运动皮层手部代表区 192 通道 Utah 阵列，10.7 小时、1,000 句共约 4.35 万字符尝试书写），实现 90 字符/分钟高速通信。"
+scale:
+  n_subjects: 1
+  hours_per_subject: 10.7
+  total_hours: 10.7
+  n_stimuli: 1000
+  n_channels_or_voxels: "192 intracortical microelectrodes (two 96-channel Utah arrays in left precentral gyrus hand-knob M1)"
+  sampling_rate_or_tr: "100 Hz binned multi-unit threshold-crossing spike counts (10 ms bins from 30 kHz raw recordings)"
+brain_regions:
+  - Precentral_Gyrus_Hand_Knob_M1
+data_formats:
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: Dryad
+  accession_ids:
+    - "Dryad:10.5061/dryad.wh70rxwmv"
+  urls:
+    homepage: "https://doi.org/10.5061/dryad.wh70rxwmv"
+    code: "https://github.com/fwillett/handwritingBCI"
+  download_cli: "curl -L 'https://datadryad.org/api/v2/datasets/doi%3A10.5061%2Fdryad.wh70rxwmv/download' -o willett_handwriting_bci_2021.zip"
+modeling:
+  recommended_tasks:
+    - unsegmented_ctc_character_decoding
+    - time_warped_pen_trajectory_latent_alignment
+    - synthetic_neural_snippet_data_augmentation
+    - cross_day_rnn_decoder_calibration
+  standard_splits: "Chronological held-out sentence blocks within and across the 10 multi-day sentence-writing sessions (~1,000 total sentences across 31 character classes: 26 lowercase letters + comma, apostrophe, question mark, tilde/period, and space)."
+  noise_ceiling_or_repeat_structure: "94.1% raw online character accuracy (5.4% character error rate raw, <1% error rate with general-purpose language model autocorrect) + single-character condition-averaged PSTH repeatability across 31 isolated characters and radial straight-line strokes."
+  key_pitfalls:
+    - "ZERO GROUND-TRUTH PEN KINEMATICS ON SENTENCE TRIALS: Because participant T5 has C4 tetraplegia, attempted handwriting produces no physical pen movement—character onset times within continuous sentences are unlabelled and require either CTC alignment or iterative dynamic time-warping (DTW) template alignment."
+    - "TEMPORAL TRAJECTORY COMPLEXITY DRIVES SEPARABILITY: Time-varying curved pen-stroke velocities produce far lower nearest-neighbor neural confusion than point-to-point straight-line reaches; aggressive temporal downsampling (>50 ms bins) destroys high-frequency stroke curvature cues."
+    - "CROSS-SESSION DRIFT & SYNTHETIC SENTENCE AUGMENTATION: Training solely on raw multi-day sentences without day-specific input affine layers and synthetic character-snippet recombination substantially degrades sample efficiency."
+citations:
+  primary_bib_keys:
+    - willett2021handwriting
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-021-03506-2"
+card_path: "cards/bci_motor_prosthetics/willett_handwriting_bci_2021.md"
+last_verified: "2026-11-25"

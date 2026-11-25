@@ -1,0 +1,63 @@
+id: siegel_miller_6area
+name: "Siegel-Buschman-Miller Macaque Simultaneous 6-Area Cortical Decision Hierarchy"
+short_name: "SiegelMiller6Area"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Microwire_Single_Unit
+  - Behavior
+  - Eye_Tracking
+domains:
+  - decision_making
+  - working_memory
+year: 2015
+summary_en: "Simultaneous acute multi-electrode recordings across 6 cortical regions (`MT`, `V4`, `IT`, `LIP`, `PFC`, `FEF`; 2,694 multi-unit sites in 2 macaques) during flexible rule-cued motion vs. color categorization."
+summary_zh: "猕猴 6 大皮层脑区（MT、V4、IT、LIP、PFC、FEF；2 只恒河猴共 2,694 个记录位点）同步多电极电生理数据集，完整刻画规则线索驱动的运动方向对比颜色分类决策跨脑区信息流。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 35.0
+  total_hours: 70.0
+  n_stimuli: 32
+  n_channels_or_voxels: "2,694 multi-unit & LFP recording sites simultaneously sampled across 6 areas (1,020 dlPFC, 807 LIP, 532 FEF, 155 V4, 123 MT, 57 IT)"
+  sampling_rate_or_tr: "1,000 Hz spike trains & local field potentials (`LFP`) across cue, delay, stimulus, and saccadic choice epochs"
+brain_regions:
+  - Macaque_MT
+  - Macaque_V4
+  - Macaque_IT
+  - Macaque_LIP
+  - Macaque_dlPFC
+  - Macaque_FEF
+data_formats:
+  - HDF5_MAT
+access:
+  tier: registered
+  license: "Academic Institutional Sharing (University of Tübingen CIN / MIT Picower Miller Lab)"
+  primary_portal: "University of Tübingen CIN / Miller Lab MIT"
+  accession_ids:
+    - "DOI:10.1126/science.aab0551"
+    - "DSpaceMIT:1721.1/102482"
+  urls:
+    homepage: "https://ekmillerlab.mit.edu/"
+    paper: "https://doi.org/10.1126/science.aab0551"
+    dspace: "https://dspace.mit.edu/handle/1721.1/102482"
+  download_cli: "curl -sL https://dspace.mit.edu/handle/1721.1/102482 -o siegel2015_record.html"
+modeling:
+  recommended_tasks:
+    - multi_region_recurrent_neural_networks_mrnn
+    - inter_areal_communication_subspaces
+    - flexible_rule_guided_sensorimotor_gating
+    - oscillatory_lfp_spike_phase_routing
+  standard_splits: "Session-wise trial splits stratified jointly by task rule (`Motion` vs. `Color` cue, `2` visual cue shapes per rule to dissociate rule identity from cue visual shape!), `4` motion directions, and `4` colors (`2 × 4 × 4 = 32` core conditions)."
+  noise_ceiling_or_repeat_structure: "Percent explained variance (`ω^2` / bias-corrected `PEV`) across hundreds of trials per session, separating pure task-rule, sensory-color, sensory-motion, and saccadic-choice subspaces across all 6 simultaneously recorded regions."
+  key_pitfalls:
+    - "RULE CUE VISUAL IDENTITY CONFOUND: Each behavioral rule (`Categorize Motion` vs. `Categorize Color`) was signaled by **two sensory-distinct visual cue shapes**—always cross-generalize rule decoders *across* the two cue shapes (`Cue A -> Cue B`) so visual cue responses in V4/IT are never mistaken for abstract executive rule coding in PFC/LIP!"
+    - "Unbalanced Regional Sampling Density: Because `dlPFC` (`1,020` sites), `LIP` (`807`), and `FEF` (`532`) have far more recorded channels than `IT` (`57`), `MT` (`123`), and `V4` (`155`), subsample equal neuron counts per area (`e.g., n = 50` bootstrap draws) before comparing regional dimensionality or decoding accuracy!"
+    - "Stimulus-Irrelevant Sensory Leakage vs. Choice Axis: Contrary to early feedforward gating theories, irrelevant sensory features (`color` during `motion` rule and vice versa) remain strongly represented in `MT/V4` and even `PFC/FEF`—test communication subspace alignment (`Semedo/Kaufman` reduced-rank regression) rather than assuming early sensory suppression."
+citations:
+  primary_bib_keys:
+    - siegel2015sixarea
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1126/science.aab0551"
+card_path: "cards/nhp_electrophysiology/siegel_miller_6area.md"
+last_verified: "2026-11-25"

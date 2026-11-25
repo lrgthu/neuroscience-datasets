@@ -1,0 +1,60 @@
+id: odoherty_sabes_indy
+name: "Sabes Lab Chronic Macaque M1/S1 Random-Grid Reaching (Indy & Loco)"
+short_name: "Sabes-Indy-Loco"
+category: bci_motor_prosthetics
+species:
+  - macaque
+modalities:
+  - Utah_Array
+  - Behavior
+domains:
+  - motor_reaching
+year: 2017
+summary_en: "Foundational 47-session chronic macaque M1/S1 Utah-array corpus (monkeys Indy and Loco, ~28 hours of continuous self-paced random-grid reaching without trial resets) serving as a primary multi-session pretraining benchmark for POYO and NDT2."
+summary_zh: "Sabes 实验室猕猴初级运动/躯体感觉皮层（M1/S1）长期慢性微电极记录基准（Indy 37 场与 Loco 10 场共 47 场无试次切分的连续随机网格伸手任务），构成 POYO 与 NDT2 等神经基础模型核心预训练语料。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 14.0
+  total_hours: 28.0
+  n_stimuli: null
+  n_channels_or_voxels: "96-channel (M1) or 192-channel (M1 + S1) chronic Utah arrays per session (unsorted threshold crossings + up to 4 sorted single units/channel)"
+  sampling_rate_or_tr: "24.4 kHz spike timestamps + 250 Hz continuous 2D/3D fingertip and target coordinates (4 ms frame resolution)"
+brain_regions:
+  - Macaque_M1_Primary_Motor
+  - Macaque_S1_Primary_Somatosensory
+data_formats:
+  - HDF5_MAT
+  - NWB
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: Zenodo
+  accession_ids:
+    - "Zenodo:583331"
+    - "Zenodo:788569"
+  urls:
+    homepage: "https://doi.org/10.5281/zenodo.583331"
+    poyo_code: "https://github.com/neuro-galaxy/poyo"
+  download_cli: "uvx zenodo_get 10.5281/zenodo.583331"
+modeling:
+  recommended_tasks:
+    - continuous_unsegmented_kinematic_decoding
+    - multi_session_spike_foundation_model_pretraining
+    - longitudinal_neural_drift_and_unsupervised_recalibration
+    - m1_vs_s1_proprioceptive_lag_modeling
+  standard_splits: "Within-session chronological blocks (e.g., 70% train / 10% val / 20% contiguous test per session) AND cross-session longitudinal transfer (pretraining across 30+ sessions of Indy/Loco and fine-tuning unit embeddings on held-out recording days)."
+  noise_ceiling_or_repeat_structure: "Continuous hand-position and hand-velocity coefficient of determination (R^2 ~ 0.80-0.90 for state-of-the-art rEFH, Kalman/UKF, NDT2, and POYO decoders); zero stereotyped condition repeats by design (targets appear on a random 8x8 / continuous workspace)."
+  key_pitfalls:
+    - "CONTINUOUS UNSEGMENTED STREAM (NO INTER-TRIAL RESETS): Unlike center-out tasks, a new random target appears immediately upon target acquisition—never slice random 1-second windows and shuffle them i.i.d. across train/test, as inertial arm momentum and overlapping context windows leak across adjacent slices!"
+    - "UNSORTED THRESHOLD CROSSINGS (`u=0`) VS. SORTED UNITS (`u>=1`): In each HDF5/MAT `spikes` cell array `(channels x units)`, row/column index 1 stores unsorted multi-unit threshold crossings while higher indices store manually/semi-automatically sorted units that turn over across the ~10-month span—decide explicitly whether to include `hash` (`u=0`) spikes."
+    - "ARRAY CONFIGURATION DIFFERENCES ACROSS SESSIONS: Early `Indy` sessions record 96 M1 channels only, whereas later `Indy` and all `Loco` sessions include a second 96-channel S1 array (192 total channels); multi-session models must handle variable channel/unit cardinality gracefully."
+citations:
+  primary_bib_keys:
+    - odoherty2017sabes
+    - makin2018sabes
+  related_bib_keys:
+    - azabou2023poyo
+    - ye2023ndt2
+  primary_doi_or_arxiv: "10.1088/1741-2552/aa9e95"
+card_path: "cards/bci_motor_prosthetics/odoherty_sabes_indy.md"
+last_verified: "2026-11-25"

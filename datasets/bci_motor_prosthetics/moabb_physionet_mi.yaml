@@ -1,0 +1,61 @@
+id: moabb_physionet_mi
+name: "PhysioNet 109-Subject EEG Motor Movement/Imagery (EEGMMIDB) & MOABB Benchmark Suite"
+short_name: "PhysioNet-MI-MOABB"
+category: bci_motor_prosthetics
+species:
+  - human
+modalities:
+  - EEG
+  - Behavior
+domains:
+  - motor_reaching
+  - mental_imagery
+year: 2018
+summary_en: "109-subject 64-channel scalp EEG motor execution and motor imagery corpus (`PhysioNet:eegmmidb`, >1,500 BCI2000 runs) paired with the Mother of All BCI Benchmarks (MOABB) framework for leakage-free within-session, cross-session, and cross-subject EEG decoding."
+summary_zh: "PhysioNet 109 人 64 通道运动执行与运动想象头皮脑电基准（EEGMMIDB，含左拳/右拳/双拳/双足四类范式逾 1,500 段记录），结合 MOABB 统一评测框架支撑跨被试脑电基础模型验证。"
+scale:
+  n_subjects: 109
+  hours_per_subject: 0.45
+  total_hours: 49.0
+  n_stimuli: 4
+  n_channels_or_voxels: "64-channel scalp EEG (international 10-10 montage via BCI2000; MOABB further unifies 30+ open MI, P300/ERP, and c-VEP/SSVEP EEG corpora)"
+  sampling_rate_or_tr: "160 Hz scalp EEG in EDF+ format (4 subjects have malformed sampling rate/annotations—see pitfalls)"
+brain_regions:
+  - Whole_Scalp_10_10_Sensorimotor_C3_Cz_C4
+data_formats:
+  - BrainVision_EDF
+  - FIF_MNE
+  - BIDS
+access:
+  tier: open
+  license: ODC-By-1.0
+  primary_portal: PhysioNet
+  accession_ids:
+    - "PhysioNet:eegmmidb/1.0.0"
+    - "DOI:10.13026/C28G6P"
+  urls:
+    homepage: "https://physionet.org/content/eegmmidb/1.0.0/"
+    moabb_docs: "https://moabb.neurotechx.com/"
+    code: "https://github.com/NeuroTechX/moabb"
+  download_cli: "wget -r -N -c -np https://physionet.org/files/eegmmidb/1.0.0/"
+modeling:
+  recommended_tasks:
+    - cross_subject_zero_shot_motor_imagery_transfer
+    - riemannian_geometry_spd_covariance_alignment
+    - eeg_foundation_model_finetuning_benchmark
+    - executed_vs_imagined_mu_beta_erd_ers_comparison
+  standard_splits: "Official MOABB (`PhysionetMI`) evaluation protocols: `WithinSessionEvaluation` (5-fold stratified CV within run set) and `CrossSubjectEvaluation` (leave-one-subject-out / k-fold subject split across the 105 clean subjects, strictly separating executed runs `[3,5,7,9,11,13]` from imagined runs `[4,6,8,10,12,14]`)."
+  noise_ceiling_or_repeat_structure: "ROC-AUC (2-class left vs. right hand) and macro accuracy (4-class left hand / right hand / both hands / both feet + rest) benchmarked against Filter-Bank CSP + LDA, Tangent-Space Riemannian (`FgMDM` / `TS+LR`), `EEGNet`, and pretrained EEG foundation models (`BIOT`, `LaBraM`, `CBraMod`)."
+  key_pitfalls:
+    - "EXCLUDE KNOWN CORRUPTED SUBJECTS (`S088`, `S089`, `S092`, `S100`): Subjects `S088`, `S092`, and `S100` were recorded at `128 Hz` with truncated/misaligned trial durations, and `S089` has corrupted trigger labels—`mne.datasets.eegbci` and `MOABB` handle/flag these, whereas raw `EDF` loaders silently misalign epochs!"
+    - "NEVER MIX MOTOR EXECUTION AND MOTOR IMAGERY RUNS: Runs `3, 7, 11` (left/right fist) and `5, 9, 13` (fists/feet) are overt physical movements, whereas runs `4, 8, 12` and `6, 10, 14` are pure motor imagery; `T1`/`T2` event codes change meaning between `[3,4,7,8,11,12]` (`T1=left`, `T2=right`) and `[5,6,9,10,13,14]` (`T1=both fists`, `T2=both feet`)!"
+    - "EUCLIDEAN ALIGNMENT (`EA`) / RIEMANNIAN RE-CENTERING LEAKAGE: When applying per-subject covariance whitening (`R^(-1/2) X`) in cross-subject transfer, compute the reference mean covariance strictly from unlabeled rest/calibration trials or causal buffers without leaking test-trial class imbalance."
+citations:
+  primary_bib_keys:
+    - jayaram2018moabb
+    - schalk2004bci2000
+  related_bib_keys:
+    - goldberger2000physionet
+  primary_doi_or_arxiv: "10.1088/1741-2552/aadea0"
+card_path: "cards/bci_motor_prosthetics/moabb_physionet_mi.md"
+last_verified: "2026-11-25"

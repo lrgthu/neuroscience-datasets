@@ -1,0 +1,60 @@
+id: peyrache_th1_head_direction
+name: "Peyrache & Buzsáki Thalamocortical Head-Direction Ring-Manifold Dataset (CRCNS th-1 / DANDI:000056)"
+short_name: "Peyrache-HD"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Silicon_Probe
+  - Behavior
+domains:
+  - spatial_navigation
+  - resting_state
+year: 2015
+summary_en: "Classic dual-region silicon-probe head-direction (HD) ensemble benchmark (Peyrache et al., Nature Neuroscience 2015; 42 sessions in 7 freely moving mice across anterodorsal thalamus ADn and postsubiculum PoSub), proving preservation of the 1D ring attractor (S^1) across wakefulness, REM, and slow-wave sleep."
+summary_zh: "经典的丘脑—皮层头朝向（Head-Direction）一维环流形硅探针数据集（Peyrache 等 Nature Neuroscience 2015；7 只自由活动小鼠共 42 个会话同步记录丘脑前背核 ADn 与后下托 PoSub），证实内部环吸引子（S¹）在清醒觅食、REM 睡眠及慢波睡眠中的拓扑不变性。"
+scale:
+  n_subjects: 7
+  hours_per_subject: 6.0
+  total_hours: 42.0
+  n_stimuli: 3
+  n_channels_or_voxels: "Dual silicon probes (8-shank 64-ch in PoSub + 4/8-shank 32/64-ch in ADn; ~15–45+ co-recorded pure HD cells plus cortical pyramidal/FS units per session across 42 sessions)"
+  sampling_rate_or_tr: "20 kHz broadband extracellular spikes + 1,250 Hz LFP + 39.06 Hz dual red/blue head-stage LED angle & 2D position tracking"
+brain_regions:
+  - Mouse_Anterodorsal_Thalamic_Nucleus_ADn
+  - Mouse_Postsubiculum_PoSub
+data_formats:
+  - NWB
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "DANDI / CRCNS"
+  accession_ids:
+    - "DANDI:000056"
+    - "CRCNS:th-1"
+  urls:
+    homepage: "https://dandiarchive.org/dandiset/000056"
+    crcns: "https://crcns.org/data-sets/thalamus/th-1"
+    pynapple_docs: "https://pynapple.org/"
+    paper: "https://doi.org/10.1038/nn.3968"
+  download_cli: "uvx dandi download DANDI:000056 --download dandiset.yaml && uvx dandi ls DANDI:000056 | head -n 10"
+modeling:
+  recommended_tasks:
+    - ring_manifold_isomap_persistent_homology_s1
+    - wake_to_rem_and_sws_virtual_gaze_bayesian_decoding
+    - thalamocortical_adn_posub_lead_lag_transmission
+    - point_process_glm_and_splines_angular_tuning
+  standard_splits: "Fit 1D angular tuning curves or unsupervised `S^1` ring coordinates (`Isomap`, `GPLVM`, `VAE`, `Ripser H_1`) during active `Wake` open-field foraging (`53 × 46 cm` arena), and evaluate zero-shot internal ring coherence, pairwise angular offset preservation, and virtual angular velocity (`10×` compressed in `SWS` vs. `1×` real-time in `REM`) during `Pre-Sleep` and `Post-Sleep`."
+  noise_ceiling_or_repeat_structure: "Continuous 30–45 min open-field foraging thoroughly samples `[0, 2π)` head azimuth dozens of times per session (`Mouse12-120806` canonical benchmark session), paired with hours of flanking `SWS` and `REM` epochs on identical sorted units."
+  key_pitfalls:
+    - "TIMESCALE COMPRESSION IN SLOW-WAVE SLEEP (`10×` Speedup + UP/DOWN States): During `REM` sleep, the internal HD packet drifts at wake-like angular velocities (`1×`), whereas during `SWS` (`non-REM`), virtual HD trajectories sweep ~`8–10×` faster during cortical `UP` states and collapse to silence during `DOWN` states (`50–200 ms` bins are too wide for `SWS`—use `10–20 ms` bins restricted to `UP` states!)."
+    - "CIRCULAR TOPOLOGY & LOSS WRAPPING: Head angle `θ ∈ [0, 2π)` is periodic (`0 ≡ 2π`)—NEVER regress raw scalar angles with Euclidean MSE (which introduces a `2π` cliff discontinuity!); always optimize `(cos θ, sin θ)` on the unit circle or von Mises / circular geodesic loss."
+    - "`ADn` neurons anticipate actual head angle by `~20–25 ms` (vestibular/motor efference lead), whereas `PoSub` neurons fire near `0 ms` lag and multiplex spatial/border cues—account for this biophysical lead-lag when fitting `ADn -> PoSub` directed communication models."
+citations:
+  primary_bib_keys:
+    - peyrache2015internally
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/nn.3968"
+card_path: "cards/rodent_circuits_population/peyrache_th1_head_direction.md"
+last_verified: "2026-11-25"

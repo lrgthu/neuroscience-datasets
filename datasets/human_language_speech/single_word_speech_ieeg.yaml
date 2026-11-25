@@ -1,0 +1,60 @@
+id: single_word_speech_ieeg
+name: "SingleWordProductionDutch-iBIDS (Overt Spoken Word Intracranial sEEG)"
+short_name: "DutchSpeech-sEEG"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - sEEG
+  - Structural_MRI
+  - Behavior
+domains:
+  - speech_bci
+  - natural_speech
+year: 2022
+summary_en: "Open iBIDS stereotactic depth EEG (sEEG) and time-aligned overt speech audio dataset of 10 epilepsy patients (1,103 intracranial contacts) reading aloud 100 Dutch words for speech neuroprosthesis synthesis and decoding."
+summary_zh: "开源颅内立体定向脑电（sEEG）与有声词汇朗读同步数据集（OSF nrgx6，遵循 iBIDS 标准）：10 名癫痫患者（共植入 1,103 个深部电极触点）出声朗读 100 个荷兰语词与数字，广泛用于语音脑机接口（Speech BCI）声码器重建基准。"
+scale:
+  n_subjects: 10
+  hours_per_subject: 0.15
+  total_hours: 1.5
+  n_stimuli: 100
+  n_channels_or_voxels: "1,103 penetrating stereotactic EEG (sEEG) depth contacts across 10 patients (~90–130 contacts/patient)"
+  sampling_rate_or_tr: "1,024 Hz or 2,048 Hz sEEG synchronized with 48 kHz overt microphone speech audio"
+brain_regions:
+  - Ventral_Sensorimotor_and_Insular_Cortex
+  - Superior_Temporal_Sulcus_and_Heschls_Gyrus
+  - Deep_Perisylvian_and_Subcortical_sEEG
+data_formats:
+  - BIDS
+  - NWB
+  - BrainVision_EDF
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: OSF
+  accession_ids:
+    - "OSF:nrgx6"
+  urls:
+    homepage: "https://osf.io/nrgx6/"
+    paper: "https://doi.org/10.1038/s41597-022-01542-9"
+    code: "https://github.com/neuralinterfacinglab/SingleWordProductionDutch"
+  download_cli: "uvx osfclient -p nrgx6 clone ./single_word_speech_ieeg"
+modeling:
+  recommended_tasks:
+    - overt_speech_mel_spectrogram_and_waveform_synthesis
+    - pre_articulatory_vs_auditory_feedback_seeg_decomposition
+    - volumetric_depth_electrode_speech_bci_decoding
+  standard_splits: "10-fold word-disjoint cross-validation across the 100 unique spoken Dutch stimuli per patient (zero overlapping word prompts or adjacent-trial baseline windows between train and test)."
+  noise_ceiling_or_repeat_structure: "Within-patient cross-validated mel-cepstral distortion (`MCD`) and Pearson spectrogram correlation (`r`) compared against block-permuted / phase-randomized neural baselines across all 10 patients."
+  key_pitfalls:
+    - "CRITICAL MICROPHONIC ACOUSTIC CONTAMINATION CHECK: During overt speech (`70–500 Hz` fundamental + harmonics), airborne sound waves can mechanically vibrate clinical sEEG headboxes/cables and inject a linear spectrogram copy of the voice directly into high-gamma (`70–170 Hz`) bands (`Roussel et al., J. Neural Eng. 2020`)! ALWAYS audit zero-lag audio-to-sEEG spectral coherence and report causal pre-articulatory (`[-500, 0 ms]`) decoding separately from post-onset auditory/somatosensory feedback!"
+    - "BIPOLAR / LAPLACIAN SHAFT RE-REFERENCING REQUIRED: Penetrating sEEG shafts traverse white matter, sulcal banks, and deep nuclei, picking up volume-conducted common-mode and temporalis/jaw `EMG` speech artifacts—apply local bipolar (`contact[i] - contact[i+1]`) or shaft-Laplacian re-referencing rather than monopolar mastoid references."
+    - "Heterogeneous per-patient electrode trajectories: Because clinical sEEG placement is patient-individualized (`sub-01`..`sub-10`), train patient-specific spatial projections or coordinate-aware 3D MNI point-cloud encoders (`*_electrodes.tsv`) rather than stacking raw channel indices."
+citations:
+  primary_bib_keys:
+    - verwoert2022speech
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-022-01542-9"
+card_path: "cards/human_language_speech/single_word_speech_ieeg.md"
+last_verified: "2026-11-25"

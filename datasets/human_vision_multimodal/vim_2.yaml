@@ -1,0 +1,64 @@
+id: vim_2
+name: "Gallant Lab Dynamic Natural Movies 4T fMRI Dataset (CRCNS vim-2)"
+short_name: "vim-2"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_4T
+  - Structural_MRI
+domains:
+  - natural_movies
+  - retinotopy
+year: 2011
+summary_en: "Classic 4T occipitotemporal fMRI dataset (N=3, TR=1.0 s) recording continuous BOLD responses to 7,200 s of training natural movie clips (1 repeat) and 540 s of high-SNR validation clips (10 repeats) for spatiotemporal motion-energy encoding and dynamic video reconstruction."
+summary_zh: "经典的自然动态视频 4T 枕颞叶 fMRI 数据集（3 名被试，TR=1.0 s，7,200 秒单次呈现训练电影片段 + 540 秒重复 10 次的高信噪比测试片段），奠定了三维运动能量编码与动态视频重建的基准。"
+scale:
+  n_subjects: 3
+  hours_per_subject: 4.5
+  total_hours: 13.5
+  n_stimuli: 21
+  n_channels_or_voxels: "4T 2.0 × 2.0 × 2.5 mm occipitotemporal slab (~4,500–6,000 visual voxels/subj across V1–V4, MT+, LO, ventral/lateral occipitotemporal cortex)"
+  sampling_rate_or_tr: "TR = 1.0 s (18 coronal slices; 15 Hz silent color natural movies)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - V3A_V3B
+  - hV4
+  - hMT_Plus
+  - Occipitotemporal_Cortex
+data_formats:
+  - HDF5_MAT
+  - NIfTI
+access:
+  tier: registered
+  license: "CRCNS Data Sharing Terms"
+  primary_portal: "CRCNS.org"
+  accession_ids:
+    - "CRCNS:vim-2"
+  urls:
+    homepage: "https://crcns.org/data-sets/vc/vim-2"
+    gallantlab: "https://gallantlab.org/"
+    paper: "https://doi.org/10.1016/j.cub.2011.08.031"
+  download_cli: "curl -O -J --user <crcns_username> https://portal.nersc.gov/project/crcns/download/vim-2/VoxelResponses_subject1.mat"
+modeling:
+  recommended_tasks:
+    - spatiotemporal_video_encoding
+    - dynamic_movie_reconstruction
+    - hemodynamic_fir_lag_modeling
+    - motion_energy_vs_video_transformer_alignment
+  standard_splits: "Train voxelwise finite-impulse-response (FIR) encoding models on the 7,200 TRs (12 × 600 s blocks = 120 min, 1 repeat) of estimation movies; evaluate on the strictly disjoint 540 TRs (9 × 60 s clips, averaged across 10 repeats = 90 min total test acquisition)."
+  noise_ceiling_or_repeat_structure: "10 independent repetitions of the 540-second validation sequence enable exact noise-ceiling normalization (explainable variance R^2_norm) and multi-trial SNR scaling curves."
+  key_pitfalls:
+    - "Continuous movie BOLD signals lag visual frames by 4–8 seconds with no inter-trial blanks—fit explicit multi-lag FIR filters (typically t - 2 s, t - 4 s, t - 6 s, or delays 1–8 TRs) per feature channel rather than instantaneous frame-to-TR regression."
+    - "Scene cuts inside compilation trailers occur every few seconds and induce sharp broad-spectrum luminance/contrast transients; keep contiguous clip blocks intact during cross-validation so hemodynamic tails do not leak across train/val boundaries."
+    - "Movies were presented silently (`20° × 20°`, `15 fps`, `512 × 512 px`) while subjects maintained central fixation—discard audio tracks if matching external trailer sources."
+citations:
+  primary_bib_keys:
+    - nishimoto2011vim2
+  related_bib_keys:
+    - kay2008vim1
+  primary_doi_or_arxiv: "10.1016/j.cub.2011.08.031"
+card_path: "cards/human_vision_multimodal/vim_2.md"
+last_verified: "2026-11-25"

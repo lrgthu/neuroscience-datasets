@@ -1,0 +1,69 @@
+id: hemibrain_flyem
+name: "Janelia FlyEM Adult Drosophila Hemibrain, Optic-Lobe & MANC Ventral Nerve Cord Connectomes"
+short_name: "FlyEM Hemibrain & MANC"
+category: model_organisms_connectomics
+species:
+  - drosophila
+modalities:
+  - EM_Connectomics
+domains:
+  - connectomics
+  - spatial_navigation
+  - motor_reaching
+  - object_recognition
+year: 2020
+summary_en: "Isotropic 8 × 8 × 8 nm FIB-SEM synaptic connectomes from HHMI Janelia FlyEM queried via neuPrint—spanning the adult female central brain (Hemibrain v1.2.1: ~25,000 traced neurons, ~20M synapses) and adult male Ventral Nerve Cord (MANC v1.2.1: ~23,000 neurons, ~10M T-bars / 74M PSDs)—powering connectome-constrained mechanistic vision and navigation models."
+summary_zh: "霍华德·休斯医学研究所 Janelia FlyEM 基于各向同性 8×8×8 nm 聚焦离子束扫描电镜（FIB-SEM）与 neuPrint 图数据库构建的果蝇突触连接组系列：涵盖雌蝇中央脑（Hemibrain v1.2.1：约 2.5 万神经元、2,000 万突触）与雄蝇腹神经索（MANC v1.2.1：约 2.3 万神经元），直接支撑连接组约束视觉深度网络（Lappalainen et al. 2024）。"
+scale:
+  n_subjects: 2
+  hours_per_subject: null
+  total_hours: null
+  n_stimuli: null
+  n_channels_or_voxels: "Hemibrain v1.2.1 (~25,000 central brain neurons, ~5,000 cell types, ~20M synapses) + MANC v1.2.1 (~23,000 VNC motor/premotor/ascending neurons, ~10M T-bars, 74M PSDs)"
+  sampling_rate_or_tr: "Static isotropic 8 × 8 × 8 nm Focused Ion Beam Scanning Electron Microscopy (FIB-SEM) volumes"
+brain_regions:
+  - Drosophila_Central_Complex_Ring_Attractor
+  - Mushroom_Body_and_Antennal_Lobe
+  - Optic_Lobe_Medulla_Lobula_Columns
+  - Male_Ventral_Nerve_Cord_T1_T2_T3_Neuromeres
+data_formats:
+  - Parquet_CSV
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: "CC-BY-4.0 (Open Google Cloud Storage exports & free Google-authenticated Cypher/Python queries on neuPrint)"
+  primary_portal: "Janelia neuPrint / Google Cloud Storage"
+  accession_ids:
+    - "neuPrint:hemibrain:v1.2.1"
+    - "neuPrint:manc:v1.2.1"
+    - "neuPrint:optic-lobe:v1.1"
+  urls:
+    homepage: "https://neuprint.janelia.org/"
+    hemibrain_page: "https://www.janelia.org/project-team/flyem/hemibrain"
+    manc_page: "https://www.janelia.org/manc-connectome"
+    paper: "https://doi.org/10.7554/eLife.57443"
+    manc_paper: "https://doi.org/10.7554/eLife.97769"
+    flyvis_paper: "https://doi.org/10.1038/s41586-024-07939-3"
+  download_cli: "gsutil ls gs://flyem-hemibrain/v1.2/exported-traced-adjacencies-v1.2.tar.gz && uv run --with neuprint-python python -c \"import neuprint; print(neuprint.__version__)\""
+modeling:
+  recommended_tasks:
+    - connectome_constrained_task_optimized_dmns_flyvis
+    - ring_attractor_navigation_and_mushroom_body_associative_learning
+    - descending_to_motor_vnc_locomotion_circuit_modeling
+    - ultra_isotropic_8nm_3d_em_segmentation_and_synapse_detection
+  standard_splits: "For connectome-constrained deep mechanistic networks (`Lappalainen et al., Nature, 2024`, `flyvis`), freeze exact FlyEM synaptic stoichiometry + cell-type parameter tying (`64` optic-lobe cell types across `45,669` model cells), train solely on naturalistic optic-flow estimation (*Sintel*), and evaluate zero-shot neural tuning predictions across `20+` independent two-photon/electrophysiology studies!"
+  noise_ceiling_or_repeat_structure: "`50` ensemble restarts in task-optimized connectome-constrained networks quantify degeneracy vs. topological determinacy, while repeated hexagonal retinotopic columns (`~750` ommatidial columns) and bilateral `MANC` leg/wing neuromeres (`T1/T2/T3` Left vs. Right) provide dense internal structural replication."
+  key_pitfalls:
+    - "VOLUME CROPPING IN `HEMIBRAIN` (`NOT` A WHOLE BRAIN!): Despite its name, `Hemibrain` (`~250 × 250 × 250 µm³` hot-knife stitched block) contains ONE central hemisphere, partial medial structures (`Central Complex`), only part of the right optic lobe, and crops out the subesophageal zone (`SEZ`) and contralateral hemisphere—always check `status == 'Traced'` and `cropped == False` in `neuPrint` so truncated arbors do not masquerade as low-degree neurons!"
+    - "POLYSYNAPTIC `1-TO-MANY` INSECT T-BAR STOICHIOMETRY: A single presynaptic *Drosophila* `T-bar` contacts multiple postsynaptic densities (`PSDs`, averaging `~5–7` partners per T-bar in `MANC`/`Hemibrain`)—distinguish `pre` (`T-bar` count) from `weight` (`PSD` synapse count) when computing fan-out vs. fan-in!"
+    - "SEXUAL DIMORPHISM WHEN BRIDGING `HEMIBRAIN`/`FLYWIRE` (FEMALE) TO `MANC` (MALE VNC): `Hemibrain` and `FlyWire` reconstruct **adult female** brains, whereas `MANC` reconstructs an **adult male** ventral nerve cord (`fruitless`/`doublesex` courtship song & abdominal motor circuits are male-specific!)."
+citations:
+  primary_bib_keys:
+    - scheffer2020hemibrain
+  related_bib_keys:
+    - takemura2024manc
+    - lappalainen2024flyvis
+  primary_doi_or_arxiv: "10.7554/eLife.57443"
+card_path: "cards/model_organisms_connectomics/hemibrain_flyem.md"
+last_verified: "2026-11-25"

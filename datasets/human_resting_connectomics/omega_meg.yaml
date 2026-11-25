@@ -1,0 +1,63 @@
+id: omega_meg
+name: "Open MEG Archive (OMEGA — Standardized BIDS 275-Channel Resting MEG & Anatomical MRI)"
+short_name: "OMEGA"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - MEG
+  - EEG
+  - Structural_MRI
+domains:
+  - resting_state
+  - connectomics
+  - clinical_lifespan
+year: 2016
+summary_en: "Continuous open-access MEG-BIDS reference repository from McGill MNI / Université de Montréal (N>300 participants across healthy controls and neurological cohorts) providing 275-channel CTF whole-head resting-state MEG at 2,400 Hz, daily empty-room noise recordings, 3D Polhemus head digitization, EOG/ECG, and defaced T1w MRI."
+summary_zh: "麦吉尔大学蒙特利尔神经病学研究所（MNI）与蒙特利尔大学联合建设的开放脑磁图档案库（OMEGA，>300 名健康对照与神经疾病受试者），也是 MEG-BIDS 国际标准的参考基石，提供 275 通道 CTF 全头 2400 Hz 静息态 MEG、同日空房间噪声记录、3D 头型数字化及去面部 T1w 结构核磁。"
+scale:
+  n_subjects: 300
+  hours_per_subject: 0.17
+  total_hours: 65.0
+  n_stimuli: 1
+  n_channels_or_voxels: "275-channel CTF whole-head axial gradiometer MEG (+ 29 reference sensors for 3rd-order synthetic gradiometry + EOG/ECG + optional simultaneous EEG + 1 mm T1w MRI)"
+  sampling_rate_or_tr: "2,400 Hz raw MEG sampling rate (600 Hz hardware anti-aliasing low-pass filter; ≥5 min eyes-open resting-state + ≥2 min empty-room noise)"
+brain_regions:
+  - Whole-Head_275Ch_CTF_MEG
+  - Source_Reconstructed_FreeSurfer_Cortex
+data_formats:
+  - BIDS
+  - FIF_MNE
+  - NIfTI
+access:
+  tier: registered
+  license: "OMEGA Open Data Use Agreement (free registration for full archive; 5-subject MEG-BIDS reference sample CC0 on OpenNeuro ds000247)"
+  primary_portal: "McGill BIC OMEGA Portal / CONP / OpenNeuro"
+  accession_ids:
+    - "OpenNeuro:ds000247"
+    - "CONP:OMEGA"
+  urls:
+    homepage: "https://www.mcgill.ca/bic/resources/omega"
+    openneuro_sample: "https://openneuro.org/datasets/ds000247"
+    conp_portal: "https://portal.conp.ca/"
+    paper: "https://doi.org/10.1016/j.neuroimage.2015.04.028"
+  download_cli: "aws s3 sync --no-sign-request s3://openneuro.org/ds000247 ./omega_bids_sample"
+modeling:
+  recommended_tasks:
+    - resting_meg_source_imaging_and_oscillatory_connectomics
+    - electrophysiological_foundation_model_pretraining
+    - empty_room_noise_covariance_and_artifact_denoising
+    - cross_site_ctf_vs_elekta_meg_harmonization
+  standard_splits: "Subject-level 5-fold or 10-fold cross-validation stratified by age, sex, and scanner site (`MNI` vs. `UdeM` CTF systems; keeping multi-session longitudinal visits of the same participant strictly in the same fold)."
+  noise_ceiling_or_repeat_structure: "Split-half `5 min` resting-state spectral power/envelope connectivity (`ICC > 0.80` in alpha/beta bands) plus multi-visit longitudinal sub-cohorts and matched `sub-emptyroom` sensor noise baselines for whitening/beamforming."
+  key_pitfalls:
+    - "AXIAL GRADIOMETERS & 3RD-ORDER SYNTHETIC GRADIENT COMPENSATION: Unlike Elekta/MEGIN `306-ch` planar gradiometer + magnetometer systems (`Cam-CAN`), CTF `275-ch` systems use radial axial gradiometers with `29` reference sensors (`3rd-order gradient` compensation)—always verify identical compensation order (`mne.io.read_raw_ctf(..., clean_names=True)` / `apply_gradient_compensation(3)`) between brain runs, `sub-emptyroom` noise covariance, and the forward leadfield!"
+    - "TWO RECORDING SITES (`MNI` vs. `Université de Montréal`) & MISSING/BROKEN SQUID CHANNELS: Individual sessions disable `2–6` noisy SQUID channels (`~270` active channels out of `275`) and span two CTF installations (`60 Hz` North American powerline + harmonics)—interpolate to a canonical sensor template or project to individual `FreeSurfer` cortical surface (`LCMV` / `dSPM`) before cross-subject ML!"
+    - "CONTINUOUS HEAD LOCALIZATION (`HLC` COILS): Inspect continuous head-coil trajectories (`HLC0011–HLC0038`) and reject or movement-compensate segments where cumulative head drift exceeds `5 mm`."
+citations:
+  primary_bib_keys:
+    - niso2016omega
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.neuroimage.2015.04.028"
+card_path: "cards/human_resting_connectomics/omega_meg.md"
+last_verified: "2026-11-25"

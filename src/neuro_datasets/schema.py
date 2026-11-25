@@ -16,24 +16,39 @@ ALLOWED_CATEGORIES: frozenset[str] = frozenset(
         "rodent_circuits_population",
         "human_resting_connectomics",
         "bci_motor_prosthetics",
+        "model_organisms_connectomics",
     }
 )
 
 ALLOWED_SPECIES: frozenset[str] = frozenset(
-    {"human", "macaque", "mouse", "rat", "marmoset", "zebrafish", "drosophila"}
+    {
+        "human",
+        "macaque",
+        "mouse",
+        "rat",
+        "marmoset",
+        "zebrafish",
+        "drosophila",
+        "celegans",
+    }
 )
 
 ALLOWED_MODALITIES: frozenset[str] = frozenset(
     {
         "fMRI_7T",
         "fMRI_3T",
+        "fMRI_4T",
         "MEG",
         "EEG",
         "ECoG_iEEG",
         "sEEG",
+        "Microwire_Single_Unit",
         "Utah_Array",
+        "Silicon_Probe",
         "Neuropixels",
         "Two_Photon",
+        "Widefield_Calcium",
+        "Light_Sheet",
         "Eye_Tracking",
         "Behavior",
         "Diffusion_MRI",
@@ -51,8 +66,12 @@ ALLOWED_DOMAINS: frozenset[str] = frozenset(
         "multilingual",
         "object_recognition",
         "motor_reaching",
+        "speech_bci",
         "decision_making",
+        "spatial_navigation",
+        "working_memory",
         "mental_imagery",
+        "affective_emotion",
         "multimodal",
         "resting_state",
         "videogames",

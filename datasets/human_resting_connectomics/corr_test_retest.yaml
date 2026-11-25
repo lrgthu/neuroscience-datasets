@@ -1,0 +1,60 @@
+id: corr_test_retest
+name: "Consortium for Reliability and Reproducibility (CoRR — Multi-Site Longitudinal Test-Retest Connectomics)"
+short_name: "CoRR"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Diffusion_MRI
+domains:
+  - resting_state
+  - connectomics
+  - clinical_lifespan
+year: 2014
+summary_en: "Definitive open test-retest reliability & connectome-fingerprinting benchmark aggregating N=1,629 participants and >5,000 longitudinal resting-state fMRI, morphometric T1w, and dMRI scans across 18 international institutions (36 samples), highlighted by dense 10-session cohorts such as HNU1 (N=30 × 10 scans over 1 month)."
+summary_zh: "功能与结构脑连接组重测信度（ICC）及脑指纹识别的权威开放基准库：汇聚全球 18 所机构的 36 个子样本、1,629 名受试者共 >5,000 次纵向重测静息态 fMRI、T1w 结构像与弥散核磁扫描（含杭州师范大学 HNU1 每人 1 个月内连续 10 次密集重测队列）。"
+scale:
+  n_subjects: 1629
+  hours_per_subject: 0.4
+  total_hours: 650.0
+  n_stimuli: 1
+  n_channels_or_voxels: "Whole-brain 3T (and 1.5T/7T sub-samples) EPI + 1 mm T1w + multi-direction dMRI in 11 samples"
+  sampling_rate_or_tr: "Sample-dependent TR = 0.645–3.0 s (e.g., HNU1 TR = 2.0 s, 10 × 10 min sessions; NKI-TRT multiband TR = 0.645 / 1.4 / 2.5 s)"
+brain_regions:
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC-BY-NC-SA-3.0 / Open FCP-INDI Data Sharing Terms (anonymous AWS S3 BIDS download)"
+  primary_portal: "FCP-INDI / AWS Open Data / NITRC"
+  accession_ids:
+    - "AWS:s3://fcp-indi/data/Projects/CORR"
+  urls:
+    homepage: "https://fcon_1000.projects.nitrc.org/indi/CoRR/html/"
+    aws_registry: "https://registry.opendata.aws/fcp-indi/"
+    paper: "https://doi.org/10.1038/sdata.2014.49"
+  download_cli: "aws s3 ls --no-sign-request s3://fcp-indi/data/Projects/CORR/RawDataBIDS/HNU_1/ && uv run --with nilearn python -c \"from nilearn.datasets import fetch_development_fmri; print('Ready for Nilearn/AWS fetch; for HNU1 use fetch_surf_nki_enhanced or AWS s3 sync')\""
+modeling:
+  recommended_tasks:
+    - intraclass_correlation_icc_and_discriminability_benchmarking
+    - longitudinal_connectome_fingerprinting_and_biometrics
+    - denoising_and_parcellation_pipeline_optimization
+    - sequence_tr_comparison_multiband_vs_standard_epi
+  standard_splits: "Evaluate within-sample longitudinal re-identification (`Session 1` gallery vs. `Session 2..K` query) or compute mixed-effects Intraclass Correlation (`ICC(2,1)` / `ICC(3,1)`) and multivariate `Discriminability` (`Bridgeford et al.`) stratified by sample (`HNU_1`, `BNU_1..3`, `NYU_1..2`, `NKI_2`, `Utah`, `SWU_4`, `UM`, `MPG_1`)."
+  noise_ceiling_or_repeat_structure: "`3,357+` longitudinal anatomical scans, `5,093` resting-state fMRI scans, and `1,302` dMRI scans across short (`same-day` within-session), medium (`days-to-weeks`, e.g. `HNU_1` `10 × 10 min` every 3 days for `30` days = `100 min/subject`), and long (`months-to-years`, e.g. `SWU_4` `N=235`, `Utah` `2.5 yr`) intervals!"
+  key_pitfalls:
+    - "HIGH MOTION ARTIFACT RELIABILITY PARADOX (`NOBLE ET AL. / PARKES ET AL.`): Head-motion tendencies (`mean FD`, respiratory patterns) are themselves highly heritable and trait-stable across sessions (`FD ICC ~ 0.6–0.7`)! Naively maximizing test-retest `ICC` without simultaneously minimizing `QC-FC` motion correlation selects under-denoised pipelines whose 'reliable' connectome edges are actually reproducible motion artifacts!"
+    - "EXTREME PROTOCOL HETEROGENEITY ACROSS THE 36 SAMPLES: CoRR intentionally spans `Siemens`, `GE`, and `Philips` scanners (`1.5T`, `3T`, and `MPG_1` `7T` `N=22`), `TR`s from `0.645 s` (`NKI_2` multiband) to `3.0 s`, and retest intervals from `30 minutes` to `2.5 years`—never pool raw `ICC` across all 36 samples without accounting for scan duration (`5 min` vs `10 min`) and inter-session interval!"
+    - "WITHIN-SESSION VS. BETWEEN-DAY INFLATION: Same-day back-to-back repeats (without leaving the head coil) inflate `ICC` and fingerprinting accuracy by `10–20%` via identical head positioning and arousal state; always benchmark connectome stability on true **between-day** sessions (`e.g., HNU_1` `ses-01..ses-10` or `NYU_2`)."
+citations:
+  primary_bib_keys:
+    - zuo2014corr
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/sdata.2014.49"
+card_path: "cards/human_resting_connectomics/corr_test_retest.md"
+last_verified: "2026-11-25"

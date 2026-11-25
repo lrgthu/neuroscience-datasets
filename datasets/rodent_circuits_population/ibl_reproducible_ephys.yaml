@@ -1,0 +1,67 @@
+id: ibl_reproducible_ephys
+name: "IBL Multi-Lab Reproducible Electrophysiology Repeated-Site Benchmark"
+short_name: "IBL-Repro"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Neuropixels
+  - Eye_Tracking
+  - Behavior
+domains:
+  - decision_making
+  - multimodal
+year: 2025
+summary_en: "Ground-truth multi-laboratory reproducibility benchmark (IBL / Banga et al., eLife 2024/2025; 121 Neuropixels insertions, 82 QC-passing replicates across 10 labs) repeatedly targeting the exact same stereotaxic trajectory (VISa/PPC, CA1, DG, LP, PO), paired with the 6,615-session behavioral reproducibility cohort (DANDI:000045)."
+summary_zh: "国际脑实验室（IBL）跨 10 家实验室电生理可重复性基准（Banga 等 eLife 2024/2025）：在相同立体定位靶点（覆盖 VISa/PPC、海马 CA1/DG 与丘脑 LP/PO）采集 121 次重复 Neuropixels 插入（82 次通过严格 RIGOR 质控），并配套 6,615 会话行为可重复性库（DANDI:000045）。"
+scale:
+  n_subjects: 121
+  hours_per_subject: 2.0
+  total_hours: 242.0
+  n_stimuli: 9
+  n_channels_or_voxels: "121 standardized Repeated-Site Neuropixels 1.0 insertions across 10 laboratories (82 full-QC-passing insertions, ~400–700 sorted units/insertion across VISa/PPC, CA1, DG, LP & PO) + 6,615 standardized behavioral sessions (DANDI:000045)"
+  sampling_rate_or_tr: "30 kHz spikes / 2.5 kHz LFP + 60/150 Hz 3-camera pose tracking, infrared pupil diameter, and rotary wheel kinematics"
+brain_regions:
+  - Mouse_VISa_Anterior_Visual_PPC
+  - Mouse_Hippocampus_CA1_DG
+  - Mouse_Thalamus_LP_PO
+data_formats:
+  - NWB
+  - Parquet_CSV
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "ONE-API (AWS S3) / DANDI Archive"
+  accession_ids:
+    - "ONE:2022_Q4_IBL_et_al_RepeatedSite"
+    - "DANDI:000409"
+    - "DANDI:000045"
+    - "AWS:s3://ibl-brain-wide-map-public"
+  urls:
+    homepage: "https://www.internationalbrainlab.com/repro-ephys"
+    dandi_ephys: "https://dandiarchive.org/dandiset/000409"
+    dandi_behavior: "https://dandiarchive.org/dandiset/000045"
+    code: "https://github.com/int-brain-lab/paper-reproducible-ephys"
+    paper: "https://doi.org/10.7554/elife.100840.3"
+  download_cli: "uv run --with ONE-api python -c \"from one.api import ONE; one = ONE(base_url='https://openalyx.internationalbrainlab.org'); print(len(one.search_insertions(datasets='*2022_Q4_IBL_et_al_RepeatedSite*')))\""
+modeling:
+  recommended_tasks:
+    - cross_laboratory_batch_effect_and_domain_generalization
+    - multi_session_stitching_and_across_animal_alignment
+    - rigor_electrophysiological_qc_and_histology_calibration
+    - hierarchical_mixed_effects_vs_permutation_inference
+  standard_splits: "Leave-One-Laboratory-Out (`10` labs) and Leave-One-Mouse-Out (`82` RIGOR-QC insertions) evaluation across identical target regions (`VISa`, `CA1`, `DG`, `LP`, `PO`), auditing whether learned latent dynamics, single-cell encoders, or foundation-model embeddings absorb lab-identity (`site`) batch effects."
+  noise_ceiling_or_repeat_structure: "`82` QC-passing biological & institutional replicates of the exact same `(-2.0 mm AP, -2.24 mm ML, 15°)` probe trajectory provide empirical inter-animal vs. inter-laboratory variance components (`R²_lab` vs. `R²_mouse`)."
+  key_pitfalls:
+    - "DANDISET DISAMBIGUATION (`DANDI:000045` vs. `RepeatedSite` in `DANDI:000409` / `ONE`): `DANDI:000045` (`6,615` NWB files, `~98 GB`) is the companion **IBL Behavioral Reproducibility** dataset (`Aguillon-Rodriguez et al., eLife, 2021`), whereas the **Repeated-Site Neuropixels** electrophysiology sessions (`Banga et al., eLife, 2024/2025`) reside in `DANDI:000409` / `openalyx` and are queried cleanly via the official `ONE-api` tag `2022_Q4_IBL_et_al_RepeatedSite`!"
+    - "SUB-MILLIMETER TARGETING JITTER MIMICS LAB EFFECTS: Apparent 'inter-lab differences' in thalamic (`LP`, `PO`) responses largely vanish once 3D `CCFv3` `(x, y, z)` micro-coordinate offsets (`±200–400 µm` histological trajectory variance) and `Lightning Pose` movement kinematics are included as covariates!"
+    - "Apply the full two-level **IBL `RIGOR` inclusion criteria** (insertion-level criteria: `>=400` trials, behavioral performance `>80%` on 100% contrast, histological track recovery, low LFP RMS noise; plus unit-level `label == 1.0` metric) to select the canonical `82` of `121` sessions."
+citations:
+  primary_bib_keys:
+    - ibl2025reproducible
+    - ibl2021standardized
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.7554/elife.100840.3"
+card_path: "cards/rodent_circuits_population/ibl_reproducible_ephys.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,61 @@
+id: kar_dicarlo_recurrent_it
+name: "Kar-DiCarlo Macaque IT Recurrent Challenge-Image Latency Benchmark"
+short_name: "Kar2019-OST"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Utah_Array
+  - Behavior
+  - Eye_Tracking
+domains:
+  - natural_images
+  - object_recognition
+  - synthetic_ood
+year: 2019
+summary_en: "Millisecond-resolved chronic Utah array recordings across 424 macaque IT sites on 1,320 natural and synthetic object images (`BrainScore:Kar2019-ost`), isolating late (`+30 ms` delayed) recurrent object solution times on feedforward-challenging images."
+summary_zh: "猕猴下颞叶皮层（IT，424 个慢性阵列位点）观看 1,320 张自然与合成物体识别图像的毫秒级神经潜伏期基准（Brain-Score `Kar2019-ost`），定量揭示前馈困难图像依赖额外 ~30 ms 循环反馈回路完成线性可分。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 25.0
+  total_hours: 50.0
+  n_stimuli: 1320
+  n_channels_or_voxels: "424 chronic multi-unit IT sites (plus V4 sites) across 2 awake macaques + pooled primate/human behavioral accuracy"
+  sampling_rate_or_tr: "10 ms sliding linear-decoder bins across [70, 250] ms post-stimulus onset (100 ms image flash)"
+brain_regions:
+  - Macaque_IT
+  - Macaque_V4
+data_formats:
+  - NWB
+  - Zarr_NPZ
+  - HDF5_MAT
+access:
+  tier: open
+  license: MIT
+  primary_portal: "Brain-Score / GitHub"
+  accession_ids:
+    - "BrainScore:Kar2019"
+    - "BrainScore:dicarlo.Kar2019-ost"
+  urls:
+    homepage: "https://www.brain-score.org/"
+    code: "https://github.com/dicarlolab/CORnet"
+    vision_repo: "https://github.com/brain-score/vision"
+  download_cli: "uv run python -c \"import brainscore_vision; b = brainscore_vision.load_benchmark('Kar2019-ost'); print(b)\""
+modeling:
+  recommended_tasks:
+    - recurrent_vs_feedforward_object_recognition
+    - image_level_object_solution_time_prediction
+    - dynamic_it_population_decoding
+  standard_splits: "Stratified cross-validation across the `1,320` (`1,318` valid OST-defined) binary/10-way core object recognition images (`10` object categories: bear, elephant, person, car, dog, apple, chair, plane, bird, zebra), pairing `Control` (feedforward-easy) and `Challenge` (primates succeed, shallow/deep feedforward CNNs fail) subsets."
+  noise_ceiling_or_repeat_structure: "High trial repeat density (`~30–50` presentations per image) yields reliable per-image **Object Solution Time (`OST`)**—the exact millisecond (`10 ms` step) at which linear IT population decodability crosses the behavioral `I1` accuracy threshold (`split-half OST Spearman r ~ 0.85+`)."
+  key_pitfalls:
+    - "TIME-AVERAGED RATES HIDE RECURRENT SOLUTION LATENCY: Integrating IT spikes over a wide `[70, 170] ms` window masks the core phenomenon—`Control` images linearly resolve at `~100–115 ms`, whereas accuracy-matched `Challenge` images require `~135–155 ms` (`~30 ms` extra recurrent processing, suppressed by V4/IT pharmacological silencing)!"
+    - "Undefined `OST` on Unsolved Images: For a small fraction of extreme occlusion/clutter stimuli where biological IT never reaches the behavioral `I1` threshold within `250 ms`, `OST` is `NaN` (`1,318` / `1,320` defined)—handle censored/undefined latencies explicitly without zero-imputation!"
+    - "Matching Feedforward Depth vs. Recurrent Unrolling: Ultra-deep `150+` layer ResNets partially mimic challenge-image accuracy via depth, whereas biological time-step alignment (`Kar2019-ost`) specifically requires dynamic recurrent trajectories (`CORnet-S`, `ConvRNN`, continuous-time ODEs) mapped onto physical milliseconds."
+citations:
+  primary_bib_keys:
+    - kar2019recurrent
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41593-019-0392-5"
+card_path: "cards/nhp_electrophysiology/kar_dicarlo_recurrent_it.md"
+last_verified: "2026-11-25"

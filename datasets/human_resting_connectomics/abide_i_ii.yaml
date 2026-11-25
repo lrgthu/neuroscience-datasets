@@ -1,0 +1,66 @@
+id: abide_i_ii
+name: "Autism Brain Imaging Data Exchange (ABIDE I & ABIDE II Multi-Site Connectomics)"
+short_name: "ABIDE I & II"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - clinical_lifespan
+  - resting_state
+  - connectomics
+year: 2014
+summary_en: "Foundational open multi-site clinical neuroimaging benchmark aggregating N=2,226 datasets (ABIDE I: N=1,112 across 17 sites; ABIDE II: N=1,114 across 19 sites; ages 5–64) of Autism Spectrum Disorder (1,060 ASD) and typical controls (1,166 TC), with open Preprocessed Connectomes Project (PCP) derivatives."
+summary_zh: "自闭症谱系障碍（ASD）多中心脑连接组学与图神经网络评测的奠基性开放基准：聚合 ABIDE I（17 中心 N=1,112）与 ABIDE II（19 中心 N=1,114）共 2,226 例 5–64 岁 ASD 患者与典型对照的 3T 静息态 fMRI、结构像及部分 dMRI，并提供 PCP 四套流水线预提取连接组。"
+scale:
+  n_subjects: 2226
+  hours_per_subject: 0.12
+  total_hours: 267.0
+  n_stimuli: 1
+  n_channels_or_voxels: "Whole-brain 3T EPI (site-varying ~3.0 mm voxels; PCP parcellations: Craddock CC200/CC400, AAL-116, Harvard-Oxford, Dosenbach-160, EZ, TT)"
+  sampling_rate_or_tr: "Site-dependent 3T fMRI TR = 1.5–3.0 s (typically 5–10 min single resting-state run; eyes open vs. eyes closed varies by site)"
+brain_regions:
+  - Whole-Brain
+  - Cortical_and_Subcortical_PCP_Atlases
+data_formats:
+  - BIDS
+  - NIfTI
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC-BY-NC-SA-3.0 / Open FCP-INDI Data Sharing Terms (anonymous S3 download for PCP derivatives; NITRC click-through for full phenotypic tables)"
+  primary_portal: "FCP-INDI / AWS Open Data / Preprocessed Connectomes Project"
+  accession_ids:
+    - "AWS:s3://fcp-indi/data/Projects/ABIDE"
+    - "AWS:s3://fcp-indi/data/Projects/ABIDE2"
+  urls:
+    homepage: "https://fcon_1000.projects.nitrc.org/indi/abide/"
+    pcp_derivatives: "http://preprocessed-connectomes-project.org/abide/"
+    paper: "https://doi.org/10.1038/mp.2013.78"
+    paper_abide2: "https://doi.org/10.1038/sdata.2017.10"
+  download_cli: "aws s3 ls --no-sign-request s3://fcp-indi/data/Projects/ABIDE/Outputs/cpac/filt_noglobal/rois_cc200/ && uv run python -c \"from nilearn.datasets import fetch_abide_pcp; fetch_abide_pcp(n_subjects=5, pipeline='cpac', derivatives=['rois_cc200'])\""
+modeling:
+  recommended_tasks:
+    - clinical_connectome_classification_gnn_and_transformer
+    - multi_site_domain_generalization_and_harmonization
+    - normative_heterogeneity_and_asd_subtyping
+    - brain_foundation_model_downstream_fine_tuning
+  standard_splits: "Report BOTH (1) Stratified 10-fold CV across the canonical QC-passed `ABIDE I` subset (`N = 871` Abraham et al. 2017 or `N = 1,035` BrainGB/BrainNetTF) stratified by `(SITE_ID, DX_GROUP)` AND (2) Leave-One-Site-Out (`LOSO`) cross-validation across the 17 (`ABIDE I`) or 19 (`ABIDE II`) sites to quantify true out-of-scanner generalization!"
+  noise_ceiling_or_repeat_structure: "Single short resting-state run (`~5–10 min`, `120–300` volumes) per subject for most sites leads to modest single-subject edge reliability (`ICC ~ 0.2–0.4`), plus a small longitudinal `UCLA` / `UPSM` subset in `ABIDE II`; PCP provides 4 parallel pipelines (`CPAC`, `CCS`, `DPARSF`, `NIAK`) × 4 denoising strategies (`filt/nofilt` × `global/noglobal`) to audit pipeline sensitivity."
+  key_pitfalls:
+    - "SEVERE MULTI-SITE SCANNER, TR & EYES-OPEN/CLOSED CONFOUNDING: Across the 36 collections, scanners (`Siemens`, `Philips`, `GE`), `TR` (`1.5–3.0 s`), instructions (`eyes open with fixation` vs. `eyes closed`), age distributions (`5–64 yr`), and ASD:control ratios vary drastically—models that ignore site harmonization (`ComBat` fitted strictly on training folds!) easily exploit site identity as a shortcut for `DX_GROUP`."
+    - "INCOMPARABLE SAMPLE SIZES (`N=871` vs `N=1,009` vs `N=1,035` vs `N=1,112`): Published GNN/Transformer papers (`BrainNetCNN`, `BrainGNN`, `BrainNetTF`, `BrainLM`, `Brain-JEPA`) evaluate on subtly different QC subsets of `ABIDE I`—always state the exact `N`, pipeline (`e.g., CPAC filt_noglobal`), parcellation (`CC200` vs `Schaefer`), and whether `GSR` was enabled!"
+    - "SUBJECT OVERLAP BETWEEN ABIDE I AND ABIDE II: A small number of longitudinal or re-contributed participants (`e.g., UCLA`, `SDSU`, `KKI`, `NYU` cohorts) appear across `ABIDE I` and `ABIDE II`—check consortium cross-walk tables before using `ABIDE II` as a strictly independent external test set!"
+    - "DIFFERENTIAL HEAD MOTION IN ASD: ASD participants exhibit systematically higher mean framewise displacement (`FD`) than controls, creating spurious short-range hyperconnectivity and long-range hypoconnectivity unless `FD` is matched/regressed and high-motion runs (`mean FD > 0.2 mm`) are flagged."
+citations:
+  primary_bib_keys:
+    - dimartino2014abide
+    - dimartino2017abide2
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/mp.2013.78"
+card_path: "cards/human_resting_connectomics/abide_i_ii.md"
+last_verified: "2026-11-25"

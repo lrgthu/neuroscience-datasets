@@ -1,0 +1,69 @@
+id: flavell_zimmer_celegans
+name: "Whole-Brain Cell-Identified C. elegans NeuroPAL & Global Dynamics Atlases (Flavell & Zimmer Labs)"
+short_name: "C. elegans Whole-Brain"
+category: model_organisms_connectomics
+species:
+  - celegans
+modalities:
+  - Light_Sheet
+  - Two_Photon
+  - Behavior
+domains:
+  - spatial_navigation
+  - decision_making
+  - motor_reaching
+  - connectomics
+year: 2023
+summary_en: "Cell-identified whole-brain calcium imaging & behavioral kinematics in Caenorhabditis elegans—combining the Flavell Lab freely moving NeuroPAL atlas (Atanas et al. Cell 2023; DANDI:000776 / wormwideweb.org, N=40+ worms, ~120–180 named head neurons mapped to the 302-neuron White/Witvliet EM connectome) and the Zimmer Lab global motor-manifold benchmark (Kato et al. Cell 2015)."
+summary_zh: "秀丽隐杆线虫（C. elegans）精确命名单细胞全脑钙成像与行为运动学核心资源：融合 MIT Flavell 实验室自由运动 NeuroPAL 全脑图谱（Atanas et al., Cell, 2023；DANDI:000776，>40 条线虫，每条 ~120–180 个精确对应至 302 神经元电镜连接组的命名神经元）与 Zimmer 实验室全局低维运动流形经典基准（Kato et al., Cell, 2015）。"
+scale:
+  n_subjects: 52
+  hours_per_subject: 0.27
+  total_hours: 14.0
+  n_stimuli: 4
+  n_channels_or_voxels: "~120–180 simultaneously tracked head neurons per worm (~60–100+ uniquely NeuroPAL-named deterministic cell IDs out of the 189 head / 302 total C. elegans neurons)"
+  sampling_rate_or_tr: "1.7 Hz spinning-disk / light-sheet volumetric tracking in freely moving worms (Atanas 2023, 16 min/worm) & ~2.9 Hz microfluidic recordings (Kato 2015)"
+brain_regions:
+  - Celegans_Head_Ganglia_189_Neurons
+  - Nerve_Ring_Sensory_Inter_Motor_Circuits
+  - Pharyngeal_and_Head_Motor_Neurons
+data_formats:
+  - NWB
+  - HDF5_MAT
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC-BY-4.0 (Open NWB on DANDI:000776, JSON/Julia/Python API on WormWideWeb, and OSF `2395t`)"
+  primary_portal: "WormWideWeb / DANDI Archive / OSF"
+  accession_ids:
+    - "DANDI:000776"
+    - "OSF:2395t"
+  urls:
+    homepage: "https://wormwideweb.org/"
+    dandi: "https://dandiarchive.org/dandiset/000776"
+    kato_osf: "https://osf.io/2395t/"
+    paper: "https://doi.org/10.1016/j.cell.2023.07.035"
+    kato_paper: "https://doi.org/10.1016/j.cell.2015.09.034"
+    neuropal_paper: "https://doi.org/10.1016/j.cell.2020.12.012"
+  download_cli: "uvx dandi download DANDI:000776"
+modeling:
+  recommended_tasks:
+    - exact_cell_identified_cross_animal_foundation_models
+    - em_connectome_plus_gap_junction_vs_functional_dynamics
+    - multi_timescale_behavior_and_internal_state_encoding
+    - low_dimensional_attractor_and_manifold_discovery
+  standard_splits: "Leave-K-Worms-Out (`e.g., 32 train / 8 test` across the `40` baseline freely moving worms in `Atanas et al. 2023`, matching exact named neurons such as `AVA`, `RIB`, `RIM`, `AIY`, `SMDV`, `NSM` across individuals!), plus within-worm chronological splits across heat-stimulus/roaming-dwelling state switches."
+  noise_ceiling_or_repeat_structure: "Deterministic invariant *C. elegans* lineage (`302` hermaphrodite neurons with exact `NeuroPAL` `4`-fluorophore barcode IDs from `Yemini et al., Cell, 2021`) enables **exact neuron-to-neuron (`1:1`) cross-animal noise ceilings** across `40+` freely moving individuals!"
+  key_pitfalls:
+    - "IMMOBILIZED (`KATO 2015`) VS. FREELY MOVING (`ATANAS 2023`) DYNAMICAL DIVERGENCE: In microfluidic immobilization (`Kato et al. 2015`), brain dynamics collapse onto a highly stereotyped `2D/3D` forward–reversal limit cycle (`AVA`/`RIB`), whereas in freely moving worms (`Atanas et al. 2023`), ~30% of neurons dynamically remap their behavioral tuning across locomotion, head curvature, feeding (`pumping`), and internal arousal states—never assume immobilized manifolds capture natural sensorimotor coding!"
+    - "CHEMICAL SYNAPSES + GAP JUNCTIONS != FUNCTIONAL CORRELATION ALONE: Even with complete EM chemical + electrical connectomes (`White et al., 1986`; `Witvliet et al., Nature, 2021`) and exact `NeuroPAL` IDs, `>50%` of rapid functional interactions in *C. elegans* are mediated or gated by extrasynaptic **monoamines (`5-HT`, `tyramine`, `octopamine`) and wireless neuropeptide GPCR networks** (`Ripoll-Sánchez et al., Neuron, 2023`)!"
+    - "PARTIAL `NEUROPAL` CONFIDENCE & MOTION ARTIFACT CONTROLS (`GFP` CHANNEL!): Not all `~150` tracked nuclei in a given worm receive high-confidence `NeuroPAL` labels (`check ID confidence scores!`), and severe worm body bending induces optical z-shear—always validate against the Flavell Lab calcium-insensitive **`GFP` motion-control worms** and dual-channel ratiometric (`GCaMP7f / mNeptune2.5`) traces!"
+citations:
+  primary_bib_keys:
+    - atanas2023celegans
+    - kato2015celegans
+  related_bib_keys:
+    - yemini2021neuropal
+  primary_doi_or_arxiv: "10.1016/j.cell.2023.07.035"
+card_path: "cards/model_organisms_connectomics/flavell_zimmer_celegans.md"
+last_verified: "2026-11-25"

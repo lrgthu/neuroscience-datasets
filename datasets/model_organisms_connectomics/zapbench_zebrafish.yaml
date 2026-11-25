@@ -1,0 +1,63 @@
+id: zapbench_zebrafish
+name: "ZAPBench (Zebrafish Activity Prediction Benchmark — Whole-Brain Single-Neuron Forecasting)"
+short_name: "ZAPBench"
+category: model_organisms_connectomics
+species:
+  - zebrafish
+modalities:
+  - Light_Sheet
+  - Behavior
+domains:
+  - natural_movies
+  - spatial_navigation
+  - motor_reaching
+  - connectomics
+year: 2025
+summary_en: "ICLR 2025 whole-vertebrate-brain neural forecasting benchmark from Google Research, Janelia & Harvard, capturing 71,721 segmented single-neuron GCaMP traces (and raw 4D light-sheet Zarr volumes) across 7,879 timesteps (914 ms/frame, ~2 hours) and 9 virtual-reality visual conditions in a single larval zebrafish."
+summary_zh: "Google Research、Janelia 与哈佛联合发布的脊椎动物全脑单神经元活动预测基准（ICLR 2025 Spotlight）：在单条斑马鱼幼鱼全脑精确分割追踪 71,721 个神经元跨越 9 类虚拟现实视觉刺激（7,879 帧、每帧 914 ms，约 2 小时）的 4D 光片钙成像体积与时间序列，且同一标本正在进行电镜突触连接组重建。"
+scale:
+  n_subjects: 1
+  hours_per_subject: 2.0
+  total_hours: 2.0
+  n_stimuli: 9
+  n_channels_or_voxels: "71,721 segmented whole-brain single neurons (`7,879 × 71,721` float32 trace matrix + `2048 × 1328 × 72` 4D motion-stabilized light-sheet volumes in TensorStore/Zarr v3)"
+  sampling_rate_or_tr: "1.094 Hz volumetric 4D light-sheet imaging (914 ms per full-brain volume; 7,879 contiguous timesteps) + high-speed fictive swim tail-nerve electrophysiology"
+brain_regions:
+  - Whole-Vertebrate-Brain_Telencephalon_to_Hindbrain
+  - Optic_Tectum_and_Pretectum
+  - Cerebellum_Habenula_and_Brainstem_Motor_Nuclei
+data_formats:
+  - Zarr_NPZ
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC-BY-4.0 / Apache-2.0 (Open anonymous TensorStore streaming from Google Cloud Storage `gs://zapbench-release`)"
+  primary_portal: "Google Cloud Storage / GitHub (`google-research/zapbench`)"
+  accession_ids:
+    - "GCS:gs://zapbench-release/volumes/20240930/"
+  urls:
+    homepage: "https://google-research.github.io/zapbench/"
+    code: "https://github.com/google-research/zapbench"
+    gcs_console: "https://console.cloud.google.com/storage/browser/zapbench-release"
+    paper: "https://arxiv.org/abs/2503.02618"
+  download_cli: "uv run --with tensorstore python -c \"import tensorstore as ts; ds = ts.open({'driver': 'zarr3', 'kvstore': 'gs://zapbench-release/volumes/20240930/traces'}).result(); print(ds.shape)\""
+modeling:
+  recommended_tasks:
+    - multi_horizon_whole_brain_single_neuron_forecasting
+    - volumetric_4d_spatiotemporal_video_foundation_modeling
+    - zero_shot_out_of_condition_sensory_regime_transfer
+    - structure_to_function_connectome_bridging
+  standard_splits: "Official `zapbench` chronological per-condition splits (`70%` train / `10%` val / `20%` test within each of `8` training visual conditions, holding out condition `taxis` entirely for zero-shot OOD regime evaluation!), evaluated on `MAE` across horizons `H = 1..32` steps (`0.91 s` to `29.2 s` ahead) from short (`C = 4` steps) and long (`C = 256` steps) context windows."
+  noise_ceiling_or_repeat_structure: "Repeated stimulus epochs within each of the `9` visual VR conditions (`gain`, `dots`, `flash`, `taxis`, `turning`, `position`, `open_loop`, `rotation`, `dark`) quantify stimulus-driven trial-average vs. spontaneous state/motor variance ceilings."
+  key_pitfalls:
+    - "AUTOREGRESSIVE ROLLOUT DRIFT & SURPRISINGLY STRONG `TSMIXER`/`LINEAR` BASELINES: At `1`-step horizon (`914 ms`), slow `GCaMP` calcium decay makes naive mean/linear/univariate `NLinear` baselines deceptively hard to beat (`MAE` differences appear chiefly at `H = 8..32` steps and during swim/stimulus transitions!), while 4D video UNets accumulate severe rollout drift unless trained directly on multi-step horizons!"
+    - "CONTIGUOUS TIME-SERIES SPLIT BOUNDARY LEAKAGE: Never shuffle `7,879` frames randomly—`GCaMP` fluorescence autocorrelation spans `>5–10` frames; always use the official `zapbench` contiguous block boundaries (which include guard/padding margins around condition transitions and `taxis` OOD holdout)!"
+    - "NON-STATIONARY `2-HOUR` FLUORESCENCE BLEACHING & SWIM-BOUT GATING: Across the continuous `~2 hr` recording, slow baseline photobleaching and sudden fictive motor swim bursts drive massive brain-wide global modes—models lacking long context (`C = 256`) or stimulus/covariate conditioning underfit state switches."
+    - "SINGLE-SPECIMEN (`N = 1` FISH) SCOPE: ZAPBench deeply benchmarks `71,721` neurons in **one** specimen (chosen specifically because the exact same fish brain is undergoing petascale EM connectomic reconstruction); pair with multi-fish atlases (`Chen, Mu et al., 2018`, `N = 18`) when testing inter-individual generalization."
+citations:
+  primary_bib_keys:
+    - lueckmann2025zapbench
+  related_bib_keys: []
+  primary_doi_or_arxiv: "arXiv:2503.02618"
+card_path: "cards/model_organisms_connectomics/zapbench_zebrafish.md"
+last_verified: "2026-11-25"

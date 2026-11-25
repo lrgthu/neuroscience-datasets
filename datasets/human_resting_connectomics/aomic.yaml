@@ -1,0 +1,70 @@
+id: aomic
+name: "Amsterdam Open MRI Collection (AOMIC — ID1000, PIOP1 & PIOP2 CC0 Multimodal 3T MRI)"
+short_name: "AOMIC"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - resting_state
+  - natural_movies
+  - working_memory
+  - affective_emotion
+  - connectomics
+  - multimodal
+year: 2021
+summary_en: "Zero-DUA CC0-licensed multimodal 3T Philips MRI collection of N=1,370 adults across three sub-cohorts—ID1000 (ds003097, N=928 naturalistic movie-watching), PIOP1 (ds002785, N=216 rest + 5 tasks), and PIOP2 (ds002790, N=226 rest + 3 tasks)—complete with fMRIPrep, FreeSurfer, MRIQC, DWI,生理 recordings, and psychometric intelligence/personality traits."
+summary_zh: "完全免受控协议（CC0 公共领域授权）的阿姆斯特丹开放多模态 3T 核磁集合（共 1,370 名受试者，含 ID1000 电影观看队列 N=928、PIOP1 N=216 与 PIOP2 N=226 静息态+多任务队列），全套附带 fMRIPrep、FreeSurfer、MRIQC 衍生结果、弥散成像、心电呼吸生理信号及智力人格量表。"
+scale:
+  n_subjects: 1370
+  hours_per_subject: 0.75
+  total_hours: 1025.0
+  n_stimuli: 7
+  n_channels_or_voxels: "3T Philips 3.0 mm isotropic whole-brain EPI (multiband 3 TR=0.75 s in PIOP1 rest/faces; sequential TR=2.0–2.2 s in ID1000/PIOP2) + 1.0 mm T1w + 2.0 mm 32-dir DWI"
+  sampling_rate_or_tr: "3T Philips Intera/Achieva: ID1000 movie TR = 2.20 s (290 vols); PIOP1 rest/faces multiband TR = 0.75 s (480 vols) & tasks TR = 2.0 s; PIOP2 rest/tasks TR = 2.0 s; cardiac/respiratory 496 Hz"
+brain_regions:
+  - Whole-Brain
+  - FreeSurfer_fsaverage5_and_MNI152NLin2009cAsym
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+  - TextGrid_TSV
+access:
+  tier: open
+  license: "CC0-1.0 (Public Domain — zero DUA, raw + fMRIPrep/FreeSurfer/DWI derivatives openly downloadable)"
+  primary_portal: "OpenNeuro / AWS Open Data"
+  accession_ids:
+    - "OpenNeuro:ds003097"
+    - "OpenNeuro:ds002785"
+    - "OpenNeuro:ds002790"
+  urls:
+    homepage: "https://nilab-uva.github.io/AOMIC.github.io/"
+    id1000_openneuro: "https://openneuro.org/datasets/ds003097"
+    piop1_openneuro: "https://openneuro.org/datasets/ds002785"
+    piop2_openneuro: "https://openneuro.org/datasets/ds002790"
+    paper: "https://doi.org/10.1038/s41597-021-00870-6"
+  download_cli: "aws s3 ls --no-sign-request s3://openneuro.org/ds003097/derivatives/fmriprep/ && uvx datalad install https://github.com/OpenNeuroDatasets/ds002785.git"
+modeling:
+  recommended_tasks:
+    - individual_difference_intelligence_and_personality_prediction
+    - naturalistic_movie_intersubject_correlation_id1000
+    - zero_dua_fmri_foundation_model_pretraining_and_probing
+    - physiological_retroicor_noise_modeling
+  standard_splits: "Evaluate sub-cohorts (`ID1000` `N = 928`, `PIOP1` `N = 216`, `PIOP2` `N = 226`) separately via 10-fold stratified cross-validation for trait prediction (`IST` intelligence, `NEO-FFI` Big Five, `BIS/BAS`), OR train on `PIOP1` and test out-of-sample on `PIOP2` for shared paradigms (`restingstate`, `workingmemory`, `emotionmatching`, `gstroop`)."
+  noise_ceiling_or_repeat_structure: "`ID1000` presents the exact same `~11 min` (`290` TRs) naturalistic movie montage (*kovacs* / *opera* clip compilation) to all `928` participants, enabling massive-N inter-subject correlation (`ISC`) noise ceilings, while `3 × T1w` and `3 × DWI` repeats per subject in `ID1000` quantify structural/tractography reliability."
+  key_pitfalls:
+    - "SUB-COHORT PARADIGM & `TR` DIFFERENCES (`ID1000` HAS MOVIE, NOT REST!): `ID1000` (`N=928`) contains `moviewatching` (`TR=2.2 s`) and NO resting-state scan, whereas `PIOP1` (`N=216`) uses `multiband 3` `TR=0.75 s` for `restingstate` + `faces` (`TR=2.0 s` for other tasks) and `PIOP2` (`N=226`) uses sequential `TR=2.0 s` across all runs after a scanner upgrade (`Achieva` → `Achieva dStream`)!"
+    - "OVERLAP WITH `OPEN-FMIND` CORPUS: All three AOMIC OpenNeuro accessions (`ds003097`, `ds002785`, `ds002790`) are ingested into multi-study OpenNeuro pretraining corpora like `Open-fMIND`—always exclude `ds003097`/`ds002785`/`ds002790` from pretraining if using AOMIC for downstream IQ/personality probing!"
+    - "HOMOGENEOUS YOUNG ADULT AGE RANGE (`18–26 yr`): All three AOMIC cohorts sample young adults (`ID1000` ages `19–26` general population; `PIOP1`/`PIOP2` ages `18–26` university students)—do not use AOMIC alone to extrapolate childhood or geriatric brain-age models."
+citations:
+  primary_bib_keys:
+    - snoek2021aomic
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-021-00870-6"
+card_path: "cards/human_resting_connectomics/aomic.md"
+last_verified: "2026-11-25"

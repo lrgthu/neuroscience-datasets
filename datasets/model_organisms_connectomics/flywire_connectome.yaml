@@ -1,0 +1,68 @@
+id: flywire_connectome
+name: "FlyWire Adult Drosophila Whole-Brain Synaptic Connectome (FAFB v783 & Codex)"
+short_name: "FlyWire"
+category: model_organisms_connectomics
+species:
+  - drosophila
+modalities:
+  - EM_Connectomics
+domains:
+  - connectomics
+  - decision_making
+  - object_recognition
+  - spatial_navigation
+year: 2024
+summary_en: "First complete neuron-and-synapse wiring diagram of an adult central brain (female Drosophila melanogaster FAFB v783), mapping all 139,255 proofread neurons, ~54.5 million chemical synapses, 8,453 hierarchical cell types, and predicted neurotransmitters across both hemispheres and optic lobes."
+summary_zh: "首个成年动物完整全脑突触级连接组图谱（雌性果蝇 FAFB v783），经 AI 分割与全球社区校对完整重建全部 139,255 个全脑神经元、约 5,450 万个化学突触、8,453 种层级细胞类型及预测神经递质，直接驱动全脑脉冲计算仿真模型。"
+scale:
+  n_subjects: 1
+  hours_per_subject: null
+  total_hours: null
+  n_stimuli: null
+  n_channels_or_voxels: "139,255 proofread whole-brain neurons, ~54.5M chemical synapses (~50M filtered connections), 8,453 cell types, & 149.2 m cable length across 78 neuropils"
+  sampling_rate_or_tr: "Static 4 × 4 × 40 nm serial-section transmission EM (ssTEM) volume (~7,062 serial sections spanning ~950 × 500 × 430 µm³)"
+brain_regions:
+  - Whole-Brain_78_Drosophila_Neuropils
+  - Bilateral_Optic_Lobes_Medulla_Lobula
+  - Central_Complex_and_Mushroom_Bodies
+  - Subesophageal_Zone_and_Descending_Neurons
+data_formats:
+  - Parquet_CSV
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: "CC-BY-4.0 (Zenodo v783 flat connectome tables, meshes, skeletons & FlyWire Codex)"
+  primary_portal: "FlyWire Codex / Zenodo / BossDB"
+  accession_ids:
+    - "Zenodo:10676866"
+    - "BossDB:flywire_fafb_v783"
+  urls:
+    homepage: "https://codex.flywire.ai/"
+    zenodo: "https://doi.org/10.5281/zenodo.10676866"
+    bossdb: "https://bossdb.org/project/dorkenwald2023"
+    paper: "https://doi.org/10.1038/s41586-024-07558-y"
+    cell_types_paper: "https://doi.org/10.1038/s41586-024-07686-5"
+  download_cli: "# Download flat v783 synapse/connectivity/cell-type Parquet & CSV tables from Zenodo (zero auth) or via fafbseg:\nuv run --with fafbseg python -c \"from fafbseg import flywire; print('FlyWire materialization support ready')\""
+modeling:
+  recommended_tasks:
+    - connectome_constrained_whole_brain_spiking_simulation
+    - graph_neural_network_cell_type_and_motif_discovery
+    - bilateral_hemispheric_symmetry_and_stereotypy_analysis
+    - cross_connectome_alignment_flywire_vs_hemibrain
+  standard_splits: "Evaluate graph/cell-type models across left vs. right hemisphere homologous subgraphs (`8,453` cell types matched bilaterally across `FAFB` left, `FAFB` right, and `Hemibrain` in `Schlegel et al. 2024`), or validate connectome-constrained LIF simulations (`Shiu et al. 2024`) on held-out sensorimotor optogenetic/behavioral perturbations."
+  noise_ceiling_or_repeat_structure: "Internal bilateral symmetry (`Left` vs. `Right` hemisphere within FAFB) plus cross-individual stereotypy against Janelia `Hemibrain` (`Scheffer et al. 2020`) quantify biological wiring variability vs. reconstruction noise (`strong ≥5-synapse connections show >90% cross-hemisphere/cross-brain stereotypy`)."
+  key_pitfalls:
+    - "WEAK SINGLE-SYNAPSE FALSE POSITIVES (`APPLY ≥5 SYNAPSE THRESHOLD!`): Automated cleft/synapse detection (`Buhmann et al.`) yields ~54.5M raw synaptic links, including ultra-weak `1–4` synapse contacts prone to cleft assignment noise and developmental stochasticity—FlyWire flagship analyses (`Dorkenwald et al. 2024`; `Shiu et al. 2024`) apply a canonical **`syn_count ≥ 5`** threshold (`~15M` high-confidence synapses across `~2.6M` directed neuron pairs) unless modeling sub-threshold statistics explicitly!"
+    - "MISSING ELECTRICAL GAP JUNCTIONS, NEUROPEPTIDES & RECEPTOR POLARITY: `4 × 4 × 40 nm` ssTEM resolves chemical synapses and EM-predicted presynaptic neurotransmitters (`ACh`, `GABA`, `Glutamate`, `Dopamine`, `Serotonin`, `Octopamine` via `Eckstein et al., Cell, 2024`), but **cannot** resolve `Innexin` electrical gap junctions, volume-transmitted neuropeptides/monoamines, or excitatory vs. inhibitory postsynaptic glutamate-gated chloride (`GluClα` inhibitory!) receptor signs!"
+    - "IMMUTABLE `v783` SNAPSHOT VS. LIVE CAVE ROOT IDS: Neuron `root_id`s (`7205759406...` 64-bit supervoxel roots) change whenever edits occur in live CAVE—always pin analyses and model weights to **materialization version `783`** (`Zenodo:10676866`) for exact reproducibility!"
+    - "TRUNCATED NECK CONNECTIVE (`DESCENDING / ASCENDING` AXONS): `FAFB` ends at the cervical connective; motor neurons and ventral nerve cord (`VNC`) circuits require bridging `FlyWire` descending/ascending types to the male `MANC` (`Takemura et al. 2024`) or female `FANC` VNC connectomes."
+citations:
+  primary_bib_keys:
+    - dorkenwald2024flywire
+    - schlegel2024flywiretypes
+  related_bib_keys:
+    - shiu2024flywiremodel
+  primary_doi_or_arxiv: "10.1038/s41586-024-07558-y"
+card_path: "cards/model_organisms_connectomics/flywire_connectome.md"
+last_verified: "2026-11-25"

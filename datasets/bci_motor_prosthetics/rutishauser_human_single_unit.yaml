@@ -1,0 +1,69 @@
+id: rutishauser_human_single_unit
+name: "Rutishauser Lab Human Medial Temporal & Frontal Single-Neuron Memory NWB Suite"
+short_name: "Rutishauser-SingleUnit"
+category: bci_motor_prosthetics
+species:
+  - human
+modalities:
+  - Microwire_Single_Unit
+  - sEEG
+  - Eye_Tracking
+  - fMRI_3T
+  - Behavior
+domains:
+  - working_memory
+  - object_recognition
+  - natural_movies
+year: 2024
+summary_en: "Flagship open NWB suite of >4,800 spike-sorted human single neurons across 135 neurosurgical sessions (DANDI:000004 declarative recognition memory, DANDI:000469 Sternberg working memory, and DANDI:000623 multimodal movie watching with simultaneous iEEG, eye tracking, and fMRI)."
+summary_zh: "Rutishauser 实验室人类内侧颞叶与额叶单神经元标准 NWB 数据集集群（覆盖 DANDI:000004 陈述性记忆、DANDI:000469 Sternberg 工作记忆及 DANDI:000623 自然电影多模态同步 iEEG/眼动/fMRI，累计逾 4,800 个分选单神经元）。"
+scale:
+  n_subjects: 79
+  hours_per_subject: 1.2
+  total_hours: 95.0
+  n_stimuli: 500
+  n_channels_or_voxels: "4,835+ isolated human single neurons across 135 NWB sessions (1,576 in DANDI:000004 across 42 patients; 1,809 in DANDI:000469 across 21 patients; 1,450 in DANDI:000623 across 16 patients) via Behnke-Fried hybrid depth electrodes"
+  sampling_rate_or_tr: "32 kHz broadband microwire spike sorting (OSort) + 500-2,000 Hz macro/micro LFP + 500 Hz eye tracking"
+brain_regions:
+  - Human_Hippocampus
+  - Human_Amygdala
+  - dACC_Anterior_Cingulate
+  - preSMA_Medial_Frontal
+  - vmPFC
+data_formats:
+  - NWB
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: DANDI
+  accession_ids:
+    - "DANDI:000004"
+    - "DANDI:000469"
+    - "DANDI:000623"
+  urls:
+    homepage: "https://dandiarchive.org/dandiset/000004"
+    dandi_sternberg: "https://dandiarchive.org/dandiset/000469"
+    dandi_movie: "https://dandiarchive.org/dandiset/000623"
+    code: "https://github.com/rutishauserlab/recogmem-release-NWB"
+  download_cli: "uvx dandi download DANDI:000004 DANDI:000469 DANDI:000623"
+modeling:
+  recommended_tasks:
+    - human_concept_and_persistent_working_memory_decoding
+    - mtl_vs_frontal_theta_gamma_spike_field_coupling
+    - pseudopopulation_novelty_familiarity_confidence_classification
+    - single_neuron_to_ieeg_and_fmri_multimodal_alignment
+  standard_splits: "Stratified trial-level cross-validation (old vs. new recognition confidence or Sternberg load 1-3 maintenance) for pseudopopulation decoding on DANDI:000004/000469; contiguous movie-segment folds + leave-one-patient-out cross-modal prediction on DANDI:000623."
+  noise_ceiling_or_repeat_structure: "Repeated visual category/concept presentations during screening + learning/recognition pairs (`DANDI:000004`, `000469`), and shared 8-minute *Bang! You're Dead* naturalistic movie timeline synchronized across all 16 single-unit patients and healthy 3T fMRI cohort (`DANDI:000623`)."
+  key_pitfalls:
+    - "PSEUDOPOPULATION CONSTRUCTION ACROSS ASYNCHRONOUS SESSIONS: Because each patient yields ~15-50 simultaneously recorded MTL/frontal units, population decoders pooling hundreds of neurons across sessions (`pseudopopulations`) destroy trial-by-trial noise correlations—only match trials by shared stimulus/condition labels and test patient-level generalization via hierarchical bootstrap."
+    - "SCREENING-TO-TASK SELECTION BIAS (`DANDI:000469`): Sternberg working-memory images are customized per session from a prior screening block to elicit concept-cell responses; never leak screening-block firing-rate rankings into zero-shot category selectivity claims without accounting for stimulus selection."
+    - "EPILEPTOGENIC ZONE EXCLUSION: Clinical depth electrodes Occasionally border seizure-onset zones (SOZ); inspect NWB electrode table `location` / pathology annotations and interictal epileptiform discharge flags before interpreting burst firing or high-frequency oscillations."
+citations:
+  primary_bib_keys:
+    - chandravadia2020human
+    - kyzar2024sternberg
+    - keles2024multimodal
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-020-0415-9"
+card_path: "cards/bci_motor_prosthetics/rutishauser_human_single_unit.md"
+last_verified: "2026-11-25"

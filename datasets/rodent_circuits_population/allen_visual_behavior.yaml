@@ -1,0 +1,70 @@
+id: allen_visual_behavior
+name: "Allen Brain Observatory: Visual Behavior (Two-Photon & Neuropixels)"
+short_name: "Allen-VisBehav"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Two_Photon
+  - Neuropixels
+  - Eye_Tracking
+  - Behavior
+domains:
+  - decision_making
+  - natural_images
+  - synthetic_ood
+year: 2023
+summary_en: "Large-scale multi-day Allen Institute active change-detection benchmark pairing multi-plane Cre-line 2-photon imaging (Excitatory, VIP, SST; DANDI:000711) and 6-probe Neuropixels electrophysiology (DANDI:000713) across familiar vs. novel natural images and random stimulus omissions."
+summary_zh: "艾伦脑科学研究所“视觉行为（Visual Behavior）”旗舰双模态库：融合多平面细胞类型特异双光子成像（兴奋性、VIP、SST 神经元，DANDI:000711）与 6 探针同步 Neuropixels 电生理（DANDI:000713），系统追踪熟悉/新颖图像切换检测与预期刺激缺失（Omission）误差信号。"
+scale:
+  n_subjects: 161
+  hours_per_subject: 4.5
+  total_hours: 725.0
+  n_stimuli: 40
+  n_channels_or_voxels: "DANDI:000711 (107 mice, >50,000 longitudinally tracked 2P Slc17a7/Vip/Sst ROIs across VISp/VISl/VISal/VISpm) + DANDI:000713 (54 mice, 153 sessions, up to 6 Neuropixels probes/session, >200,000 total units)"
+  sampling_rate_or_tr: "Neuropixels 30 kHz spikes / 2.5 kHz LFP; Mesoscope 2P ~11 Hz multi-plane / ~31 Hz single-plane ΔF/F & L0 events + 30/60 Hz lick, wheel & eye tracking"
+brain_regions:
+  - Mouse_VISp_V1_Layers2_to_5
+  - Mouse_VISl_VISrl_VISal_VISpm_VISam
+  - Mouse_LGd_LP_Thalamus
+  - Mouse_CA1_DG_SCm_MRN_Midbrain
+data_formats:
+  - NWB
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC-BY-4.0 / Allen Institute Terms of Use"
+  primary_portal: "DANDI / AWS Open Data (AllenSDK)"
+  accession_ids:
+    - "DANDI:000711"
+    - "DANDI:000713"
+    - "AWS:s3://allen-brain-observatory/visual-behavior-2p"
+    - "AWS:s3://allen-brain-observatory/visual-behavior-neuropixels"
+  urls:
+    homepage: "https://portal.brain-map.org/circuits-behavior/visual-behavior-2p"
+    neuropixels_portal: "https://portal.brain-map.org/circuits-behavior/visual-behavior-neuropixels"
+    dandi_2p: "https://dandiarchive.org/dandiset/000711"
+    dandi_neuropixels: "https://dandiarchive.org/dandiset/000713"
+    sdk: "https://allensdk.readthedocs.io/"
+  download_cli: "uvx dandi download DANDI:000711 && uvx dandi download DANDI:000713 && aws s3 ls --no-sign-request s3://allen-brain-observatory/visual-behavior-neuropixels/"
+modeling:
+  recommended_tasks:
+    - familiar_vs_novel_experience_dependent_plasticity
+    - predictive_coding_omission_error_modeling
+    - vip_sst_excitatory_microcircuit_disinhibition
+    - active_behavior_vs_passive_replay_comparison
+  standard_splits: "Cross-session longitudinal comparisons within the same mouse (`Familiar G` active sessions vs. first-exposure `Novel H` active sessions vs. passive no-lickspout replay sessions), with contiguous block CV within each 1-hour session (`250 ms` flash / `500 ms` gray at `1.33 Hz`)."
+  noise_ceiling_or_repeat_structure: "Each 8-image set (`G`, `H`, ...) repeats hundreds of times per session at a strict `750 ms` metronomic cycle (`250 ms ON / 500 ms OFF`) with `5%` stochastic flash omissions (`p_omit = 0.05`) plus matched passive replay sessions."
+  key_pitfalls:
+    - "FIRST-EXPOSURE NOVELTY TRANSIENT: Only the VERY FIRST session with a novel image set (`experience_level == 'Novel 1'` / `'Novel'`) captures true stimulus novelty; subsequent exposures (`'Novel >1'` / `'Novel+'`) already exhibit rapid multi-day habituation in `VIP` and excitatory dynamics (`Garrett et al. 2020, 2023`)—never pool `'Novel 1'` and `'Novel >1'` blindly!"
+    - "LICK BOUT & REWARD CONSUMPTION CONFOUNDS: Change trials trigger vigorous licking, water valve clicks, and running deceleration—evaluate pure sensory/novelty and omission responses on `non-change` flashes (`is_change == False`, `licked == False`) and `omitted` flashes free from lick artifacts."
+    - "Enforce official `AllenSDK` Neuropixels unit quality filters (`isi_violations < 0.5`, `amplitude_cutoff < 0.1`, `presence_ratio > 0.9`) on `DANDI:000713` and use `cell_specimen_id` (not session-local `cell_roi_id`) to align longitudinally matched 2P neurons across days in `DANDI:000711`."
+citations:
+  primary_bib_keys:
+    - garrett2020experience
+    - devries2023sharing
+    - garrett2023novelty
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.7554/elife.85550"
+card_path: "cards/rodent_circuits_population/allen_visual_behavior.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,62 @@
+id: wehbe_harry_potter
+name: "CMU Harry Potter Word-by-Word Reading 3T fMRI & 306-Ch MEG Dataset"
+short_name: "Wehbe-HP"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - MEG
+  - Structural_MRI
+domains:
+  - reading
+year: 2014
+summary_en: "Pioneering CMU naturalistic reading benchmark presenting Chapter 9 of Harry Potter word-by-word via RSVP (5,176 words at 0.5 s/word) across both 3T whole-brain fMRI (N=8) and 306-channel Elekta MEG (N=9)."
+summary_zh: "卡内基梅隆大学（CMU）经典的《哈利·波特》逐词快速序列视觉呈现（RSVP，共 5,176 词，固定 0.5 秒/词）阅读数据集，同步涵盖全脑 3T fMRI（N=8）与 306 通道全头 MEG（N=9），是早期与现代 LLM 逐层脑编码的经典基准。"
+scale:
+  n_subjects: 8
+  hours_per_subject: 0.75
+  total_hours: 12.75
+  n_stimuli: 5176
+  n_channels_or_voxels: "~25,000–30,000 cortical voxels (3 × 3 × 3 mm 3T Siemens Verio EPI, N=8) + 306-ch Elekta Neuromag MEG (N=9)"
+  sampling_rate_or_tr: "fMRI TR = 2.0 s (exactly 4 RSVP words/TR across 1,351 TRs) + MEG 1,000 Hz (0.5 s/word RSVP)"
+brain_regions:
+  - Ventral_Occipitotemporal_VWFA
+  - Bilateral_Temporal_Parietal_Language
+  - Inferior_Frontal_Gyrus
+  - Whole-Brain
+data_formats:
+  - HDF5_MAT
+  - FIF_MNE
+  - NIfTI
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "CMU / Figshare"
+  accession_ids:
+    - "Figshare:20658428"
+  urls:
+    homepage: "http://www.cs.cmu.edu/~fmri/plosone/"
+    meg_figshare: "https://figshare.com/articles/dataset/RSVP_reading_of_book_chapter_in_MEG/20658428"
+    paper_fmri: "https://doi.org/10.1371/journal.pone.0112575"
+    paper_meg: "https://doi.org/10.3115/v1/d14-1030"
+  download_cli: "curl -LO http://www.cs.cmu.edu/~fmri/plosone/files/subject_1.mat"
+modeling:
+  recommended_tasks:
+    - voxelwise_llm_context_length_encoding
+    - spatiotemporal_meg_word_reading_dynamics
+    - multi_level_visual_syntactic_discourse_decomposition
+  standard_splits: "4-fold leave-one-run-out cross-validation across the 4 contiguous chapter runs (~11 min / ~330 TRs per run), trimming >=10-15 TRs (20-30 s) at run boundaries to prevent BOLD autocorrelation bleed."
+  noise_ceiling_or_repeat_structure: "Single-pass narrative reading; evaluate encoding correlation relative to leave-one-subject-out cross-subject predictability or anatomical/AAL ROI permutation significance (`Wehbe et al. 2014`)."
+  key_pitfalls:
+    - "4-WORDS-PER-TR AGGREGATION & DELAY LAGS: At 0.5 s/word and TR = 2.0 s, every fMRI volume integrates 4 consecutive words delayed by the 4-8 s BOLD hemodynamic response! Always pool/sum word features within each 2 s bin and stack finite-impulse-response lags (`t-1, t-2, t-3, t-4` TRs = 2-8 s delays)."
+    - "VISUAL WORD-LENGTH CONFOUND IN OCCIPITAL CORTEX: Character count and punctuation vary systematically with word frequency and syntactic class, driving massive variance in V1-V4 under fixed-fixation RSVP—always include low-level word-length and formatting nuisance features before interpreting occipital/ventral correlations as semantic."
+    - "MEG access & overlapping epochs: While the 8-subject fMRI `.mat` files download openly from CMU, the 9-subject 306-ch MEG dataset (`Figshare:20658428`) uses a lightweight academic request form; in MEG, adjacent 500 ms word epochs overlap into `[0, +800 ms]` post-word windows, requiring run-blocked CV."
+citations:
+  primary_bib_keys:
+    - wehbe2014simultaneously
+    - wehbe2014aligning
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1371/journal.pone.0112575"
+card_path: "cards/human_language_speech/wehbe_harry_potter.md"
+last_verified: "2026-11-25"

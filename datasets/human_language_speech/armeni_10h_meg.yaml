@@ -1,0 +1,63 @@
+id: armeni_10h_meg
+name: "Armeni 10-Hour Deep Within-Subject Sherlock Holmes Head-Cast 275-Ch MEG"
+short_name: "Armeni-10h-MEG"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - MEG
+  - Eye_Tracking
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_speech
+year: 2022
+summary_en: "Precision deep-sampling 275-channel CTF MEG dataset recording 3 subjects for 10 hours each across 10 sessions of Sherlock Holmes audiobooks inside individualized 3D-printed head casts (<1.5 mm cross-day motion)."
+summary_zh: "高精度单被试深度采样 275 通道 CTF 脑磁图（MEG）数据集：3 名被试佩戴个体化 3D 打印头模（跨天头动 <1.5 mm），各自在 10 次独立实验中共收听 10 小时《福尔摩斯冒险史》英语有声书。"
+scale:
+  n_subjects: 3
+  hours_per_subject: 10.0
+  total_hours: 30.0
+  n_stimuli: 10
+  n_channels_or_voxels: "275-channel CTF axial gradiometer MEG + 29 reference channels + EyeLink 1000 eye-tracking + T1w MRI"
+  sampling_rate_or_tr: "1,200 Hz continuous CTF MEG (BIDS .ds format with word/phoneme Penn Phonetics Lab forced alignments)"
+brain_regions:
+  - Bilateral_Auditory_STG_STS
+  - Left_Frontotemporal_Language_Network
+  - Whole-Head_275Ch_MEG
+data_formats:
+  - BIDS
+  - FIF_MNE
+  - TextGrid_TSV
+access:
+  tier: registered
+  license: "RU-DI-HD-1.0 (Donders Repository)"
+  primary_portal: "Donders Repository"
+  accession_ids:
+    - "Donders:10.34973/5rpw-rn92"
+  urls:
+    homepage: "https://doi.org/10.34973/5rpw-rn92"
+    paper: "https://doi.org/10.1038/s41597-022-01382-7"
+    pnpl_loader: "https://github.com/neural-processing-lab/pnpl"
+  download_cli: "# Authenticate via Donders Repository WebDAV / rclone at https://doi.org/10.34973/5rpw-rn92"
+modeling:
+  recommended_tasks:
+    - deep_single_subject_speech_and_llm_meg_encoding
+    - source_reconstructed_cortical_oscillatory_dynamics
+    - phoneme_and_word_brain_to_speech_decoding
+    - head_cast_vs_standard_meg_cross_session_stability
+  standard_splits: "Leave-one-session-out (10-fold across `ses-001`..`ses-010`, each corresponding to one complete ~1-hour Sherlock Holmes story) evaluated independently within each of the 3 deep-sampled subjects."
+  noise_ceiling_or_repeat_structure: "3D-printed MRI-derived foam head casts lock sensor-to-cortex leadfields across all 10 sessions (`<1.5 mm` repositioning error); evaluate per-subject replication across all 3/3 subjects."
+  key_pitfalls:
+    - "PRECISION SMALL-N (`N=3`), DEEP-T (`10 h`) INFERENCE REGIME: Never run underpowered `N=3` group-mean t-tests (`df=2`)! Treat each 10-hour participant as a self-contained statistical replication unit via block-permutation / session-level cross-validation across `10` stories, requiring `3/3` individual-subject significance."
+    - "Session-level environmental noise & CTF 3rd-order synthetic gradient: Despite physical head-cast immobilization, ambient room drift, SQUID jumps, and bad channels (`sub-001`..`sub-003` channel TSVs) vary slightly per day—always apply CTF 3rd-order gradient compensation, notch filtering (`50 Hz` harmonics), and per-session z-scoring."
+    - "Never split random word/phoneme windows within a session: Consecutive words in *The Adventures of Sherlock Holmes* occur every `~250–300 ms`; strictly hold out full `~1-hour` story sessions!"
+citations:
+  primary_bib_keys:
+    - armeni2022tenhour
+  related_bib_keys:
+    - schoffelen2019mous
+    - ozdogan2025libribrain
+  primary_doi_or_arxiv: "10.1038/s41597-022-01382-7"
+card_path: "cards/human_language_speech/armeni_10h_meg.md"
+last_verified: "2026-11-25"

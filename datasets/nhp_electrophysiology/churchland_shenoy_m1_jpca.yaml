@@ -1,0 +1,60 @@
+id: churchland_shenoy_m1_jpca
+name: "Churchland-Shenoy Macaque M1/PMd Rotational Dynamics Reaching Suite"
+short_name: "Churchland2012-jPCA"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Utah_Array
+  - Microwire_Single_Unit
+  - Behavior
+  - Eye_Tracking
+domains:
+  - motor_reaching
+year: 2012
+summary_en: "Landmark macaque M1 and PMd reaching recordings (`DANDI:000070` NWB + jPCA suite across Monkeys J, N, A, B; ~1,900+ units across center-out and curved-maze tasks) revealing quasi-oscillatory rotational population dynamics during non-periodic arm reaches."
+summary_zh: "猕猴初级运动皮层（M1）与背侧前运动皮层（PMd）经典伸臂运动群体电生理数据集（`DANDI:000070` NWB 格式与 jPCA 套件），首次揭示非周期单次伸臂运动中由预备态初始条件驱动的低维旋转动力学轨迹。"
+scale:
+  n_subjects: 4
+  hours_per_subject: 4.0
+  total_hours: 16.0
+  n_stimuli: 108
+  n_channels_or_voxels: "Dual 96-channel chronic Utah arrays (`Monkeys J & N`) + sequential single-unit ensembles (`Monkeys A & B`); ~1,911 total M1/PMd units across 10 NWB sessions in DANDI:000070"
+  sampling_rate_or_tr: "1,000 Hz spike timestamps / 10 ms smoothed PSTHs + continuous 3D optical hand kinematics & EMG"
+brain_regions:
+  - Macaque_M1
+  - Macaque_PMd
+data_formats:
+  - NWB
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "DANDI / Columbia Churchland Lab"
+  accession_ids:
+    - "DANDI:000070"
+    - "DANDI:000128"
+  urls:
+    homepage: "https://dandiarchive.org/dandiset/000070"
+    code: "https://churchland.zuckermaninstitute.columbia.edu/content/code"
+    paper: "https://doi.org/10.1038/nature11129"
+  download_cli: "uvx dandi download DANDI:000070"
+modeling:
+  recommended_tasks:
+    - jpca_skew_symmetric_rotational_dynamics
+    - preparatory_nullspace_to_movement_potent_transition
+    - autonomous_motor_cortex_lfads_rnn_generation
+    - multi_session_neural_stitching
+  standard_splits: "Trial-stratified splits across `27` to `108` straight and curved-barrier delayed-reach conditions (`DANDI:000070` spans 10 multi-session center-out/maze recordings across Monkeys Jenkins & Nitschke; `MC_Maze` in `DANDI:000128` provides the standardized co-smoothing subset)."
+  noise_ceiling_or_repeat_structure: "Condition-averaged peri-movement (`[-50, +250] ms` around movement onset) trajectory `R^2`, skew-symmetric `jPCA` fit ratio (`R^2_skew / R^2_unconstrained`), and shuffle/surrogate covariance-matched null controls (`Elsayed & Cunningham 2017` TMA)."
+  key_pitfalls:
+    - "CROSS-CONDITION MEAN (`CIS`) SUBTRACTION & TEMPORAL SMOOTHING ARTIFACTS: Standard `jPCA` subtracts the cross-condition mean (Condition-Invariant Signal `CIS`) and applies Gaussian smoothing (`σ ~ 20–30 ms`); note that temporally smooth tuning-curve shifts can produce illusory rotations unless tested against **Tensor Maximum Entropy (`TME`)** surrogates preserving exact marginal neuron/time/condition covariances!"
+    - "Movement-Onset vs. Go-Cue Alignment: Preparatory activity aligns tightly to target/go cues, whereas rotational execution dynamics (`~1.5–2.5 Hz`) lock strictly to physical **movement onset** (`hand speed > threshold`)—misaligning trials by reaction-time jitter smears rotational phase!"
+    - "Cross-Session Unit Non-Overlap in `DANDI:000070`: When training multi-session foundation models (`POYO`, `NDT2`) across the 10 NWB sessions in `DANDI:000070`, treat unit identities as session-specific (or apply manifold stitching) because chronic array micro-motion shifts recorded neurons across days."
+citations:
+  primary_bib_keys:
+    - churchland2012rotational
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/nature11129"
+card_path: "cards/nhp_electrophysiology/churchland_shenoy_m1_jpca.md"
+last_verified: "2026-11-25"

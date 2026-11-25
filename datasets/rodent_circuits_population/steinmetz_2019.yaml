@@ -1,0 +1,64 @@
+id: steinmetz_2019
+name: "Steinmetz, Carandini & Harris 42-Region Neuropixels Decision-Making Dataset"
+short_name: "Steinmetz-2019"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Neuropixels
+  - Eye_Tracking
+  - Behavior
+domains:
+  - decision_making
+  - motor_reaching
+year: 2019
+summary_en: "Pioneering brain-wide Neuropixels 1.0 survey (~30,000 neurons across 42 cortical and subcortical brain regions in 39 sessions from 10 mice) during a 2AFC / Go-NoGo visual contrast discrimination wheel-turning task."
+summary_zh: "里程碑式全脑多探针 Neuropixels 1.0 视觉决策电生理数据集（10 只小鼠、39 个实验会话、覆盖皮层与皮层下 42 个脑区的约 30,000 个神经元），系统揭示感觉、选择、动作发起与任务投入度的全脑分布编码规律。"
+scale:
+  n_subjects: 10
+  hours_per_subject: 4.0
+  total_hours: 40.0
+  n_stimuli: 16
+  n_channels_or_voxels: "2–3 simultaneous Neuropixels 1.0 probes per session (~30,000 sorted units across 39 sessions spanning 42 Allen CCFv3 brain regions)"
+  sampling_rate_or_tr: "30 kHz spikes / 2.5 kHz LFP + 100 Hz infrared eye/face video, wheel rotary encoder, and lick detector"
+brain_regions:
+  - Mouse_Visual_Cortex_VISp_HVAs
+  - Mouse_Frontal_Premotor_MOs_ACA_ORB_PL
+  - Mouse_Basal_Ganglia_CP_SNr_GPe
+  - Mouse_Thalamus_Midbrain_SCm_MRN_Hippocampus
+data_formats:
+  - NWB
+  - Zarr_NPZ
+  - Parquet_CSV
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Figshare / DANDI / AWS ONE"
+  accession_ids:
+    - "Figshare:10.6084/m9.figshare.9598406"
+    - "Figshare:10.6084/m9.figshare.9727895"
+  urls:
+    homepage: "https://doi.org/10.6084/m9.figshare.9598406"
+    passive_replay: "https://doi.org/10.6084/m9.figshare.9727895"
+    code: "https://github.com/nsteinme/steinmetz-et-al-2019"
+    paper: "https://doi.org/10.1038/s41586-019-1787-x"
+  download_cli: "# Download ALF-formatted .npy/.tsv session archives from Figshare (10.6084/m9.figshare.9598406) or Neuromatch Academy 39-session .npz mirrors"
+modeling:
+  recommended_tasks:
+    - distributed_sensory_choice_action_decomposition
+    - reduced_rank_kernel_regression_deconfounding
+    - pre_stimulus_task_engagement_state_decoding
+    - multi_region_spike_train_latent_dynamics
+  standard_splits: "Stratified or block-contiguous trial cross-validation across the 4 × 4 (left × right ∈ {0, 0.25, 0.5, 1.0}) contrast matrix within each session, plus leave-one-session-out / leave-one-mouse-out generalization across the 39 sessions."
+  noise_ceiling_or_repeat_structure: "Repeated presentations of the 16 discrete (contrast_left, contrast_right) conditions (~200–400 active trials/session) paired with a post-task passive sensory replay block (gratings, clicks, valve sounds without wheel/reward) on the exact same neurons."
+  key_pitfalls:
+    - "GLOBAL NON-SPECIFIC ACTION SIGNAL VS. DIRECTIONAL CHOICE: Nearly all 42 brain regions fire non-specifically around movement initiation (`Go` vs `No-Go`), whereas true contralateral-vs-ipsilateral choice selectivity prior to movement onset is sparse and concentrated in frontal cortex (`MOs`, `PL`), striatum (`CP`), and midbrain (`SCm`, `MRN`)—always fit additive event kernels separating stimulus onset, non-directional movement initiation, and signed choice!"
+    - "Equal non-zero contrast (`c_L == c_R > 0`) trials are rewarded randomly (50/50) and provide the cleanest behavioral condition for isolating internal choice signals under identical sensory drive, whereas `(0, 0)` contrast trials require withholding movement (`No-Go`) for 1.5 s."
+    - "Exclude `clusters._phy_annotation < 2` (MUA/noise units) before single-neuron selectivity statistics; Neuromatch Academy's popular 3-file `.npz` educational repackaging pre-bins spikes at 10 ms over a truncated 2.5 s window and omits inter-trial / passive-replay timestamps present in the full Figshare `ALF` release."
+citations:
+  primary_bib_keys:
+    - steinmetz2019distributed
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-019-1787-x"
+card_path: "cards/rodent_circuits_population/steinmetz_2019.md"
+last_verified: "2026-11-25"

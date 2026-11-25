@@ -1,0 +1,61 @@
+id: tdbrain_eeg
+name: "TDBRAIN (Two-Decades Brainclinics Research Archive for Insights in Neurophysiology)"
+short_name: "TDBRAIN"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - EEG
+  - Eye_Tracking
+  - Behavior
+domains:
+  - clinical_lifespan
+  - resting_state
+  - connectomics
+year: 2022
+summary_en: "Strictly hardware-standardized 20-year clinical & normative lifespan EEG-BIDS archive (N=1,274 subjects, 1,346 sessions, ages 5–89) pairing 500 Hz 26-channel Ag/AgCl Eyes-Open & Eyes-Closed resting EEG + EOG/ECG/EMG across MDD (N=426), ADHD (N=271), SMC (N=119), OCD (N=75), and healthy controls, with locked-out clinical treatment-response replication splits."
+summary_zh: "横跨二十年但硬件协议严格统一（全量 26 导 Ag/AgCl 500 Hz）的临床与全生命周期脑电 BIDS 基准库（N=1,274 名 5–89 岁受试者、1,346 次会话，涵盖抑郁症 MDD 426 例、ADHD 271 例、强迫症 OCD 75 例等及健康对照），内置盲测临床疗效预测复现集。"
+scale:
+  n_subjects: 1274
+  hours_per_subject: 0.08
+  total_hours: 112.0
+  n_stimuli: 2
+  n_channels_or_voxels: "26-channel Compumedics Quickcap Ag/AgCl 10-10 scalp EEG + 4 EOG + ECG + masseter EMG + skin conductance / orbicularis channels (24-bit BDF+ / BrainVision)"
+  sampling_rate_or_tr: "500 Hz standardized across all 1,346 sessions (2 min Eyes-Open + 2 min Eyes-Closed resting-state; subset includes auditory oddball / Go-NoGo tasks)"
+brain_regions:
+  - Whole-Scalp_26Ch_10_10_Montage
+data_formats:
+  - BIDS
+  - BrainVision_EDF
+  - TextGrid_TSV
+access:
+  tier: registered
+  license: "Brainclinics Research Archive GDPR Data Use Agreement (free ORCID sign-in & click-through DUA; ~55 GB compressed BIDS archive)"
+  primary_portal: "Brainclinics Foundation / Synapse"
+  accession_ids:
+    - "Synapse:syn25671079"
+  urls:
+    homepage: "https://www.brainclinics.com/resources"
+    synapse: "https://www.synapse.org/Synapse:syn25671079"
+    code: "https://github.com/Brainclinics/TDBRAIN"
+    paper: "https://doi.org/10.1038/s41597-022-01409-z"
+  download_cli: "# Sign free ORCID DUA at https://www.brainclinics.com/resources to obtain archive URL, or query metadata via synapseclient:\nuvx --from synapseclient synapse get -r syn25671079"
+modeling:
+  recommended_tasks:
+    - clinical_eeg_foundation_model_downstream_benchmarking
+    - psychiatric_diagnosis_and_comorbidity_classification
+    - antidepressant_rtms_and_neurofeedback_treatment_response_prediction
+    - lifespan_5_to_89_eeg_brain_age_regression
+  standard_splits: "Use the official `reproducibility / blind validation` protocol (`van Dijk et al. 2022`): `30%` of the `rTMS`/`MDD` and `ADHD` treatment-outcome sub-cohorts have diagnostic/treatment-response labels blinded in `TDBRAIN_participants_V2.tsv` for prospective anti-p-hacking verification; for general diagnostic/sex/brain-age benchmarks (`LaBraM`, `EEGPT`, `CBraMod`), use subject-grouped 5/10-fold CV!"
+  noise_ceiling_or_repeat_structure: "Test-retest longitudinal subset (`72` repeat sessions across `N = 1,274` unique individuals -> `1,346` total sessions) plus paired `2 min Eyes-Open` (`EO`) and `2 min Eyes-Closed` (`EC`) recordings on identical `Compumedics Quickcap` + `NuAmps` hardware across 2001–2021 (`alpha peak frequency ICC > 0.90`)."
+  key_pitfalls:
+    - "FORMAL VS. INFORMAL / UNKNOWN DIAGNOSTIC LABELS (`indication` vs `formal_status`): `participants.tsv` distinguishes `FORMAL` DSM-verified diagnoses (`MDD`, `ADHD`, `OCD`, `SMC`) from `INFORMAL` referral indications and `UNKNOWN` blinded replication rows—never drop `UNKNOWN` rows into the negative/healthy control class!"
+    - "MULTI-SESSION LONGITUDINAL LEAKAGE (`1,346` SESSIONS > `1,274` SUBJECTS): `~70` patients have pre-/post-treatment (`ses-1`, `ses-2`, `ses-3`) recordings—always split by `participants_ID` (`sub-*`), never by session file!"
+    - "LINKED-MASTOIDS ONLINE REFERENCE & `50 Hz` EUROPEAN MAINS: Raw EEG was recorded relative to `A1/A2` (average mastoids) in Nijmegen, Netherlands (`50 Hz` line noise, NOT `60 Hz`!)—re-reference to common average (`CAR`) or REST and use the official `Brainclinics/TDBRAIN` Python ocular-regression + artifact pipeline before cross-dataset transfer with US `60 Hz` corpora (`TUH-EEG`, `HBN`)."
+citations:
+  primary_bib_keys:
+    - vandijk2022tdbrain
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-022-01409-z"
+card_path: "cards/human_resting_connectomics/tdbrain_eeg.md"
+last_verified: "2026-11-25"

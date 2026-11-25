@@ -1,0 +1,65 @@
+id: multimodal_ieeg_fmri_film
+name: "Utrecht Open Multimodal iEEG & 7T/3T fMRI Audiovisual Film Dataset"
+short_name: "Utrecht-Film-iEEG-fMRI"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - ECoG_iEEG
+  - sEEG
+  - fMRI_7T
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - natural_speech
+  - natural_movies
+  - multimodal
+year: 2022
+summary_en: "Unique cross-modal BIDS dataset presenting an identical 6.5-minute audiovisual narrative film to N=51 intracranial ECoG/sEEG patients and N=30 3T/7T fMRI participants (with N=18 within-subject dual iEEG + fMRI overlap)."
+summary_zh: "独特的跨模态颅内脑电与超高场功能磁共振数据集（OpenNeuro ds003688）：51 名颅内 ECoG/sEEG 患者与 30 名 3T/7T fMRI 被试观看同一部 6.5 分钟有声叙事短片（其中 18 名被试同时拥有自身配对的 iEEG 与 fMRI 数据）。"
+scale:
+  n_subjects: 63
+  hours_per_subject: 0.11
+  total_hours: 9.0
+  n_stimuli: 1
+  n_channels_or_voxels: "51 iEEG patients (subdural ECoG grids/strips + sEEG depth electrodes) + 30 whole-brain 3T/7T fMRI subjects (18 dual-modality subjects)"
+  sampling_rate_or_tr: "iEEG 512–2,048 Hz + fMRI 3D PRESTO / EPI (effective volume TR = 0.608 s – 2.0 s across protocols)"
+brain_regions:
+  - Left_Perisylvian_STG_IFG
+  - Ventral_and_Lateral_Occipitotemporal
+  - Sensorimotor_and_Auditory_Cortex
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - BrainVision_EDF
+  - NIfTI
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds003688"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds003688"
+    paper: "https://doi.org/10.1038/s41597-022-01173-0"
+    code: "https://github.com/UMCU-RIBS/Open-multimodal-iEEG-fMRI-dataset"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds003688.git"
+modeling:
+  recommended_tasks:
+    - within_subject_ieeg_high_gamma_to_bold_coupling
+    - multimodal_audiovisual_speech_and_scene_encoding
+    - developmental_lifespan_perisylvian_mapping
+  standard_splits: "Contiguous block-stratified temporal cross-validation across the 13 alternating 30 s Speech+Video (`7` blocks) and Music+Video (`6` blocks) segments (390 s total), or cross-subject transfer using the N=18 dual-modality anchor cohort."
+  noise_ceiling_or_repeat_structure: "Direct within-brain electrophysiological-to-hemodynamic correspondence in N=18 dual iEEG+fMRI patients, plus inter-subject correlation across N=51 iEEG and N=30 fMRI cohorts."
+  key_pitfalls:
+    - "30-SECOND SPEECH vs. MUSIC BLOCK-DESIGN DOMINANCE: The 6.5 min film alternates `7 × 30 s` Dutch dialogue blocks with `6 × 30 s` background-music-only visual blocks! Any speech/LLM regressor is zero during music blocks and non-zero during speech blocks, creating inflated correlations unless a binary Speech-vs.-Music boxcar + acoustic envelope are explicitly regressed out or evaluation is restricted within speech blocks!"
+    - "Heterogeneous clinical hardware & 3D-PRESTO fMRI timing: iEEG sampling spans `512–2,048 Hz` across clinical amplifiers and fMRI spans fast 3T `3D-PRESTO` (`~0.608 s` volume time) and `7T` EPI; always read per-subject BIDS `*_ieeg.json` / `*_bold.json` timing sidecars and exclude `status=bad` seizure-zone electrodes."
+    - "Sequential viewing order in the `N=18` overlap subset: Presurgical fMRI preceded clinical iEEG implantation, so dual-modality patients viewed the film for a second time during iEEG."
+citations:
+  primary_bib_keys:
+    - berezutskaya2022multimodal
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-022-01173-0"
+card_path: "cards/human_language_speech/multimodal_ieeg_fmri_film.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,66 @@
+id: seed_deap_affective_eeg
+name: "SEED & DEAP Multimodal Video/Music Affective EEG Benchmark Suite"
+short_name: "SEED / DEAP"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - EEG
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_movies
+  - affective_emotion
+  - multimodal
+year: 2015
+summary_en: "Foundational affective BCI benchmark pair combining SJTU SEED (N=15 × 3 longitudinal sessions, 62-ch EEG + eye-tracking during 15 ~4-min emotional film clips) and QMUL DEAP (N=32, 32-ch EEG + 8 peripheral physiological channels during 40 1-min music videos)."
+summary_zh: "情感计算与多模态脑机接口领域的两大经典基石数据集组合：上海交大 SEED（15 名被试 × 3 次跨日重复会话，62 通道脑电 + 眼动追踪观看 15 段约 4 分钟情绪电影片段）与伦敦玛丽女王大学 DEAP（32 名被试，32 通道脑电 + 外周生理信号观看 40 段 1 分钟音乐视频）。"
+scale:
+  n_subjects: 47
+  hours_per_subject: 2.2
+  total_hours: 79.0
+  n_stimuli: 55
+  n_channels_or_voxels: "SEED: 62-channel ESI NeuroScan EEG (+ SMI eye-tracking in subset); DEAP: 32-channel BioSemi ActiveTwo EEG + 8 peripheral channels (EOG, EMG, GSR, BVP, Resp, Temp)"
+  sampling_rate_or_tr: "SEED: 200 Hz preprocessed + 1-s/4-s Differential Entropy (DE) across 5 bands; DEAP: 128 Hz preprocessed (512 Hz raw BDF)"
+brain_regions:
+  - Frontal_Temporal_Asymmetry_Scalp
+  - Whole-Scalp_62Ch_and_32Ch
+data_formats:
+  - HDF5_MAT
+  - BrainVision_EDF
+  - Parquet_CSV
+access:
+  tier: registered
+  license: "Academic Non-Commercial EULA (SJTU BCMI & QMUL DEAP Data Access Agreements)"
+  primary_portal: "SJTU BCMI Lab & QMUL DEAP Portal"
+  accession_ids:
+    - "BCMI:SEED"
+    - "QMUL:DEAP"
+  urls:
+    homepage: "https://bcmi.sjtu.edu.cn/home/seed/"
+    deap_portal: "https://www.eecs.qmul.ac.uk/mmv/datasets/deap/"
+    torcheeg_docs: "https://torcheeg.readthedocs.io/"
+    paper_seed: "https://doi.org/10.1109/TAMD.2015.2431497"
+    paper_deap: "https://doi.org/10.1109/T-AFFC.2011.15"
+  download_cli: "python -c \"from torcheeg.datasets import SEEDDataset, DEAPDataset\"  # requires signed EULA tarballs from BCMI / QMUL"
+modeling:
+  recommended_tasks:
+    - affective_state_decoding
+    - cross_session_and_cross_subject_domain_adaptation
+    - multimodal_eeg_eye_peripheral_fusion
+    - eeg_foundation_model_downstream_probing
+  standard_splits: "SEED: strict chronological split within session (first 9 movie clips train / last 6 clips test, balanced 3-class positive/neutral/negative), Cross-Session (`Session 1 -> Session 2 -> Session 3` spaced >=1 week apart), and Leave-One-Subject-Out (`LOSO` across N=15). DEAP: Leave-One-Video-Out (`40`-fold) or `LOSO` (`32`-fold) for binary/continuous Valence & Arousal."
+  noise_ceiling_or_repeat_structure: "SEED's 3 longitudinal sessions per subject (~1 week interval) using the exact same 15 movie stimuli directly quantify multi-week non-stationarity and domain-adaptation ceilings."
+  key_pitfalls:
+    - "SEVERE WINDOW-SHUFFLING DATA LEAKAGE TRAP: Hundreds of published SEED/DEAP papers randomly split 1-second epochs (`K-fold` over windows) from the same 1-minute or 4-minute continuous video across train and test, inflating accuracy from ~65–85% to >98% by memorizing trial-specific baseline impedance and temporal autocorrelation! NEVER allow windows from the same video trial (`trial_id`) or session block to span train and test splits!"
+    - "Craniofacial EMG contamination in high-beta/gamma (`14–50 Hz`): Positive film clips elicit smiling/zygomaticus muscle activity and negative clips elicit frontalis/corrugator frowning—interpret lateral temporal/frontal gamma Differential Entropy (`DE`) features cautiously alongside EOG/EMG channels."
+    - "DEAP subjective label thresholding: Continuous `1–9` SAM ratings (`Valence`, `Arousal`, `Dominance`, `Liking`) cluster near `5.0`, making binary `>=5.0` vs. `<5.0` boundary trials noisy and subject-calibrated."
+citations:
+  primary_bib_keys:
+    - zheng2015seed
+    - koelstra2012deap
+  related_bib_keys:
+    - li2021blockdesign
+  primary_doi_or_arxiv: "10.1109/TAMD.2015.2431497"
+card_path: "cards/human_vision_multimodal/seed_deap_affective_eeg.md"
+last_verified: "2026-11-25"

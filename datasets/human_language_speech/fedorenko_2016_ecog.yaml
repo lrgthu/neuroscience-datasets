@@ -1,0 +1,58 @@
+id: fedorenko_2016_ecog
+name: "Fedorenko Cortical ECoG Sentence Meaning Build-Up Benchmark"
+short_name: "Fedorenko2016-ECoG"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - ECoG_iEEG
+domains:
+  - reading
+year: 2016
+summary_en: "Landmark human subdural ECoG benchmark (N=6 patients, 97 language-selective cortical electrodes across 4 controlled sentence/word-list/Jabberwocky/nonword conditions) demonstrating monotonic high-gamma sentence-meaning build-up and anchoring Brain-Score intracranial LLM evaluation."
+summary_zh: "里程碑式的人类硬膜下皮层脑电（ECoG）句子语义建构基准（6 名癫痫术前评估患者、97 个语言选择性电极，涵盖正常句、词表、无意义句法句 Jabberwocky 与假词表四条件对照），揭示了高伽马频段随句内词位单调爬升的组合语义效应，是 Schrimpf 等（2021）的核心颅内评测集。"
+scale:
+  n_subjects: 6
+  hours_per_subject: 0.6
+  total_hours: 3.6
+  n_stimuli: 200
+  n_channels_or_voxels: "97 functionally localized language-responsive subdural ECoG electrodes (screened from >600 implanted left/right perisylvian contacts)"
+  sampling_rate_or_tr: "1,200 Hz raw ECoG / word-locked 70–170 Hz high-gamma power envelopes (8-word RSVP sequences at 450 or 700 ms/word)"
+brain_regions:
+  - Left_Superior_and_Middle_Temporal_Gyrus
+  - Left_Inferior_and_Middle_Frontal_Gyrus
+  - Perisylvian_Language_ECoG
+data_formats:
+  - Zarr_NPZ
+  - HDF5_MAT
+  - Parquet_CSV
+access:
+  tier: open
+  license: MIT
+  primary_portal: "Brain-Score / EvLab"
+  accession_ids:
+    - "BrainScore:Fedorenko2016.ecog"
+  urls:
+    homepage: "https://github.com/brain-score/language"
+    paper: "https://doi.org/10.1073/pnas.1612132113"
+    evlab: "https://evlab.mit.edu/"
+  download_cli: "uv run --with brainscore_language python -c \"from brainscore_language import load_dataset; print(load_dataset('Fedorenko2016.ecog'))\""
+modeling:
+  recommended_tasks:
+    - intracranial_llm_word_by_word_encoding
+    - compositional_sentence_vs_wordlist_jabberwocky_dissociation
+    - monotonic_context_accumulation_dynamics
+  standard_splits: "5-fold sentence-grouped cross-validation across the 52 eight-word sentences (`416` word tokens total in the standardized `Brain-Score` `Fedorenko2016` assembly), holding all 8 words of each test sentence out together."
+  noise_ceiling_or_repeat_structure: "Split-half / odd-even trial reliability and cross-electrode consistency across the 97 `Sentences > Nonword-Lists` functionally localized ECoG contacts (`Schrimpf et al., PNAS 2021`)."
+  key_pitfalls:
+    - "WORD-POSITION LINEAR RAMP CONFOUND (`t = 1..8`): High-gamma power in language-responsive electrodes rises monotonically across word positions 1 through 8 during sentence reading (`Fedorenko et al. 2016`)! Any causal LLM whose hidden-state L2 norm or positional embedding drifts monotonically with token index `t` can score high without capturing lexical/semantic composition—ALWAYS test encoding partial correlation after regressing out linear word index `t` (and compare against the Jabberwocky / Word-List / Nonword conditions)!"
+    - "NEVER SPLIT INDIVIDUAL WORD TOKENS RANDOMLY: Adjacent words `w_1..w_8` inside an 8-word trial have strong temporal autocorrelation (`450–700 ms` spacing)—always group splits strictly by `sentence_id`!"
+    - "Patient-specific RSVP rate (`450 ms` vs. `700 ms`/word): Presentation speed was adapted per patient in the clinic; align models to word-epoch windows rather than assuming identical wall-clock timing across all 6 patients."
+citations:
+  primary_bib_keys:
+    - fedorenko2016neural
+  related_bib_keys:
+    - schrimpf2021neural
+  primary_doi_or_arxiv: "10.1073/pnas.1612132113"
+card_path: "cards/human_language_speech/fedorenko_2016_ecog.md"
+last_verified: "2026-11-25"

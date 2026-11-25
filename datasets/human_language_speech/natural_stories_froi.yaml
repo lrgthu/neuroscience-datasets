@@ -1,0 +1,63 @@
+id: natural_stories_froi
+name: "Fedorenko Lab Natural Stories fROI fMRI & Self-Paced Reading Corpus"
+short_name: "NaturalStories"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Behavior
+domains:
+  - natural_speech
+  - reading
+year: 2020
+summary_en: "Psycholinguistically engineered 10-story corpus (10,245 words rich in rare syntactic constructions) pairing subject-specific langloc & MD fROI 3T fMRI story listening (N=78) with self-paced reading times (N=181)."
+summary_zh: "心理语言学精巧设计的 10 篇自然故事语料库（共 10,245 词，密集嵌入罕见复杂句法结构），联合提供个体化 langloc 语言区与 MD 多重需求网络 3T fMRI 听觉理解数据（N=78）及自定步速阅读时间（N=181）。"
+scale:
+  n_subjects: 78
+  hours_per_subject: 0.8
+  total_hours: 60.0
+  n_stimuli: 10
+  n_channels_or_voxels: "Subject-specific functional ROIs: 6 core Left-Hemisphere langloc fROIs + right-hemisphere homologs + 20 bilateral Multiple-Demand (MD) fROIs (+ N=181 SPR behavioral cohort)"
+  sampling_rate_or_tr: "TR = 2.0 s (3T Siemens Trio BOLD time series) + word-level self-paced reading RTs (ms)"
+brain_regions:
+  - Left_IFGorb_IFG_MFG_LangLoc
+  - Left_AntTemp_PostTemp_AngG_LangLoc
+  - Bilateral_Multiple_Demand_fROIs
+data_formats:
+  - Parquet_CSV
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: OSF
+  accession_ids:
+    - "OSF:eyp8q"
+    - "GitHub:languageMIT/naturalstories"
+  urls:
+    homepage: "https://osf.io/eyp8q/"
+    spr_github: "https://github.com/languageMIT/naturalstories"
+    paper: "https://doi.org/10.1016/j.neuropsychologia.2019.107307"
+  download_cli: "uvx osfclient -p eyp8q clone ./natural_stories_fmri && git clone https://github.com/languageMIT/naturalstories.git"
+modeling:
+  recommended_tasks:
+    - syntactic_and_lexical_surprisal_modeling
+    - working_memory_integration_cost_dissociation
+    - continuous_time_deconvolutional_regression
+    - multimodal_brain_and_reading_time_alignment
+  standard_splits: "Official 50% exploratory vs. 50% held-out confirmatory partition (`OSF:eyp8q` / `Shain et al. 2020`), or leave-one-story-out cross-validation across the 10 stories (`Blank2014fROI` protocol in `Schrimpf et al. 2021`)."
+  noise_ceiling_or_repeat_structure: "Inter-subject correlation (ISC) across up to N=78 subjects in functionally localized `langloc` vs. `MD` fROIs (`Blank et al., J. Neurophysiol. 2014`), plus split-half reliability across N=181 self-paced readers."
+  key_pitfalls:
+    - "ASYNCHRONOUS WORD-TO-TR TIMING IN CONTINUOUS SPEECH: Multiple spoken words (~150-180 wpm) fall inside each 2.0 s fMRI TR at irregular intervals—never align raw token embeddings to the nearest TR without HRF impulse convolution or Continuous-Time Deconvolutional Regression (`CDR`), and always control for word rate, acoustic RMS power, and prosodic pauses!"
+    - "CRITICAL `langloc` vs. `MD` DOUBLE DISSOCIATION: Anatomical Broca's area (`LIFG`) contains interdigitated language-selective and domain-general `MD` subregions with orthogonal functional profiles (`Blank et al. 2014`; `Shain et al. 2020`); always analyze the individualized `langloc` and `MD` fROI tables separately."
+    - "Spillover lag in self-paced reading (`N=181`): Behavioral processing difficulty at word $w_t$ routinely spills over into reading times on $w_{t+1}$ and $w_{t+2}$—include lagged surprisal/frequency predictors when linking SPR to fMRI."
+citations:
+  primary_bib_keys:
+    - blank2014functional
+    - shain2020predictive
+    - futrell2021naturalstories
+  related_bib_keys:
+    - schrimpf2021neural
+  primary_doi_or_arxiv: "10.1016/j.neuropsychologia.2019.107307"
+card_path: "cards/human_language_speech/natural_stories_froi.md"
+last_verified: "2026-11-25"

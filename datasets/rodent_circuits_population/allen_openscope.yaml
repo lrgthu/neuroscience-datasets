@@ -1,0 +1,69 @@
+id: allen_openscope
+name: "Allen Institute OpenScope Community Neurophysiology Observatory Suite"
+short_name: "OpenScope"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Neuropixels
+  - Two_Photon
+  - Eye_Tracking
+  - Behavior
+domains:
+  - synthetic_ood
+  - natural_movies
+  - decision_making
+year: 2023
+summary_en: "Shared-observatory Allen MindScope suite executing community-proposed theory-testing experiments on standardized 6-probe Neuropixels and multi-plane soma/dendrite 2-photon pipelines, anchored by Kanizsa Illusory Contours (DANDI:000248), Global/Local Oddball (DANDI:000253), and Apical-Somatic Credit Assignment (DANDI:000037)."
+summary_zh: "艾伦脑科学研究所 OpenScope 开放神经科学“共享天文台”套件：利用标准化 6 探针 Neuropixels 与胞体/顶树突双光子平台执行外部理论验证实验，涵盖 Kanizsa 错觉轮廓推理（DANDI:000248）、全局/局部奇异预测编码（DANDI:000253）及跨天树突信用分配（DANDI:000037）。"
+scale:
+  n_subjects: 60
+  hours_per_subject: 3.5
+  total_hours: 250.0
+  n_stimuli: 120
+  n_channels_or_voxels: "Standardized 6-probe Neuropixels (~1,500–2,500 units/session across V1/HVAs/thalamus) + multi-plane 2P paired L2/3 & L5 somata and distal L1 apical dendrites (DANDI:000037, 000248, 000253)"
+  sampling_rate_or_tr: "Neuropixels 30 kHz spikes / 2.5 kHz LFP; Dual-plane/Mesoscope 2P 9.5–30 Hz ΔF/F + 30 Hz running speed & infrared eye tracking"
+brain_regions:
+  - Mouse_VISp_V1_Soma_and_L1_Apical_Dendrites
+  - Mouse_VISl_VISrl_VISal_VISpm_VISam
+  - Mouse_LGd_LP_Thalamus
+  - Mouse_Hippocampus_Midbrain
+data_formats:
+  - NWB
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "DANDI Archive (Allen OpenScope)"
+  accession_ids:
+    - "DANDI:000248"
+    - "DANDI:000253"
+    - "DANDI:000037"
+    - "DANDI:000036"
+  urls:
+    homepage: "https://alleninstitute.org/division/mindscope/openscope/"
+    dandi_illusion: "https://dandiarchive.org/dandiset/000248"
+    dandi_oddball: "https://dandiarchive.org/dandiset/000253"
+    dandi_credit_assignment: "https://dandiarchive.org/dandiset/000037"
+    databook: "https://alleninstitute.github.io/openscope_databook/"
+  download_cli: "uvx dandi download DANDI:000248 && uvx dandi download DANDI:000253 && uvx dandi download DANDI:000037"
+modeling:
+  recommended_tasks:
+    - recurrent_pattern_completion_illusory_contour_inference
+    - hierarchical_global_vs_local_oddball_prediction_error
+    - apical_dendrite_vs_soma_credit_assignment_plasticity
+    - biologically_plausible_predictive_and_feedback_models
+  standard_splits: "Condition-stratified splits contrasting generative perceptual illusions (`Kanizsa` illusory bars) against matched rotated-inducer (`amodal`/`fragment`) and real-edge controls (`DANDI:000248`); `xxxx` local vs. `xxxY` global sequence oddballs (`DANDI:000253`); and multi-day Session 1 -> 2 -> 3 unexpected Gabor-orientation / visual-flow violations (`DANDI:000037`)."
+  noise_ceiling_or_repeat_structure: "High-repeat diagnostic stimulus batteries (30–400 trials per stimulus/violation condition) plus classical receptive-field mapping (`Gabor` patches) on every unit to verify spatial separation between classical RFs and illusory gap centers."
+  key_pitfalls:
+    - "EXACT DANDISET ID DISAMBIGUATION: On DANDI, **`DANDI:000248`** is the *OpenScope Illusion / Kanizsa Contour* dataset (`Shin et al., Nature Neuroscience, 2025`), whereas **`DANDI:000253`** is the *OpenScope Global/Local Oddball (`GLO`)* predictive-processing dataset, and **`DANDI:000037`** is the *OpenScope Credit Assignment / Somata & Distal Apical Dendrites* dataset (`Gillon et al., J. Neurosci. & Sci. Data, 2023`)—verify Dandiset IDs before scripting!"
+    - "RECEPTIVE FIELD EXCLUSION IN ILLUSORY CONTOURS (`DANDI:000248`): True `IC-encoder` inference in V1 requires restricting neurons strictly to units whose classical Gabor receptive fields fall inside the **blank central gap** and do NOT overlap the Pac-Man luminance inducers—always check eye position (`pupil_x, pupil_y`) and RF overlap!"
+    - "APICAL DENDRITE VS. SOMA PAIRING (`DANDI:000037`): `DANDI:000037` images `L2/3` (`Cux2`) and `L5` (`Rbp4`) somata and `L1` distal apical trunk/tuft segments in separate imaging sessions/planes across `3` days (not intracellularly paired to the exact same parent soma)—compare compartment-level population distributions and longitudinally tracked ROI trajectories (`tracked_rois`)."
+citations:
+  primary_bib_keys:
+    - shin2025recurrent
+    - gillon2023credit
+    - gillon2023scidata
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41593-025-02055-5"
+card_path: "cards/rodent_circuits_population/allen_openscope.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,62 @@
+id: budapest_movie
+name: "The Grand Budapest Hotel Social Narrative Movie 3T fMRI"
+short_name: "Budapest-fMRI"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - natural_movies
+  - natural_speech
+  - multimodal
+year: 2020
+summary_en: "High-temporal-resolution 3T multiband fMRI dataset (N=25, TR=1.0 s, 2.5 mm isotropic, OpenNeuro ds003017) recorded during the socially rich second half (~50.5 min across 5 runs) of Wes Anderson's The Grand Budapest Hotel, paired with dynamic face/object localizers."
+summary_zh: "高时间分辨率社交叙事电影 3T 多频带 fMRI 数据集（25 名被试，TR=1.0 s，2.5 mm 各向同性，OpenNeuro ds003017），采集韦斯·安德森电影《布达佩斯大饭店》后半部（5 个 run 共约 50.5 分钟）观影响应及动态面孔/物体功能定位。"
+scale:
+  n_subjects: 25
+  hours_per_subject: 1.5
+  total_hours: 37.5
+  n_stimuli: 5
+  n_channels_or_voxels: "2.5 mm isotropic whole-brain 3T EPI + fMRIPrep fsaverage (icoorder 5/6) & MNI152 derivatives"
+  sampling_rate_or_tr: "TR = 1.0 s (multiband 4; ~3,030 movie TRs across 5 contiguous runs)"
+brain_regions:
+  - Core_and_Extended_Face_Network_FFA_OFA_pSTS
+  - TPJ_mPFC_Precuneus_Social_Brain
+  - Early_Visual_and_Auditory_Cortex
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds003017"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds003017"
+    github: "https://github.com/mvdoc/budapest-fmri-data"
+    paper: "https://doi.org/10.1038/s41597-020-00735-4"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds003017.git"
+modeling:
+  recommended_tasks:
+    - hyperalignment_and_connectivity_hyperalignment
+    - social_face_identity_and_expression_encoding
+    - multimodal_audiovisual_llm_alignment
+  standard_splits: "Leave-one-run-out cross-validation across the 5 movie runs (~8.4 to ~13.3 min each), carefully trimming the 10-second (10 TRs) audiovisual overlap prepended to runs 2–5!"
+  noise_ceiling_or_repeat_structure: "Synchronized 1.0 s sampling across N=25 subjects provides tight inter-subject correlation (ISC) and surface searchlight hyperalignment ceilings across occipital, temporal, and default-mode cortices."
+  key_pitfalls:
+    - "10-second run-transition overlap: Runs 2, 3, 4, and 5 each replay the final `10 seconds` (`10 TRs`) of the preceding run to maintain narrative continuity—you MUST discard overlapping boundary TRs (+ ~6–10 s hemodynamic washout) before leave-one-run-out evaluation or hyperalignment!"
+    - "Out-of-scanner first half: Participants watched the first ~46 minutes of the movie **outside** the MRI scanner immediately prior to scanning so narrative context was established; `ds003017` covers only the second half (~50.5 minutes) of the film—align stimulus timestamps to the exact second-half cut specification in `mvdoc/budapest-fmri-data`."
+    - "Auxiliary `hyperface` / dynamic localizer scans exist for the same Dartmouth cohort in companion repositories—match BIDS `sub-sidXXXXXX` subject hashes when combining localizer ROIs."
+citations:
+  primary_bib_keys:
+    - visconti2020budapest
+  related_bib_keys:
+    - haxby2011hyperalignment
+  primary_doi_or_arxiv: "10.1038/s41597-020-00735-4"
+card_path: "cards/human_vision_multimodal/budapest_movie.md"
+last_verified: "2026-11-25"

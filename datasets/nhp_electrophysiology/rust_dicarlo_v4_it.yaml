@@ -1,0 +1,60 @@
+id: rust_dicarlo_v4_it
+name: "Rust-DiCarlo Macaque V4 vs. IT Natural-Scene Selectivity & Tolerance Benchmark"
+short_name: "Rust2012"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Microwire_Single_Unit
+  - Eye_Tracking
+domains:
+  - natural_images
+  - object_recognition
+  - synthetic_ood
+year: 2012
+summary_en: "Single-unit recordings of 143 V4 and 142 IT neurons in awake fixating macaques viewing 300 natural scenes and Portilla-Simoncelli scrambled counterparts (`BrainScore:Rust2012`), demonstrating balanced increases in conjunction selectivity and tolerance."
+summary_zh: "清醒注视猕猴 V4（143 个单神经元）与 IT（142 个单神经元）观看 300 张自然场景及局部相位打乱对照图像的电生理基准（Brain-Score `Rust2012`），证明腹侧通路特征选择性与变换容忍度同步平衡增长并保持恒定群体稀疏度。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 15.0
+  total_hours: 30.0
+  n_stimuli: 300
+  n_channels_or_voxels: "285 isolated single units (143 V4 + 142 IT neurons across 2 awake rhesus macaques; additional 50 natural + 50 scrambled paired subset)"
+  sampling_rate_or_tr: "1 ms spike timestamps; canonical firing-rate integration in [70, 170] ms window (100 ms RSVP presentation)"
+brain_regions:
+  - Macaque_V4
+  - Macaque_IT
+data_formats:
+  - NWB
+  - Zarr_NPZ
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Brain-Score"
+  accession_ids:
+    - "BrainScore:dicarlo.Rust2012.single"
+    - "BrainScore:dicarlo.Rust2012.array"
+  urls:
+    homepage: "https://www.brain-score.org/"
+    code: "https://github.com/brain-score/vision"
+    paper: "https://doi.org/10.1523/jneurosci.6125-11.2012"
+  download_cli: "uv run python -c \"import brainscore_vision; print(brainscore_vision.load_benchmark('Rust2012-pls'))\""
+modeling:
+  recommended_tasks:
+    - v4_vs_it_sparseness_and_selectivity_balance
+    - natural_vs_scrambled_conjunction_sensitivity
+    - ventral_stream_single_unit_encoding
+  standard_splits: "10-fold cross-validation across the `300` natural photographs (and paired `50` intact vs. `50` Portilla-Simoncelli texture-scrambled scenes grouped by source image ID)."
+  noise_ceiling_or_repeat_structure: "`~10–20` pseudorandom presentations per image (`5` images per `~1.5 s` RSVP fixation trial, `100 ms` ON / `100 ms` OFF), with split-half Spearman-Brown correction applied to single-unit PLS/Ridge correlations and Vinje-Gallant lifetime sparseness."
+  key_pitfalls:
+    - "CORRECT J. NEUROSCI. DOI (`10.1523/jneurosci.6125-11.2012`): Many downstream benchmark tables mis-cite a broken/unrelated J. Neurosci. correction string—always bind provenance to `10.1523/jneurosci.6125-11.2012` (Rust & DiCarlo, *J. Neurosci.* 32(30):10170-10182, 2012)!"
+    - "Trial-to-Trial Poisson Variance Inflates Raw Sparseness: Computing Vinje-Gallant lifetime/population sparseness directly on finite-repeat (`~10` trial) mean firing rates systematically overestimates sparseness on lower-SNR units—subtract trial-variance bias or match SNR across V4 and IT!"
+    - "Intact vs. Scrambled Pair Leakage: In the `100`-image (`50` intact + `50` scrambled) conjunction-selectivity sub-experiment, scrambled images share exact local V1/V2 multiscale wavelet marginals with their intact parent scenes—keep intact/scrambled pairs in the same CV fold!"
+citations:
+  primary_bib_keys:
+    - rust2012sparseness
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1523/jneurosci.6125-11.2012"
+card_path: "cards/nhp_electrophysiology/rust_dicarlo_v4_it.md"
+last_verified: "2026-11-25"

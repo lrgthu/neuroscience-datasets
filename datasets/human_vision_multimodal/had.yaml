@@ -1,0 +1,67 @@
+id: had
+name: "Human Action Dataset (HAD — 21,600 HACS Action Video Clips 3T fMRI)"
+short_name: "HAD"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_movies
+  - object_recognition
+year: 2023
+summary_en: "Large-scale 3T video fMRI dataset (N=30 subjects, 2.0 mm isotropic, OpenNeuro ds004488) sampling 21,600 distinct 2-second HACS human action clips (720 unique clips/subject × 30 subjects, zero clip overlap) across 180 everyday action categories."
+summary_zh: "大规模人类动作识别 3T 视频 fMRI 数据集（30 名被试，2.0 mm 各向同性，OpenNeuro ds004488），跨 180 类日常动作采集 21,600 段完全不重复的 2 秒 HACS 自然视频片段（每人观看 720 段独立样本）。"
+scale:
+  n_subjects: 30
+  hours_per_subject: 1.8
+  total_hours: 54.0
+  n_stimuli: 21600
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain 3T EPI + 91,282 CIFTI fsLR grayordinates (fMRIPrep + ciftify)"
+  sampling_rate_or_tr: "TR = 2.0 s (multiband 3; 2.0 s silent clip + 2.0 s fixation = 4.0 s SOA; single-clip GLM betas)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - EBA_MT_Lateral_Visual
+  - STS_TPJ
+  - Premotor_Parietal_Action_Network
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds004488"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds004488"
+    github: "https://github.com/BNUCNL/HAD-fmri"
+    paper: "https://doi.org/10.1038/s41597-023-02325-6"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds004488.git"
+modeling:
+  recommended_tasks:
+    - action_category_decoding_and_rsa
+    - breadth_first_video_encoding
+    - cross_subject_semantic_action_alignment
+  standard_splits: "Within-subject odd-cycle (runs 1–6: 360 clips, 2 exemplars/category) vs. even-cycle (runs 7–12: 360 clips, 2 exemplars/category) split across all 180 action categories, or leave-N-subjects-out across the 30-subject cohort."
+  noise_ceiling_or_repeat_structure: "No exact video clip is ever repeated within or across subjects; test-retest reliability and noise ceilings are defined at the 180-category level across the 4 distinct category exemplars per subject (2 odd-cycle vs. 2 even-cycle repeats) and across 30 subjects."
+  key_pitfalls:
+    - "Breadth-over-repeat trade-off: Each subject viewed 720 unique clips (`180 categories × 4 exemplars × 1 repeat`), NOT 21,600 clips per subject (`30 × 720 = 21,600` cohort-wide)—do not attempt exact-clip ISC or clip-repeat noise ceilings; pair HAD with `bmd_moments` (`ds005165`) when multi-repeat clip-level SNR is needed."
+    - "All 21,600 2-second HACS clips were cropped square and presented **without audio**—strip audio streams from original HACS/YouTube videos when computing multimodal features."
+    - "Rapid 4.0 s fixed SOA (`2 s` video + `2 s` fixation, no null jitter trials within runs) produces strong collinearity between adjacent trials; rely on ridge/L2-regularized single-trial GLM (`ciftify` derivatives) and within-run z-scoring."
+citations:
+  primary_bib_keys:
+    - zhou2023had
+  related_bib_keys:
+    - gong2023nod
+    - lahner2024bmd
+  primary_doi_or_arxiv: "10.1038/s41597-023-02325-6"
+card_path: "cards/human_vision_multimodal/had.md"
+last_verified: "2026-11-25"

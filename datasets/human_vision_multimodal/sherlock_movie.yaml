@@ -1,0 +1,68 @@
+id: sherlock_movie
+name: "Princeton Sherlock Audiovisual Movie & Spoken Free-Recall 3T fMRI"
+short_name: "Sherlock"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_movies
+  - natural_speech
+  - working_memory
+  - multimodal
+year: 2017
+summary_en: "Seminal naturalistic memory and event-segmentation 3T fMRI dataset (N=17 in paper; 16 complete subjects on OpenNeuro ds001132, TR=1.5 s) pairing a 48-minute BBC Sherlock episode with uncued in-scanner spoken narrative recall."
+summary_zh: "经典的自然叙事记忆与事件分割 3T fMRI 数据集（论文 17 名被试，OpenNeuro ds001132 公开 16 名完整被试，TR=1.5 s），配对采集 48 分钟 BBC《神探夏洛克》观影与扫描仪内无提示口头自由回忆全过程。"
+scale:
+  n_subjects: 17
+  hours_per_subject: 1.3
+  total_hours: 22.0
+  n_stimuli: 50
+  n_channels_or_voxels: "3.0 mm isotropic whole-brain 3T EPI (MNI152 + cortical event-hierarchy ROIs: V1, A1, angular gyrus, PMC/precuneus, mPFC, hippocampus)"
+  sampling_rate_or_tr: "TR = 1.5 s (1,976 movie TRs across 2 ~24-min parts + self-paced ~10–45 min spoken recall TRs)"
+brain_regions:
+  - Posterior_Medial_Cortex_Precuneus
+  - Angular_Gyrus_TPJ
+  - Medial_Prefrontal_Cortex
+  - Hippocampus_Parahippocampal
+  - Early_Visual_and_Auditory_Cortex
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - HDF5_MAT
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds001132"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds001132"
+    princeton_dataspace: "https://dataspace.princeton.edu/handle/88435/dsp01nz8062179"
+    paper: "https://doi.org/10.1038/nn.4450"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds001132.git"
+modeling:
+  recommended_tasks:
+    - event_segmentation_hmm
+    - perception_to_memory_reactivation
+    - inter_subject_correlation_and_srm
+    - llm_narrative_memory_alignment
+  standard_splits: "Split movie Part 1 (946 TRs, ~23.6 min) vs. Part 2 (1,030 TRs, ~25.8 min) across the 48–50 human-annotated narrative scenes, plus leave-one-subject-out cross-subject transfer and movie-perception -> spoken-recall reinstatement evaluation."
+  noise_ceiling_or_repeat_structure: "Synchronized viewing across 16–17 subjects yields high inter-subject pattern correlation (ISPC) and Shared Response Model (SRM) ceilings across all 50 narrative scenes."
+  key_pitfalls:
+    - "16 vs. 17 subject count discrepancy: `Chen et al. (2017)` analyzed `N = 17` subjects (hosted in Princeton DataSpace `dsp01nz8062179`), whereas `OpenNeuro:ds001132` contains **`16` subjects** (`s5` omitted due to missing TRs at the end of movie Part 2)—state explicitly whether results use `N = 16` (`ds001132`) or `N = 17`!"
+    - "Introductory cartoon warmup clip: Each of the two movie runs prepends a brief ~30 s (`20 TRs`) unrelated cartoon clip ('Let's All Go to the Lobby') to absorb initial T1/BOLD onset transients—strip the warmup cartoon TRs before aligning to the 1,976-TR `Sherlock` scene annotations!"
+    - "Spoken free recall inside the scanner introduces overt jaw/head motion and variable per-subject recall durations (`~10` to `45 min`); evaluate recall via scene-averaged multivoxel patterns after motion scrubbing and high-pass detrending rather than raw TR-to-TR correlation."
+citations:
+  primary_bib_keys:
+    - chen2017sherlock
+  related_bib_keys:
+    - baldassano2017events
+  primary_doi_or_arxiv: "10.1038/nn.4450"
+card_path: "cards/human_vision_multimodal/sherlock_movie.md"
+last_verified: "2026-11-25"

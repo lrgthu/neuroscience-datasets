@@ -1,0 +1,69 @@
+id: svoboda_alm_working_memory
+name: "Svoboda Lab Mouse ALM Attractor & Brain-Wide Memory-Guided Movement Map"
+short_name: "Svoboda-ALM"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Neuropixels
+  - Silicon_Probe
+  - Behavior
+domains:
+  - working_memory
+  - decision_making
+  - motor_reaching
+year: 2024
+summary_en: "Canonical short-term memory and motor-planning electrophysiology resource pairing ALM discrete-attractor perturbation recordings (Inagaki et al., Nature 2019; CRCNS:alm-5) with the petascale multi-Neuropixels brain-wide Mesoscale Activity Map (Chen et al., Cell 2024; DANDI:000363)."
+summary_zh: "经典的短期工作记忆与运动规划电生理基准：结合小鼠前外侧运动皮层（ALM）光遗传微扰离散吸引子数据集（Inagaki 等 Nature 2019，CRCNS:alm-5）与全脑多探针 Neuropixels 记忆引导运动图谱（Chen 等 Cell 2024，DANDI:000363）。"
+scale:
+  n_subjects: 90
+  hours_per_subject: 3.0
+  total_hours: 300.0
+  n_stimuli: 8
+  n_channels_or_voxels: "DANDI:000363 (>65,000 sorted Neuropixels units across >700 probe insertions spanning ALM, thalamus, basal ganglia, midbrain, cerebellum & medulla) + CRCNS:alm-5 intracellular/64-ch silicon-probe perturbation units"
+  sampling_rate_or_tr: "30 kHz Neuropixels 1.0/2.0 & 64-ch silicon-probe spikes + 300–400 Hz multi-view high-speed orofacial/tongue kinematics (DeepLabCut) and dual-lickport sensors"
+brain_regions:
+  - Mouse_ALM_Frontal_Motor_Cortex
+  - Mouse_VM_VAL_MD_Motor_Thalamus
+  - Mouse_SCm_MRN_SNr_Midbrain_Basal_Ganglia
+  - Mouse_Cerebellum_Pons_Medulla_Hindbrain
+data_formats:
+  - NWB
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "DANDI / Janelia Figshare / CRCNS"
+  accession_ids:
+    - "DANDI:000363"
+    - "DANDI:000221"
+    - "DANDI:000009"
+    - "Figshare:10.25378/janelia.7489253"
+    - "CRCNS:alm-5"
+  urls:
+    homepage: "https://dandiarchive.org/dandiset/000363"
+    dandi_go_cue: "https://dandiarchive.org/dandiset/000221"
+    inagaki_figshare: "https://doi.org/10.25378/janelia.7489253"
+    paper_cell2024: "https://doi.org/10.1016/j.cell.2023.12.035"
+    paper_nature2019: "https://doi.org/10.1038/s41586-019-0919-7"
+  download_cli: "uvx dandi download DANDI:000363 --download dandiset.yaml && uvx dandi ls DANDI:000363 | head -n 10"
+modeling:
+  recommended_tasks:
+    - discrete_vs_continuous_attractor_system_identification
+    - causal_optogenetic_perturbation_recovery_modeling
+    - coding_direction_delay_to_execution_subspace_collapse
+    - multi_region_thalamocortical_midbrain_loop_rnn
+  standard_splits: "Stratified trial splits separating unperturbed control trials (`Lick Left` vs. `Lick Right`, auditory/tactile sample -> `1.2–2.0 s` delay -> auditory `Go` cue) from held-out causal bilateral/unilateral ALM photoinhibition trials (`Inagaki et al. 2019`; `Chen et al. 2024`) and cross-session holdouts."
+  noise_ceiling_or_repeat_structure: "Hundreds of stereotypic `Sample -> Delay -> Response` trials per session plus randomized-duration delay cohorts (`Inagaki 2019`) that dissociate time-invariant discrete-attractor endpoints from deterministic temporal ramping."
+  key_pitfalls:
+    - "RAMPING IN FIXED-DELAY VS. DISCRETE ATTRACTORS IN RANDOM-DELAY: On fixed-delay tasks (`1.2 s`), ALM population projections along the **Coding Direction (`CD`)** ramp monotonically; ONLY on exponentially distributed **random-delay** trials (`alm-5` / `7489253`) and causal `VGAT-ChR2` photoinhibition trials can models distinguish slow integrators from discrete two-well attractors!"
+    - "PREMATURE LICKING & UNINSTRUCTED OROFACIAL MOTION DURING DELAY: Early-lick trials (`lick before Go cue`) abort/contaminate persistent delay activity, and subtle jaw/whisker posture differs between `Left` and `Right` plans—exclude early-lick trials and regress out `300–400 Hz` high-speed camera jaw/tongue keypoints (`DANDI:000363`) when isolating cognitive memory maintenance."
+    - "`DANDI:000363` totals `~65.7 TB` across `174` NWB files because raw high-speed behavioral video / raw ephys streams are included alongside sorted `units`—always stream spike tables lazily via `remfile` / `dandi` rather than bulk-downloading entire terabyte assets!"
+citations:
+  primary_bib_keys:
+    - chen2024brainwide
+    - inagaki2019discrete
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.cell.2023.12.035"
+card_path: "cards/rodent_circuits_population/svoboda_alm_working_memory.md"
+last_verified: "2026-11-25"

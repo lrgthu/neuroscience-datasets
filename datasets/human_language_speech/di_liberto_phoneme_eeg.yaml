@@ -1,0 +1,61 @@
+id: di_liberto_phoneme_eeg
+name: "Di Liberto Categorical Phonemic Feature Natural Speech 128-Ch EEG"
+short_name: "DiLiberto-Phoneme-EEG"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - EEG
+domains:
+  - natural_speech
+year: 2015
+summary_en: "Seminal 128-channel BioSemi scalp EEG natural speech benchmark (Hemingway's The Old Man and the Sea, OpenNeuro ds004408 / Dryad, N=19) demonstrating low-frequency (1–8 Hz) cortical tracking of categorical phonemes and articulatory features beyond spectrograms."
+summary_zh: "奠基性的 128 通道头皮脑电（EEG）音素与发音特征自然语音追踪数据集（收听海明威《老人与海》，OpenNeuro ds004408 / Dryad，N=19），首次证明低频脑电（1–8 Hz）在声学语谱图之外编码离散音素与发音器官特征。"
+scale:
+  n_subjects: 19
+  hours_per_subject: 1.0
+  total_hours: 19.0
+  n_stimuli: 20
+  n_channels_or_voxels: "128-channel BioSemi ActiveTwo scalp EEG + 2 mastoid reference channels"
+  sampling_rate_or_tr: "512 Hz raw BIDS / 128 Hz preprocessed MAT + 39 ARPAbet phoneme & 19 articulatory feature TextGrid/MAT alignments"
+brain_regions:
+  - Bilateral_Temporal_Auditory_Scalp
+  - Fronto_Central_Speech_Scalp
+  - Whole-Scalp_128Ch
+data_formats:
+  - BIDS
+  - HDF5_MAT
+  - BrainVision_EDF
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: "OpenNeuro / Dryad"
+  accession_ids:
+    - "OpenNeuro:ds004408"
+    - "Dryad:10.5061/dryad.070jc"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds004408"
+    dryad: "https://datadryad.org/dataset/doi:10.5061/dryad.070jc"
+    paper: "https://doi.org/10.1016/j.cub.2015.08.030"
+    mtrf_toolbox: "https://github.com/mickcrosse/mTRF-Toolbox"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds004408.git"
+modeling:
+  recommended_tasks:
+    - categorical_phoneme_and_articulatory_feature_trf
+    - banded_ridge_acoustic_vs_phonetic_variance_partitioning
+    - forward_and_backward_mtrf_speech_tracking
+  standard_splits: "20-fold leave-one-trial-out cross-validation across the 20 contiguous ~180 s audiobook segments per subject."
+  noise_ceiling_or_repeat_structure: "Within-subject 20-fold CV vs. leave-one-subject-out generic TRF ceiling across N=19 listeners, paired with time-reversed unintelligible speech negative controls."
+  key_pitfalls:
+    - "JOINT `FS` (`FEATURES + SPECTROGRAM`) vs. `S` (`SPECTROGRAM`) TEST REQUIRED: Categorical phoneme/articulatory impulses correlate strongly (`r > 0.6`) with acoustic spectrogram onsets! Never interpret standalone `Phoneme` (`P`) or `Feature` (`F`) TRF correlations as linguistic—strictly measure unique predictive gain `\\Delta r = r(FS) - r(S)` over a rich multi-band cochlear spectrogram + half-wave envelope derivative, and verify `\\Delta r \\approx 0` on time-reversed speech!"
+    - "REGULARIZATION BIAS IN CONCATENATED RIDGE (`FS` vs. `S`): Concatenating `19` sparse binary articulatory features with dense `16–64` band spectrograms under a single scalar ridge penalty `\\lambda` distorts `\\Delta r` (`Daube et al., Current Biology 2019`)—always fit **Banded Ridge Regression** (`himalaya`) with independent `\\lambda_F, \\lambda_S` hyperparameters!"
+    - "Preserve `1–8 Hz` delta/theta bands: Phonetic feature tracking in scalp EEG resides almost entirely in `1–8 Hz` (`100–250 ms` lag) and vanishes above `15 Hz`."
+citations:
+  primary_bib_keys:
+    - diliberto2015phoneme
+  related_bib_keys:
+    - broderick2018speech
+  primary_doi_or_arxiv: "10.1016/j.cub.2015.08.030"
+card_path: "cards/human_language_speech/di_liberto_phoneme_eeg.md"
+last_verified: "2026-11-25"

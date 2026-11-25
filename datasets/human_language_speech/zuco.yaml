@@ -1,0 +1,64 @@
+id: zuco
+name: "ZuCo 1.0 & ZuCo 2.0 Simultaneous 128-Ch EEG & Eye-Tracking Reading Corpora"
+short_name: "ZuCo"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - EEG
+  - Eye_Tracking
+  - Behavior
+domains:
+  - reading
+year: 2018
+summary_en: "Simultaneous 128-channel EGI EEG and 500 Hz infrared eye-tracking corpora during natural self-paced sentence reading and relation annotation (ZuCo 1.0 N=12, 1,107 sentences; ZuCo 2.0 N=18, 739 sentences)."
+summary_zh: "自然自定步速句子阅读与关系抽取期间同步采集的 128 通道高密度 EEG 与 500 Hz 眼动追踪语料库（ZuCo 1.0 含 12 人 1,107 句；ZuCo 2.0 含 18 人 739 句），提供词级注视驻留时间与频段功率特征。"
+scale:
+  n_subjects: 30
+  hours_per_subject: 3.0
+  total_hours: 90.0
+  n_stimuli: 1846
+  n_channels_or_voxels: "128-channel EGI HydroCel Geodesic Sensor Net (105 non-ocular scalp channels retained) + EyeLink 1000 Plus eye-tracking"
+  sampling_rate_or_tr: "500 Hz simultaneous EEG & eye-tracking (plus fixation-locked 8-band frequency features per word)"
+brain_regions:
+  - Occipitotemporal_Reading_Scalp
+  - Centro_Parietal_N400_Scalp
+  - Whole-Scalp_105Ch_Clean
+data_formats:
+  - HDF5_MAT
+  - BrainVision_EDF
+  - Parquet_CSV
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: OSF
+  accession_ids:
+    - "OSF:q3zws"
+    - "OSF:2urht"
+  urls:
+    homepage: "https://osf.io/q3zws/"
+    zuco2_osf: "https://osf.io/2urht/"
+    paper_zuco1: "https://doi.org/10.1038/sdata.2018.291"
+    paper_zuco2: "https://aclanthology.org/2020.lrec-1.18/"
+  download_cli: "uvx osfclient -p q3zws clone ./zuco1 && uvx osfclient -p 2urht clone ./zuco2"
+modeling:
+  recommended_tasks:
+    - eye_fixation_and_reading_time_prediction
+    - fixation_related_potential_frp_encoding
+    - normal_vs_task_specific_reading_comparison
+    - noise_controlled_brain_to_text_retrieval
+  standard_splits: "STRICT UNIQUE-SENTENCE DISJOINT SPLITS ONLY: Partition by unique `sentence_id` (deduplicating sentences shared across ZuCo 1.0/2.0 tasks and across all 30 subjects) so zero test sentences ever appear in training!"
+  noise_ceiling_or_repeat_structure: "Cross-subject reliability across N=12 (ZuCo 1.0) and N=18 (ZuCo 2.0) readers viewing identical sentences, plus 63 duplicate sentences read in both Normal Reading and Task-Specific modes in ZuCo 2.0."
+  key_pitfalls:
+    - "CRITICAL TEACHER-FORCING & PURE-NOISE ARTIFACT IN EEG-TO-TEXT (`Jo et al., 2024/2025`, `10.1038/s41598-025-29587-x`): Influential 2022–2023 ZuCo open-vocabulary `EEG-to-Text` papers inadvertently passed ground-truth target tokens into `BART`/`T5` decoders at evaluation time (implicit teacher forcing); when fixed to true autoregressive `.generate()` and tested against pure Gaussian noise inputs, models scored identically on random noise and real ZuCo EEG! NEVER evaluate EEG-to-Text without (1) free autoregressive generation, (2) deduplicated unique-sentence splits, and (3) a mandatory Gaussian-noise / permuted-EEG null baseline ($H_0$)."
+    - "CROSS-SUBJECT TARGET MEMORIZATION: Because all subjects read the same sentence pool, random `(subject, sentence)` row splits leak 100% of ground-truth test sentences into training!"
+    - "OCULOMOTOR SACCADIC SPIKE & GAMMA MYOGENIC CONFOUNDS: Unlike fixed-fixation RSVP, natural reading generates extraocular muscle spikes (`20–80 Hz`) and corneo-retinal dipole shifts tightly correlated with word length and fixation count (`TRT`/`FFD`); partial out eye-tracking gaze kinematics before claiming cortical high-frequency (`beta`/`gamma`) semantic signal."
+citations:
+  primary_bib_keys:
+    - hollenstein2018zuco
+    - hollenstein2020zuco2
+  related_bib_keys:
+    - jo2024eegtotext
+  primary_doi_or_arxiv: "10.1038/sdata.2018.291"
+card_path: "cards/human_language_speech/zuco.md"
+last_verified: "2026-11-25"

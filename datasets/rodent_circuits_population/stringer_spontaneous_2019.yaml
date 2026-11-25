@@ -1,0 +1,65 @@
+id: stringer_spontaneous_2019
+name: "Stringer & Pachitariu Brain-Wide Spontaneous Behavior Dataset (8-Probe Neuropixels & 10k-Neuron 2P)"
+short_name: "Stringer-Spont"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Neuropixels
+  - Two_Photon
+  - Eye_Tracking
+  - Behavior
+domains:
+  - resting_state
+  - multimodal
+  - natural_images
+year: 2019
+summary_en: "Landmark dual-modality spontaneous behavior dataset (Stringer et al., Science 2019) pairing simultaneous 8-probe Neuropixels forebrain recordings (~2,500–3,000 units/mouse) and ~10,000-neuron 11-plane V1 2-photon calcium imaging with 500-D infrared orofacial motion SVD tracking."
+summary_zh: "自发行为驱动全脑多维神经动力学经典数据集（Stringer 等 Science 2019）：包含 8 根 Neuropixels 探针全脑前脑同步电生理与约 10,000 神经元 11 平面 V1 双光子钙成像，并与 500 维面部微动作 SVD 特征及正交视觉刺激对比。"
+scale:
+  n_subjects: 12
+  hours_per_subject: 2.0
+  total_hours: 25.0
+  n_stimuli: 32
+  n_channels_or_voxels: "8 simultaneous Neuropixels 1.0 probes (~2,200–3,000 sorted units/session across forebrain/thalamus/hippocampus/midbrain) + ~10,000-neuron 11-plane V1 2P cohorts + 500-D Facemap SVDs"
+  sampling_rate_or_tr: "Neuropixels 30 kHz spikes + 50 Hz infrared face video; Two-Photon 2.5–3 Hz 11-plane volumetric GCaMP6s imaging"
+brain_regions:
+  - Mouse_Forebrain_8Probe_Simultaneous
+  - Mouse_VISp_V1_Layer2_3
+  - Mouse_Frontal_Sensorimotor_Cortex
+  - Mouse_Thalamus_Striatum_Hippocampus_Midbrain
+data_formats:
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Janelia Figshare"
+  accession_ids:
+    - "Figshare:10.25378/janelia.6163622"
+    - "Figshare:10.25378/janelia.7739750"
+  urls:
+    homepage: "https://doi.org/10.25378/janelia.6163622"
+    probe_ccf_locations: "https://doi.org/10.25378/janelia.7739750"
+    code: "https://github.com/MouseLand/stringer-pachitariu-et-al-2018a"
+    paper: "https://doi.org/10.1126/science.aav7893"
+  download_cli: "# Download spontaneous 2P & 8-probe Neuropixels .mat archives from Janelia Figshare: https://doi.org/10.25378/janelia.6163622 (CCF probe locations: 10.25378/janelia.7739750)"
+modeling:
+  recommended_tasks:
+    - spontaneous_behavior_to_neural_reduced_rank_regression
+    - peer_prediction_shared_variance_power_law
+    - sensory_vs_behavioral_subspace_orthogonality
+    - multi_area_eight_probe_communication_subspaces
+  standard_splits: "Contiguous temporal block cross-validation (~60–120 s blocks; NEVER random single-frame splits!) across 1–2 hour darkness/gray-screen spontaneous recordings and interleaved 32-image repeated natural stimulus blocks."
+  noise_ceiling_or_repeat_structure: "Spatial peer-prediction split (predicting held-out checkerboard planes/probe channels from remaining simultaneous neurons) bounds shared population variance (>100 reliable dimensions, ~1/n^alpha power law) during unrepeatable spontaneous behavior; 32 natural images × ~90–120 repeats benchmark sensory-behavioral orthogonality."
+  key_pitfalls:
+    - "DO NOT CONFUSE WITH `stringer_mouse_v1` (Nature 2019, `10.25378/janelia.6845348`): `stringer_mouse_v1` studies the 2,800-image × 2-repeat static sensory eigenspectrum in V1; THIS dataset (`stringer_spontaneous_2019`, Science 2019, `10.25378/janelia.6163622`) captures prolonged spontaneous darkness/gray-screen behavior, 500-D `Facemap` motion-energy SVDs, and the unique 8-probe simultaneous Neuropixels forebrain recordings!"
+    - "TEMPORAL AUTOCORRELATION LEAKAGE: Spontaneous behavioral states (running bouts, whisking, pupil dilation, GCaMP6s decay) have autocorrelation timescales of 1–20 seconds—random frame/bin train-test splits severely inflate explained variance; always hold out contiguous multi-minute temporal blocks with buffer gaps!"
+    - "When analyzing the 8-probe Neuropixels sessions (`krebs`, `waksman`, `robbins`), join spike structures in `6163622` with the histological Allen CCFv3 channel coordinates in companion Figshare `7739750` (`probeLocations.mat`)."
+citations:
+  primary_bib_keys:
+    - stringer2019spontaneous
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1126/science.aav7893"
+card_path: "cards/rodent_circuits_population/stringer_spontaneous_2019.md"
+last_verified: "2026-11-25"
