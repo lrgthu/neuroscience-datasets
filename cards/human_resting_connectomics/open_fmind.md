@@ -39,3 +39,4 @@ uvx --from huggingface_hub hf download cbarbano/open-fmind \
 
 ## 5. Verified Primary References
 - **`barbano2026openfmind`**: Barbano, C. A., Marraffini, G., & Wassermann, D. (2026). *Open-fMIND: A Large-Scale Open-Access fMRI Corpus for Pretraining Brain Foundation Models*. arXiv (`arXiv:2611.21215`).
+- **Companion Native-Space 4D Voxel Corpus**: See **`readyneuro`** (`cards/human_resting_connectomics/readyneuro.md`, `817` OpenNeuro studies / `22,083 h` BOLD rigidly aligned at `2 mm` / `1.0 Hz` without parcellation) when training 4D volumetric ViT/MAE architectures rather than ROI-atlas models.

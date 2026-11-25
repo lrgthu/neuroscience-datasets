@@ -1,0 +1,76 @@
+id: readyneuro
+name: "ReadyNeuro (Native-Space 22,083-Hour OpenNeuro 4D fMRI Foundation Corpus)"
+short_name: "ReadyNeuro"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - fMRI_7T
+  - Structural_MRI
+domains:
+  - resting_state
+  - multimodal
+  - natural_movies
+  - natural_speech
+  - decision_making
+  - clinical_lifespan
+year: 2026
+summary_en: "15.88 TB CC0 training-ready 4D fMRI foundation-model corpus pooling 817 OpenNeuro studies (~30,160 subjects across 30,222 WebDataset shards, 22,083 BOLD hours, >1,300 tasks; plus a 500 GB / 672-study / 725 h Hugging Face subset) minimally preprocessed in native anatomy via 6-DOF rigid SynthMorph alignment onto a 2 mm grid at 1 Hz."
+summary_zh: "面向 4D 体素脑基础模型预训练的超大规模 CC0 开放 fMRI 语料库（全量 Cloudflare R2 桶含 817 个 OpenNeuro 研究、30,222 个被试 WebDataset 分片、22,083 小时 BOLD、15.88 TB，另在 Hugging Face 提供 500 GB / 672 研究 / 725 小时精选子集），跳过非线性配准与皮层重建，保留个体原生解剖形状并刚性对齐至 2 mm 网格与 1 Hz 采样。"
+scale:
+  n_subjects: 30160
+  hours_per_subject: 0.73
+  total_hours: 22083.0
+  n_stimuli: 1300
+  n_channels_or_voxels: "Native-space 6-DOF rigidly aligned 2 mm grid (MNI152NLin2009cAsym orientation, 97×115×97 voxels, int8 BOLD + float mean/std) + 1 mm T1w & cortical GM masks"
+  sampling_rate_or_tr: "Uniformly interpolated to 1.0 s/frame (1.0 Hz) from source-native TRs (acquired TR preserved in run JSON sidecars)"
+brain_regions:
+  - Whole-Brain_Native_Space_2mm_Grid
+  - Cortical_Grey_Matter_Masks
+  - Subcortical_and_Whole_Brain_T1w_1mm
+data_formats:
+  - WebDataset_Tar
+  - BIDS
+  - NIfTI
+  - Parquet_CSV
+access:
+  tier: open
+  license: "CC0-1.0 corpus release (500 GB medarc/ReadyNeuro subset is strictly 637 CC0 + 34 PDDL + 1 public domain; full 817-study R2 bucket tracks source licenses in corpus_manifest.tsv; CortexMAE-ReadyNeuro weights are CC-BY-NC-4.0)"
+  primary_portal: "Cloudflare R2 (Public S3) & Hugging Face"
+  accession_ids:
+    - "R2:s3://openneuro/v1"
+    - "HuggingFace:medarc/ReadyNeuro"
+  urls:
+    homepage: "https://huggingface.co/datasets/medarc/ReadyNeuro"
+    code: "https://github.com/SophontAI/ReadyNeuro"
+    model_code: "https://github.com/SophontAI/CortexMAE-ReadyNeuro"
+    model_weights: "https://huggingface.co/medarc/CortexMAE-ReadyNeuro"
+    paper: "https://openreview.net/forum?id=rLMKAJCLc1"
+    blog: "https://sophont.med/blog/native-fmri/"
+  download_cli: "uvx --from huggingface_hub hf download medarc/ReadyNeuro subset_manifest.tsv --repo-type dataset  # or full 15.88 TB R2 bucket: curl -fsS https://openneuro.sophont.med/clients/aws-setup.sh -o openneuro-aws-setup.sh && sh openneuro-aws-setup.sh && aws --profile openneuro-public s3 ls s3://openneuro/v1/"
+modeling:
+  recommended_tasks:
+    - native_space_4d_fmri_masked_autoencoder_pretraining
+    - scaling_laws_across_dataset_hours_and_study_diversity
+    - native_vs_template_space_preprocessing_ablation
+    - brainmarks_frozen_encoder_downstream_probing
+  standard_splits: "Full R2 corpus (`s3://openneuro/v1/`): `29,256` training shards (`b0`–`b30`, across `816` studies) and `966` held-out validation shards (`b31`); 6 nested scaling subsets (`737`, `1,502`, `2,946`, `5,836`, `11,674`, `22,083` released hours); downstream probing via Brainmarks across 7 targets (`HCP-YA` task21, `NSD` image category, `AABC` age/sex, `PPMI`, `ABIDE`, `ADHD-200`)."
+  noise_ceiling_or_repeat_structure: "Multi-seed pretraining stability (`3` independent 200k-update ViT-L runs at full scale & HCP-YA, `2` runs per scaling subset) plus held-out `b31` (`966`-shard) reconstruction loss and frozen-backbone `Brainmarks` attention/logistic probe accuracy."
+  key_pitfalls:
+    - "MASSIVE OPENNEURO BENCHMARK OVERLAP (`corpus_manifest.tsv` Verified): ReadyNeuro's `b0`–`b30` training shards directly include `ds004192` (THINGS-fMRI, `train=3`), `ds003020` (UT-Speech, `train=8`), `ds001499` (BOLD5000, `train=4`), `ds001506` (DeepRecon, `train=3`), `ds004496` (NOD, `train=24`), `ds004488` (HAD, `train=24`), `ds005165` (BMD/Algonauts-2021, `train=6`), `ds002345` (Narratives, `train=273`), `ds003643` (LPP, `train=87`), `ds001132` (Sherlock, `train=16`), `ds000113` (StudyForrest, `train=10`), `ds002837` (NNDb, `train=68`), `ds000224` (MSC, `train=9`), and `ds002785/2790/3097` (AOMIC)—always check `corpus_manifest.tsv` before claiming zero-shot downstream transfer!"
+    - "EXPLICIT HCP-YA SUBJECT & STIMULUS OVERLAP (`eval_overlap` Column): Four studies in the full R2 bucket overlap HCP-YA evaluation—`ds003452` (`DMCC13benchmark`, `12` train) and `ds003465` (`DMCC55B`, `48` train + `1` val including `31` actual HCP-YA participants!) plus `ds000244` & `ds002685` (`IBC`, `21` train + `2` val re-administering HCP `task21` stimuli). Exclude all four when evaluating on HCP-YA (already excluded in the 500 GB `medarc/ReadyNeuro` HF subset)."
+    - "NSD `shared1000` TRAIN-TEST IMAGE LEAKAGE IN READYNEURO'S NSD BUILDER (`265` Leaked Images): `src/readyneuro/nsd.py` retains `shared1000` trials held out by `Brainmarks` (`35,184 / 5,857 / 5,794` clips vs. Brainmarks' `32,539 / 5,418 / 5,390`), placing `265` images in both train and test! Filter on `split` in `subject_run_clips` for fair comparison against published Brainmarks baselines."
+    - "NATIVE-SPACE RIGID ALIGNMENT (NO VOXELWISE ANATOMICAL WARPING): Scans are only 6-DOF rigidly oriented via `SynthMorph` onto the `97×115×97` (`2 mm`) grid without nonlinear template deformation—voxel `(i, j, k)` does NOT correspond to identical gyri/sulci across subjects! Models must ingest per-subject `bold_cortical_gm` masks and continuous millimeter coordinate embeddings rather than assuming fixed voxel or parcel correspondence."
+    - "HETEROGENEOUS WEBDATASET SCHEMA v3 & `int8` TRANSPOSED ARRAYS: Each `<accession>__<subject>.tar` mixes `1` subject-geometry sample (`.npy` tar members `bold_idx`, `bold_gm`, `bold_cortical_gm`, `bold_affine`, `1 mm` `T1w`) with `K` run samples (`values.npy` stored as `int8 [voxels, frames]` at `1.0 Hz` after run-wise z-scoring + JSON `scale`). Generic `datasets` WebDataset loaders fail; use `fmrifm.pretrain_data` and `--exclude '*.done'` on R2 sync."
+    - "PAPER vs. PUBLIC RELEASE WITHDRAWN-STUDY DELTA & WEIGHT LICENSING: The paper trained on `837` studies (`22,373 h`), whereas `21` subsequently withdrawn OpenNeuro studies (`498` shards, `290 h`) are removed from `s3://openneuro/v1/` (`817` studies, `22,083 h`); also note `CortexMAE-ReadyNeuro` weights are `CC-BY-NC-4.0` even though ReadyNeuro data is `CC0-1.0`."
+citations:
+  primary_bib_keys:
+    - liu2026readyneuro
+  related_bib_keys:
+    - lane2026scaling
+    - markiewicz2021the
+    - hoffmann2021synthmorph
+  primary_doi_or_arxiv: "OpenReview:rLMKAJCLc1"
+card_path: "cards/human_resting_connectomics/readyneuro.md"
+last_verified: "2026-11-25"

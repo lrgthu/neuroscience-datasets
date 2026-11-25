@@ -69,9 +69,14 @@ def test_tidy_csv_roundtrip_and_missing_values() -> None:
     assert rows[0]["n_subjects"] == "4"
 
 
+def test_openreview_reference_link_formatting() -> None:
+    link = exporter._format_ref_link("OpenReview:rLMKAJCLc1")
+    assert link == "[`OpenReview:rLMKAJCLc1`](https://openreview.net/forum?id=rLMKAJCLc1)"
+
+
 def test_live_repository_catalog_integrity_and_sync() -> None:
     catalog = loader.load_repository_catalog(REPO_ROOT)
-    assert len(catalog.records) >= 112
+    assert len(catalog.records) >= 113
     assert len({r.category for r in catalog.records}) == 7
     seen_ids = {r.id for r in catalog.records}
     assert {
@@ -88,6 +93,7 @@ def test_live_repository_catalog_integrity_and_sync() -> None:
         "bmd_moments",
         "had",
         "open_fmind",
+        "readyneuro",
         "uk_biobank_brain",
         "hcp_ya",
         "hcp_lifespan",

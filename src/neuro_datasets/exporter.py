@@ -160,9 +160,13 @@ def render_tidy_csv(records: Sequence[schema.DatasetRecord]) -> str:
 
 
 def _format_ref_link(doi_or_arxiv: str) -> str:
-    if doi_or_arxiv.lower().startswith("arxiv:"):
+    lower = doi_or_arxiv.lower()
+    if lower.startswith("arxiv:"):
         arxiv_id = doi_or_arxiv.split(":", 1)[1]
         return f"[`{doi_or_arxiv}`](https://arxiv.org/abs/{arxiv_id})"
+    if lower.startswith("openreview:"):
+        forum_id = doi_or_arxiv.split(":", 1)[1]
+        return f"[`{doi_or_arxiv}`](https://openreview.net/forum?id={forum_id})"
     return f"[`{doi_or_arxiv}`](https://doi.org/{doi_or_arxiv})"
 
 
