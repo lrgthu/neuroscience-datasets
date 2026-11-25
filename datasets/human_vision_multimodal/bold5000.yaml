@@ -1,0 +1,62 @@
+id: bold5000
+name: "BOLD5000 (Release 2.0)"
+short_name: "BOLD5000"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_images
+  - object_recognition
+year: 2019
+summary_en: "Slow event-related 3T fMRI dataset (N=4, 15 sessions/subj) spanning 5,254 natural scene and object images sampled jointly across ImageNet, MS-COCO, and SUN."
+summary_zh: "跨 ImageNet、MS-COCO 与 SUN 三大计算机视觉基准的慢速事件相关 3T fMRI 数据集（4 名被试，5,254 张自然场景与物体图像，v2.0 提供 GLMsingle 单试次 beta）。"
+scale:
+  n_subjects: 4
+  hours_per_subject: 15.0
+  total_hours: 55.0
+  n_stimuli: 4916
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain + functional localizer ROIs (EVC, LOC, OPA, PPA, RSC)"
+  sampling_rate_or_tr: "TR = 2.0 s (1.0 s stimulus + 9.0 s fixation ITI = 10.0 s slow event-related trial)"
+brain_regions:
+  - Early_Visual_Cortex
+  - LOC
+  - OPA
+  - PPA
+  - RSC
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds001499"
+  urls:
+    homepage: "https://bold5000-dataset.github.io/website/"
+    openneuro: "https://openneuro.org/datasets/ds001499"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds001499.git"
+modeling:
+  recommended_tasks:
+    - voxelwise_encoding
+    - cross_dataset_domain_shift
+    - scene_selective_roi_analysis
+  standard_splits: "4,803 single-trial training images + 113 repeated test images (3-4 repeats each) shared across CSI1-CSI3 (CSI4 completed 9 of 15 sessions)."
+  noise_ceiling_or_repeat_structure: "113 images repeated 4 times (3 times in some partial sessions) provide test-set split-half reliability; slow 10 s ITI minimizes hemodynamic overlap."
+  key_pitfalls:
+    - "Always use BOLD5000 Release 2.0 (GLMsingle betas) rather than Release 1.0 raw boxcar/FIR betas—GLMsingle boosted explainable variance and SNR substantially despite the slow event-related design."
+    - "CSI4 terminated after 9/15 sessions (~3,108 trials); handle incomplete stimulus coverage explicitly when running cross-subject alignment."
+    - "Stimuli span three distinct CV distributions (SUN scene categories, COCO multi-object scenes, ImageNet iconic objects) with systematic low-level luminance/aspect-ratio differences."
+citations:
+  primary_bib_keys:
+    - chang2019bold5000
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-019-0052-3"
+card_path: "cards/human_vision_multimodal/bold5000.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,64 @@
+id: allen_visual_coding
+name: "Allen Brain Observatory: Visual Coding (Neuropixels & Two-Photon)"
+short_name: "Allen-Vis"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Neuropixels
+  - Two_Photon
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_images
+  - natural_movies
+year: 2021
+summary_en: "Standardized mouse visual hierarchy survey combining 6-probe simultaneous Neuropixels electrophysiology (58 mice, ~100k units across V1, 5 HVAs, LGN, LP, hippocampus) and Cre-line-specific 2-photon calcium imaging (>60k neurons)."
+summary_zh: "艾伦脑科学研究所小鼠视觉层级旗舰普查库，融合 6 探针同步 Neuropixels 电生理（58 只小鼠、近 10 万神经元覆盖 V1、5 个高级视觉区、丘脑 LGN/LP 及海马）与转基因细胞类型特异双光子钙成像（>6 万神经元）。"
+scale:
+  n_subjects: 500
+  hours_per_subject: 3.0
+  total_hours: 1500.0
+  n_stimuli: 118
+  n_channels_or_voxels: "Up to 6 simultaneous Neuropixels 1.0 probes (~1,500-2,000 units/session) + multi-layer 2P GCaMP6f fields"
+  sampling_rate_or_tr: "Neuropixels 30 kHz spikes / 2.5 kHz LFP; Two-Photon 30 Hz ΔF/F & L0-deconvolved events"
+brain_regions:
+  - Mouse_VISp_V1
+  - Mouse_VISl_VISrl_VISal_VISpm_VISam
+  - Mouse_LGd_LP_Thalamus
+  - Mouse_Hippocampus_CA1_DG
+data_formats:
+  - NWB
+  - HDF5_MAT
+access:
+  tier: open
+  license: "Allen Institute Terms of Use / CC-BY-4.0 (DANDI)"
+  primary_portal: "DANDI / AWS Open Data"
+  accession_ids:
+    - "DANDI:000021"
+    - "AWS:s3://allen-brain-observatory"
+  urls:
+    homepage: "https://portal.brain-map.org/circuits-behavior/visual-coding"
+    dandi: "https://dandiarchive.org/dandiset/000021"
+    sdk: "https://allensdk.readthedocs.io/"
+  download_cli: "uvx dandi download DANDI:000021 && aws s3 ls --no-sign-request s3://allen-brain-observatory/"
+modeling:
+  recommended_tasks:
+    - anatomical_vs_functional_hierarchy_score
+    - inter_areal_spike_communication_subspaces
+    - behavioral_state_running_pupil_modulation
+    - spikes_vs_calcium_modality_calibration
+  standard_splits: "Stratified splits across the 118 natural scenes (50 repeats each) and frame-block holdouts across Natural Movies 1 & 3 (10–20 repeats each), paired with session-level generalization across mice."
+  noise_ceiling_or_repeat_structure: "50 presentations per natural scene (250 ms each) and 10-60 repeats of Natural Movies 1/2/3 provide high-precision trial-to-trial Fano factor and noise-correlation estimates."
+  key_pitfalls:
+    - "QUALITY METRIC FILTERING IS MANDATORY: Raw Kilosort2 outputs include multi-unit contamination and drifting units—always apply official AllenSDK quality filters (`isi_violations < 0.5`, `amplitude_cutoff < 0.1`, `presence_ratio > 0.9`)!"
+    - "Running speed & pupil arousal dominate mouse V1/HVA variance: locomotion multiplies firing rates and shifts noise correlations—always include running velocity and pupil area as covariates or stratify stationary vs. running epochs."
+    - "2P GCaMP6f vs. Neuropixels discrepancies: slow calcium decay (~400-600 ms) nonlinearly filters fast spike bursts and inflates apparent selectivity; compare identical Brain Observatory 1.1 stimuli across both modalities explicitly."
+citations:
+  primary_bib_keys:
+    - siegle2021neuropixels
+    - devries2019twophoton
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-020-03171-x"
+card_path: "cards/rodent_circuits_population/allen_visual_coding.md"
+last_verified: "2026-11-25"

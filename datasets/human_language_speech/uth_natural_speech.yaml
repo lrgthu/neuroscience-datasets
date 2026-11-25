@@ -1,0 +1,63 @@
+id: uth_natural_speech
+name: "UT Austin Naturalistic Narrative Speech fMRI (LeBel / Huth)"
+short_name: "UT-Speech"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - natural_speech
+year: 2023
+summary_en: "Deeply sampled within-subject 3T fMRI dataset (N=8; 6-18+ hours/subj across 27-90+ Moth Radio Hour stories) with exact phoneme/word TextGrid alignments and pycortex flatmaps."
+summary_zh: "单被试超深采样的自然英语叙事 3T fMRI 基准（8 名被试收听 27–90+ 篇 Moth Radio Hour 故事，每人约 6–18+ 小时），提供音素/词级 TextGrid 时间戳与 pycortex 皮层展开图。"
+scale:
+  n_subjects: 8
+  hours_per_subject: 11.0
+  total_hours: 90.0
+  n_stimuli: 95
+  n_channels_or_voxels: "2.6 mm isotropic whole-brain (~70k-95k cortical voxels/subj; native & pycortex surfaces)"
+  sampling_rate_or_tr: "TR = 2.0 s (multiband 2; 10 s silence padding before/after each story)"
+brain_regions:
+  - Auditory_Cortex_HG_PT
+  - STG_STS_Wernicke
+  - IFG_Broca
+  - Angular_Gyrus_TPJ
+  - Precuneus_Prefrontal
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - HDF5_MAT
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds003020"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds003020"
+    code: "https://github.com/HuthLab/deep-fMRI-dataset"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds003020.git"
+modeling:
+  recommended_tasks:
+    - voxelwise_llm_encoding
+    - continuous_brain_to_text_decoding
+    - timescale_hierarchy_mapping
+    - acoustic_vs_semantic_variance_partitioning
+  standard_splits: "Train on 26+ unique stories (up to 80+ in UTS01-UTS03); evaluate on the held-out story 'wheretheressmoke' (~10 min, 291 TRs after trimming 10 TRs onset/offset), which was repeated 5-10 times per subject."
+  noise_ceiling_or_repeat_structure: "Test story 'wheretheressmoke' has 5-10 exact repetitions per subject, enabling exact single-subject explainable variance (SPE / Schoppe et al. 2016) ceiling normalization."
+  key_pitfalls:
+    - "Always trim the first 5-10 TRs (10-20 s) after story onset (and silence padding) before fitting or scoring FIR ridge models to avoid strong onset transient artifacts."
+    - "Downsample sub-TR word/LLM embeddings to the 2.0 s TR grid using Lanczos anti-aliasing interpolation (not naive boxcar/mean binning) and stack causal FIR delays [1, 2, 3, 4] TRs (2-8 s)."
+    - "Low-level speech rate, word count per TR, and spectral envelope strongly drive STG/STS and bleed into association cortex—include acoustic/phonemic nuisance regressors via banded ridge (`himalaya`) before attributing R^2 to semantics."
+citations:
+  primary_bib_keys:
+    - lebel2023utspeech
+  related_bib_keys:
+    - huth2016semantic
+  primary_doi_or_arxiv: "10.1038/s41597-023-02437-z"
+card_path: "cards/human_language_speech/uth_natural_speech.md"
+last_verified: "2026-11-25"

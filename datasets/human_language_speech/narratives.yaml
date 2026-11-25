@@ -1,0 +1,61 @@
+id: narratives
+name: "Narratives Spoken Story fMRI Dataset"
+short_name: "Narratives"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_speech
+year: 2021
+summary_en: "Broad-cohort 3T fMRI archive aggregating 345 unique subjects (891 scans, ~139 days total data) listening to 27 spoken stories (~4.6 hours unique audio) with Gentle word/phoneme timestamps and fMRIPrep surfaces."
+summary_zh: "大样本群体级自然语音故事 3T fMRI 聚合库（345 名被试、891 次扫描，覆盖 27 篇故事共约 4.6 小时音频），适合跨被试同步（ISC/ISFC）、超对齐与语境改写对比。"
+scale:
+  n_subjects: 345
+  hours_per_subject: 0.6
+  total_hours: 380.0
+  n_stimuli: 27
+  n_channels_or_voxels: "Whole-brain 3T EPI (MNI152 + fsaverage6 40,962 vertices/hemisphere via fMRIPrep)"
+  sampling_rate_or_tr: "TR = 1.5 s (most stories; 2.0 s in older sub-cohorts)"
+brain_regions:
+  - Auditory_STG_STS
+  - Language_Network
+  - Default_Mode_Network_PMC_TPJ
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds002345"
+  urls:
+    homepage: "https://github.com/snastase/narratives"
+    openneuro: "https://openneuro.org/datasets/ds002345"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds002345.git"
+modeling:
+  recommended_tasks:
+    - inter_subject_correlation_isc
+    - shared_response_modeling
+    - narrative_context_manipulation
+    - population_generalizable_encoding
+  standard_splits: "Cross-story split (e.g., train encoding weights on long stories like '21styear' [56 min] or pooled stories, test on held-out stories like 'pieman' or 'milkyway') AND split-half subject folds within each story."
+  noise_ceiling_or_repeat_structure: "Large per-story cohorts (N = 18 to 82 subjects hearing the exact same story) provide tight leave-one-subject-out ISC upper/lower bounds on stimulus-locked shared variance."
+  key_pitfalls:
+    - "Heterogeneous acquisition parameters across sub-studies: older cohorts used TR = 2.0 s single-band while newer cohorts used TR = 1.5 s multiband—never concatenate raw TR indices across stories without verifying exact story TR in task-*_bold.json."
+    - "Subject IDs overlap partially across stories (345 unique individuals across 891 scans); group cross-validation splits by `participant_id` so the same subject never spans train and test cohorts."
+    - "Several stories contain experimental manipulations (e.g. 'milkyway' synonym replacements, 'piemanpni' vs 'pieman', 'notheory' vs 'yes' context framing, 'prettymouth' Chekhov ambiguity)—consult stimulus metadata before treating all 27 runs as passive stories."
+citations:
+  primary_bib_keys:
+    - nastase2021narratives
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-021-01033-3"
+card_path: "cards/human_language_speech/narratives.md"
+last_verified: "2026-11-25"

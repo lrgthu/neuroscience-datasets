@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  validate:
+    name: Schema, Cross-Links, Ruff & Pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python 3.12
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --extra dev
+
+      - name: Lint with Ruff
+        run: uv run ruff check src scripts tests
+
+      - name: Run unit & integrity tests
+        run: uv run pytest -v
+
+      - name: Verify zero catalog/README/Pages drift
+        run: uv run python scripts/build_catalog.py --check

@@ -1,0 +1,65 @@
+id: studyforrest
+name: "StudyForrest (7T Audio & 3T Audiovisual Movie fMRI + Eye-Tracking)"
+short_name: "StudyForrest"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_7T
+  - fMRI_3T
+  - Structural_MRI
+  - Eye_Tracking
+domains:
+  - natural_movies
+  - natural_speech
+  - multimodal
+year: 2016
+summary_en: "Richly annotated naturalistic movie dataset featuring 7T audio-movie fMRI (N=20) and simultaneous 3T audiovisual fMRI + 1,000 Hz eye-gaze tracking (N=15) during a 2-hour cut of Forrest Gump."
+summary_zh: "经典多模态电影《阿甘正传》数据集，包含 7T 纯听觉电影 fMRI（N=20）与 3T 视听同步 fMRI + 1,000 Hz 眼动追踪（N=15），配有视网膜拓扑、功能定位及逐帧言语/情绪/音乐/视觉标注。"
+scale:
+  n_subjects: 20
+  hours_per_subject: 5.0
+  total_hours: 90.0
+  n_stimuli: 8
+  n_channels_or_voxels: "7T 1.4 mm isotropic slab + 3T 3.0 mm whole-brain + retinotopy/fLoc ROIs"
+  sampling_rate_or_tr: "TR = 2.0 s (8 × ~15 min movie segments); EyeLink 1,000 Hz gaze"
+brain_regions:
+  - Early_Visual_Cortex
+  - Ventral_Temporal_Cortex
+  - Auditory_STG_STS
+  - TPJ_Precuneus_DMN
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - TextGrid_TSV
+access:
+  tier: open
+  license: "PDDL-1.0 / CC0-1.0"
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds000113"
+  urls:
+    homepage: "https://www.studyforrest.org/"
+    openneuro: "https://openneuro.org/datasets/ds000113"
+  download_cli: "datalad install https://github.com/psychoinformatics-de/studyforrest-data.git"
+modeling:
+  recommended_tasks:
+    - hyperalignment_srm
+    - gaze_contingent_visual_encoding
+    - audiovisual_narrative_alignment
+  standard_splits: "Leave-one-segment-out across the 8 contiguous ~15 min movie runs (discarding overlapping boundary TRs between segments)."
+  noise_ceiling_or_repeat_structure: "Inter-subject correlation (ISC) and hyperalignment / Shared Response Model (SRM) across 15-20 subjects synchronized to identical movie timestamps."
+  key_pitfalls:
+    - "Adjacent movie runs include brief (~12 s / 6 TRs) audio/video overlap at segment transitions to preserve narrative continuity—trim overlapping boundary TRs before leave-one-run-out evaluation!"
+    - "Stimulus audio is the German-dubbed version of Forrest Gump (native German cohort)—never align English movie transcripts or English phonetic features to the BOLD timeline."
+    - "7T phase-1 slab (~1.4 mm) prioritizes temporal/occipital/ventral cortex and clips superior parietal/dorsal motor crown; use the 3T phase-2 extension when full whole-brain coverage is required."
+citations:
+  primary_bib_keys:
+    - hanke2014studyforrest
+    - hanke2016studyforrest_av
+  related_bib_keys:
+    - sengupta2016studyforrest_ret
+  primary_doi_or_arxiv: "10.1038/sdata.2016.92"
+card_path: "cards/human_vision_multimodal/studyforrest.md"
+last_verified: "2026-11-25"

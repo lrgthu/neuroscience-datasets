@@ -1,0 +1,62 @@
+id: podcast_ecog
+name: "The 'Podcast' Intracranial ECoG Natural Language Dataset"
+short_name: "Podcast-ECoG"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - ECoG_iEEG
+  - Structural_MRI
+domains:
+  - natural_speech
+year: 2025
+summary_en: "BIDS-iEEG release of 9 neurosurgical participants (1,330 cortical grid, strip, and depth electrodes) listening to a 30-minute naturalistic story podcast with aligned high-gamma broadband, transcripts, and LLM embeddings."
+summary_zh: "普林斯顿/NYU 自然语言颅内脑电（ECoG/iEEG）公开基准（9 名临床受试者共 1,330 个电极完整收听 30 分钟播客故事），附带高伽马包络、逐词时间戳及声学/句法/LLM 特征。"
+scale:
+  n_subjects: 9
+  hours_per_subject: 0.5
+  total_hours: 4.5
+  n_stimuli: 1
+  n_channels_or_voxels: "1,330 total intracranial electrodes (grids, strips, depth; MNI & fsaverage coordinates)"
+  sampling_rate_or_tr: "512 Hz (raw & minimally preprocessed 70-200 Hz high-gamma broadband)"
+brain_regions:
+  - STG_Heschls_Wernicke
+  - IFG_Broca
+  - MTG_ITG
+  - Precentral_Postcentral_Speech_Motor
+  - Angular_Supramarginal_Gyrus
+data_formats:
+  - BIDS
+  - FIF_MNE
+  - HDF5_MAT
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds005574"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds005574"
+    code: "https://github.com/hassonlab/podcast-ecog-tutorials"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds005574.git"
+modeling:
+  recommended_tasks:
+    - millisecond_pre_onset_predictive_coding
+    - high_gamma_llm_encoding
+    - stg_vs_ifg_directional_lag_analysis
+    - electrode_wise_variance_partitioning
+  standard_splits: "Contiguous temporal folds across the 30-minute (~5,000-word) podcast (e.g., 10 contiguous 3-minute folds or 2-fold split-half with >=10 s boundary buffers; never random word splits!)."
+  noise_ceiling_or_repeat_structure: "Inter-electrode / inter-subject anatomical ROI reliability and split-half encoding stability across the 9 subjects synchronized to the exact same 30-minute audio waveform."
+  key_pitfalls:
+    - "PRE-WORD PREDICTIVE BLEED: Autocorrelation in natural speech and co-articulation mean LLM embeddings at word w correlate with word w-1 (~300 ms earlier); when claiming pre-onset prediction (t < 0 ms), partial out acoustic spectrogram and previous-word embeddings!"
+    - "Sparse heterogeneous coverage across patients: left-hemisphere IFG/STG density varies widely by clinical implantation—never treat pooled electrode counts as uniform population averages without mixed-effects / per-patient stratification."
+    - "60 Hz line noise and harmonics (120, 180 Hz) sit directly inside the 70-200 Hz high-gamma band; use the provided notch-filtered common-average/bipolar referenced high-gamma derivatives (`derivatives/ecogprep`)."
+citations:
+  primary_bib_keys:
+    - zada2025podcast
+    - goldstein2022shared
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-025-05462-2"
+card_path: "cards/human_language_speech/podcast_ecog.md"
+last_verified: "2026-11-25"

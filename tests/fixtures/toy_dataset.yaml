@@ -1,0 +1,49 @@
+id: toy_visual_bench
+name: "Toy Synthetic Visual Dataset"
+short_name: "ToyVis"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_7T
+domains:
+  - natural_images
+year: 2024
+summary_en: "Synthetic fixture dataset used to calibrate schema and CSV invariants."
+summary_zh: "用于单元测试校准 Schema 与 Tidy CSV 不变量的合成数据集。"
+scale:
+  n_subjects: 4
+  hours_per_subject: 12.5
+  total_hours: 50.0
+  n_stimuli: 1000
+  n_channels_or_voxels: "10,000 cortical voxels"
+  sampling_rate_or_tr: "TR = 1.5 s"
+brain_regions:
+  - V1
+  - V4
+data_formats:
+  - BIDS
+  - NIfTI
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds999999"
+  urls:
+    homepage: "https://openneuro.org/"
+  download_cli: "datalad install https://example.org/ds999999.git"
+modeling:
+  recommended_tasks:
+    - voxelwise_encoding
+  standard_splits: "800 train / 200 shared test images."
+  noise_ceiling_or_repeat_structure: "3 repeats per test image."
+  key_pitfalls:
+    - "Avoid image overlap between pretrained backbone and test split."
+citations:
+  primary_bib_keys:
+    - allen2021nsd
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41593-021-00962-x"
+card_path: "cards/human_vision_multimodal/toy_visual_bench.md"
+last_verified: "2026-11-25"

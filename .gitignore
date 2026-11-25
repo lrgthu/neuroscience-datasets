@@ -1,0 +1,25 @@
+# Python & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+
+# Environment & private local cluster overlays (NEVER commit internal hosts/paths)
+.env
+.env.*
+local/*.local.yaml
+local/*.local.json
+
+# macOS / Editor artifacts
+.DS_Store
+*.swp
+*~
+.vscode/
+.idea/

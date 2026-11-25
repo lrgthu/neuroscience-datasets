@@ -1,0 +1,72 @@
+id: cneuromod
+name: "Courtois NeuroMod & Algonauts 2025 Multimodal Movie Dataset"
+short_name: "CNeuroMod"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - MEG
+  - Structural_MRI
+  - Diffusion_MRI
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_movies
+  - natural_speech
+  - multimodal
+  - videogames
+year: 2025
+summary_en: "Deepest longitudinal multimodal neuroimaging benchmark (~80-200+ hours 3T fMRI per subject in up to 6 subjects) spanning Friends Seasons 1-7, Movie10 films, HCP localizers, and interactive videogames."
+summary_zh: "单被试纵向采样最深的多模态自然电影 fMRI 基准（核心被试每人 80–200+ 小时 3T fMRI，含《老友记》第 1–7 季、Movie10 长片、HCP 定位任务与电子游戏；支撑 Algonauts 2025 挑战赛）。"
+scale:
+  n_subjects: 6
+  hours_per_subject: 80.0
+  total_hours: 480.0
+  n_stimuli: 250
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain (TR=1.49 s; CIFTI 91,282 grayordinates / Schaeffer 1,000 parcels)"
+  sampling_rate_or_tr: "TR = 1.49 s (multiband 4, whole-brain 3T Siemens Prisma)"
+brain_regions:
+  - Whole-Brain
+  - Visual_Ventral_Dorsal
+  - Auditory_STG_STS
+  - Language_Network
+  - Default_Mode_Network
+data_formats:
+  - BIDS
+  - CIFTI_GIfTI
+  - NIfTI
+  - HDF5_MAT
+  - TextGrid_TSV
+access:
+  tier: registered
+  license: "Custom DUA (Courtois NeuroMod / Algonauts Challenge Terms)"
+  primary_portal: CNeuroMod
+  accession_ids:
+    - "CNeuroMod:friends"
+    - "CNeuroMod:movie10"
+    - "Algonauts:2025"
+  urls:
+    homepage: "https://www.cneuromod.ca/"
+    docs: "https://docs.cneuromod.ca/"
+    algonauts: "https://algonautsproject.com/"
+  download_cli: "datalad install -r git@github.com:courtois-neuromod/cneuromod.git"
+modeling:
+  recommended_tasks:
+    - multimodal_video_audio_language_encoding
+    - long_context_narrative_integration
+    - variance_partitioning_stacking
+    - out_of_distribution_movie_generalization
+  standard_splits: "Algonauts 2025 standard (4 core subjects sub-01/02/03/05): Train on Friends Seasons 1-6 + Movie10 (~65+ hours/subj); evaluate in-distribution on Friends Season 7 and out-of-distribution on held-out feature films (e.g. Chaplin, Mononoke, Passepartout, Planet Earth, Pulp Fiction, Wot)."
+  noise_ceiling_or_repeat_structure: "Selected Movie10 films (e.g., Life, Hidden Figures, Bourne) and HCP/retinotopy runs include multiple repetitions per subject for within-subject temporal noise-ceiling estimation."
+  key_pitfalls:
+    - "Multimodal collinearity: visual motion/faces, speech acoustics, and dialogue semantics strongly covary in sitcoms like Friends—use stacked encoding or variance partitioning / orthogonalized backfitting rather than interpreting marginal R^2 of a single modality."
+    - "Autocorrelation & causal FIR windows: at TR=1.49 s, features must be causally lagged (typically 1.5–9 s / 1–6 TRs) and cross-validated across full episodes (~22 min), never random TR splits."
+    - "Out-of-distribution domain shift: models overfit to Friends multi-camera dialogue scenes often degrade sharply on silent/cinematic OOD movies unless audio, vision, and narrative context are balanced."
+citations:
+  primary_bib_keys:
+    - gifford2025algonauts
+  related_bib_keys: []
+  primary_doi_or_arxiv: "arXiv:2501.00504"
+card_path: "cards/human_vision_multimodal/cneuromod.md"
+last_verified: "2026-11-25"

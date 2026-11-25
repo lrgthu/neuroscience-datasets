@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "Neuroscience Datasets Knowledge Base"
+message: "If you find this curated catalog or schema useful, please cite both the underlying primary dataset publications (in references.bib) and this repository."
+type: dataset
+authors:
+  - family-names: Lin
+    given-names: Ruogu
+repository-code: "https://github.com/lrgthu/neuroscience-datasets"
+url: "https://lrgthu.github.io/neuroscience-datasets/"
+license: CC-BY-4.0
+version: 0.1.0
+date-released: "2026-11-25"
+keywords:
+  - neuroscience
+  - neural-encoding
+  - neural-decoding
+  - fmri
+  - meg
+  - eeg
+  - ecog
+  - neuropixels
+  - two-photon
+  - datasets

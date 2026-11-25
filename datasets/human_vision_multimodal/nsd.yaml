@@ -1,0 +1,70 @@
+id: nsd
+name: "Natural Scenes Dataset (NSD)"
+short_name: "NSD"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_7T
+  - Structural_MRI
+  - Diffusion_MRI
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_images
+  - object_recognition
+year: 2021
+summary_en: "Ultra-deep 7T whole-brain fMRI (1.8 mm, TR=1.6 s) in 8 subjects viewing up to 10,000 MS-COCO scenes (3 repeats each; 30-40 sessions/subject) during continuous recognition."
+summary_zh: "超深度采样的 7T 全脑自然图像 fMRI 基准（8 名被试，每人 30–40 个扫描 session、最多 10,000 张 MS-COCO 图像 × 3 次重复），广泛用于视觉编码、图像重建与表征对齐。"
+scale:
+  n_subjects: 8
+  hours_per_subject: 38.0
+  total_hours: 272.0
+  n_stimuli: 73000
+  n_channels_or_voxels: "1.8 mm isotropic whole-brain (~80k-120k cortical voxels/subj; fsaverage & func1pt8mm)"
+  sampling_rate_or_tr: "TR = 1.6 s (single-trial GLMsingle betas: betas_fithrf_GLMdenoise_RR)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - Ventral_Temporal_Cortex
+  - Parietal_Prefrontal
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+  - HDF5_MAT
+access:
+  tier: registered
+  license: "CC-BY-NC-4.0 (NSD Data Access Terms)"
+  primary_portal: "AWS Open Data"
+  accession_ids:
+    - "AWS:s3://natural-scenes-dataset"
+  urls:
+    homepage: "https://naturalscenesdataset.org/"
+    docs: "https://cvnlab.slite.page/p/fRv4lz5V2F/Natural-Scenes-Dataset"
+    download: "https://registry.opendata.aws/nsd/"
+  download_cli: "aws s3 ls --no-sign-request s3://natural-scenes-dataset/nsddata_betas/ppdata/"
+modeling:
+  recommended_tasks:
+    - voxelwise_encoding
+    - image_reconstruction
+    - rsa_cka_alignment
+    - cross_subject_functional_alignment
+    - noise_ceiling_identifiability
+  standard_splits: "Test on shared1000 (1,000 MS-COCO images viewed by all 8 subjects; 515 images have complete 3-trial repeats in all 8 subjects, 982 in core 4 subjects sub01/02/05/07). Train on subject-unique 9,000 images (up to 27,000 trials/subj)."
+  noise_ceiling_or_repeat_structure: "Up to 3 presentations per image spaced across sessions; official ncsnr metric provided per voxel, where NC (%) = 100 * ncsnr^2 / (ncsnr^2 + 1/n_avg)."
+  key_pitfalls:
+    - "Use betas_fithrf_GLMdenoise_RR (b3) rather than naive canonical HRF betas (b1); z-score betas WITHIN each scan session before concatenating across the 30-40 sessions to remove session-level baseline/gain drift."
+    - "Pretrained vision/VLM leakage: MS-COCO 2017 train/val overlaps NSD stimuli; check whether foundation models (CLIP, Stable Diffusion, DINO) saw shared1000 images or captions during pretraining."
+    - "Subjects 1, 2, 5, and 7 completed all 40 sessions; Subjects 3, 4, 6, and 8 completed 32, 30, 32, and 30 sessions respectively—account for missing third repeats when computing n_avg=3 noise ceilings."
+    - "Continuous old/new recognition task introduces memory/repetition-suppression effects across Repeat 1 -> Repeat 2 -> Repeat 3 in higher-tier ventral, parietal, and medial temporal areas."
+citations:
+  primary_bib_keys:
+    - allen2021nsd
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41593-021-00962-x"
+card_path: "cards/human_vision_multimodal/nsd.md"
+last_verified: "2026-11-25"

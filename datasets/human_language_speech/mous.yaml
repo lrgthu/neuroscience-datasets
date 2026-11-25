@@ -1,0 +1,63 @@
+id: mous
+name: "MOUS (Mother of Unification Studies — 204-Subject Paired fMRI & MEG)"
+short_name: "MOUS"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - MEG
+  - Structural_MRI
+  - Diffusion_MRI
+domains:
+  - natural_speech
+  - reading
+year: 2019
+summary_en: "Large-cohort paired multimodal dataset of 204 Dutch speakers who each completed BOTH 3T fMRI and 275-channel CTF MEG while comprehending sentences versus scrambled word lists (102 visual reading, 102 auditory listening)."
+summary_zh: "大规模同被试双模态语言数据集（204 名荷兰语母语者均同时完成 3T fMRI 与 275 通道 MEG；其中 102 人视觉阅读、102 人听觉理解完整句子与打乱词表对照）。"
+scale:
+  n_subjects: 204
+  hours_per_subject: 2.5
+  total_hours: 510.0
+  n_stimuli: 360
+  n_channels_or_voxels: "3T 3.5 mm fMRI + 275-ch CTF MEG + T1w + DWI + resting-state"
+  sampling_rate_or_tr: "fMRI TR = 2.0 s; MEG 1,200 Hz"
+brain_regions:
+  - LIFG_Broca
+  - Posterior_STG_MTG
+  - Angular_Gyrus_ATL
+  - Visual_Word_Form_Area
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - FIF_MNE
+  - TextGrid_TSV
+access:
+  tier: registered
+  license: "Donders Repository RU-DI-HD-1.0 (Free Academic Account)"
+  primary_portal: "Donders Repository"
+  accession_ids:
+    - "Donders:di.dccn.DSC_3011020.09_236"
+  urls:
+    homepage: "https://data.donders.ru.nl/collections/di/dccn/DSC_3011020.09_236"
+  download_cli: "# Download via Donders Repository WebDAV / rclone after accepting RU-DI-HD-1.0 terms"
+modeling:
+  recommended_tasks:
+    - syntactic_semantic_unification
+    - sentences_vs_wordlists_compositionality
+    - cross_modal_fmri_meg_fusion
+    - reading_vs_listening_invariance
+  standard_splits: "Stratified sentence-triplet holdout (ensuring matched sentence and word-list counterparts of the same lexical items stay in the same fold!) and subject-level generalization across N=102 visual / N=102 auditory cohorts."
+  noise_ceiling_or_repeat_structure: "Large sample size (N=102 per sensory modality) supports high-power group-level and cross-subject generalization ceilings across both fMRI and MEG."
+  key_pitfalls:
+    - "LEXICAL ITEM PAIRING: Each scrambled word-list condition is constructed by permuting words from a matched intact Dutch sentence—split train/test by underlying item ID so identical content words do not leak across folds!"
+    - "Subject prefix `sub-V*` denotes visual reading (N=102) whereas `sub-A*` denotes auditory listening (N=102); sensory modality is between-subjects while neuroimaging modality (fMRI + MEG) is within-subjects."
+    - "Stimuli are in Dutch—use Dutch or multilingual language models (e.g. RobBERT, EuroBERT, Llama/Qwen multilingual) matched to exact word presentation timestamps."
+citations:
+  primary_bib_keys:
+    - schoffelen2019mous
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-019-0020-y"
+card_path: "cards/human_language_speech/mous.md"
+last_verified: "2026-11-25"

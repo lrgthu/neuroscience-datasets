@@ -1,0 +1,62 @@
+id: nlb_2021
+name: "Neural Latents Benchmark '21 (NLB Macaque Motor, Sensory & Frontal Suite)"
+short_name: "NLB-21"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Utah_Array
+  - Behavior
+  - Eye_Tracking
+domains:
+  - motor_reaching
+  - decision_making
+year: 2021
+summary_en: "Standardized NWB benchmark of 4 macaque spike-train datasets (MC_Maze, MC_RTT, Area2_Bump, DMFC_RSG) on DANDI for evaluating latent dynamical systems via co-smoothing bits-per-spike and kinematic decoding."
+summary_zh: "神经元群体潜在动力学建模标准基准（NWB 格式托管于 DANDI 000127–000130，含猕猴运动皮层 MC_Maze / MC_RTT、躯体感觉 Area2_Bump 与额叶时间认知 DMFC_RSG），采用协同平滑（co-smoothing bits/spike）统一评测。"
+scale:
+  n_subjects: 4
+  hours_per_subject: 1.5
+  total_hours: 6.0
+  n_stimuli: 108
+  n_channels_or_voxels: "65 to 182 sorted single/multi-units per dataset (held-in + held-out neuron splits at 1 ms / 5 ms bins)"
+  sampling_rate_or_tr: "1,000 Hz spike bins (1 ms resolution NWB)"
+brain_regions:
+  - Macaque_M1_PMd
+  - Macaque_Area2_Somatosensory
+  - Macaque_DMFC
+data_formats:
+  - NWB
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: DANDI
+  accession_ids:
+    - "DANDI:000127"
+    - "DANDI:000128"
+    - "DANDI:000129"
+    - "DANDI:000130"
+  urls:
+    homepage: "https://neurallatents.github.io/"
+    dandi_maze: "https://dandiarchive.org/dandiset/000128"
+    code: "https://github.com/neurallatents/nlb_tools"
+  download_cli: "uvx dandi download DANDI:000128/0.220113.0400"
+modeling:
+  recommended_tasks:
+    - latent_dynamical_systems_lfads_ssm
+    - neuron_co_smoothing
+    - single_trial_kinematic_decoding
+  standard_splits: "Official NLB co-smoothing split: Train on all neurons (held-in + held-out) in train trials; at test time, observe ONLY held-in neurons (3:1 ratio) and predict Poisson firing rates of held-out neurons + forward future time steps."
+  noise_ceiling_or_repeat_structure: "Condition-averaged PSTH match (`psth R^2` across 108 reach conditions in MC_Maze) + Poisson log-likelihood bits-per-spike (`co-bps`) normalized against mean-rate null model."
+  key_pitfalls:
+    - "Poisson log-likelihood (`co-bps`) explodes to -infinity if a model predicts exact zero or negative firing rates on a bin containing >=1 spike—enforce strictly positive rate link functions (`softplus` / `exp` + floor `1e-9`)!"
+    - "MC_RTT (Random Target Task) is continuous and un-stereotyped (zero condition repeats), whereas MC_Maze has 108 stereotyped barrier conditions—autonomous dynamics that memorize condition templates succeed on MC_Maze but fail on input-driven MC_RTT and Area2_Bump."
+    - "Respect causal vs. acausal (bidirectional smoother) evaluation settings when comparing state-space models (LFADS/NDT/S4) against online BCI filters."
+citations:
+  primary_bib_keys:
+    - pei2021nlb
+  related_bib_keys: []
+  primary_doi_or_arxiv: "arXiv:2109.04463"
+card_path: "cards/nhp_electrophysiology/nlb_2021.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,15 @@
+# Copy this file to `local/mirrors.local.yaml` (which is gitignored) to track
+# private local cache paths on your workstation or compute cluster without
+# ever exposing internal hostnames, IPs, or directory paths in git commits.
+
+mirrors:
+  nsd:
+    host_alias: "gpu-workstation"
+    local_path: "/data/datasets/nsd"
+    status: "downloaded_betas_1pt8mm"
+    notes: "GLMsingle betas + shared1000 splits ready."
+  tvsd:
+    host_alias: "gpu-workstation"
+    local_path: "/data/datasets/tvsd"
+    status: "downloaded_muae"
+    notes: "Monkey F & N normalized MUAe HDF5 files."

@@ -1,0 +1,63 @@
+id: ibl_brain_wide_map
+name: "International Brain Laboratory (IBL) Brain-Wide Map"
+short_name: "IBL-BWM"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Neuropixels
+  - Eye_Tracking
+  - Behavior
+domains:
+  - decision_making
+  - multimodal
+year: 2025
+summary_en: "Landmark 12-lab brain-wide Neuropixels map (139 mice, 699 probe insertions, >620,000 neurons across 279 Allen CCFv3 brain regions) during a standardized perceptual + prior-probability decision-making task."
+summary_zh: "国际脑实验室（IBL）12 家实验室联合采集的全脑神经活动图谱（139 只小鼠、699 次 Neuropixels 探针插入、跨越 279 个脑区的逾 62 万个神经元），同步记录视觉决策、贝叶斯先验切换、转轮动作与高速姿态追踪。"
+scale:
+  n_subjects: 139
+  hours_per_subject: 2.5
+  total_hours: 700.0
+  n_stimuli: 9
+  n_channels_or_voxels: "699 Neuropixels 1.0 probe insertions (>620,000 total sorted units; ~75,000+ QC-passing good units across 279 brain regions)"
+  sampling_rate_or_tr: "30 kHz spikes / 2.5 kHz LFP + 60/150 Hz multi-camera Lightning Pose video & wheel rotary encoder"
+brain_regions:
+  - Whole-Brain_279_CCFv3_Regions
+  - Visual_Somatosensory_Motor_Cortex
+  - Prefrontal_Orbitofrontal_ACA
+  - Striatum_Thalamus_Midbrain_Cerebellum_Hindbrain
+data_formats:
+  - NWB
+  - Parquet_CSV
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "DANDI / ONE-API (AWS S3)"
+  accession_ids:
+    - "DANDI:000409"
+    - "AWS:s3://ibl-brain-wide-map-public"
+  urls:
+    homepage: "https://www.internationalbrainlab.com/data"
+    dandi: "https://dandiarchive.org/dandiset/000409"
+    docs: "https://int-brain-lab.github.io/iblenv/"
+  download_cli: "uv run --with ONE-api python -c \"from one.api import ONE; one = ONE(base_url='https://openalyx.internationalbrainlab.org'); print(len(one.search(project='ibl_neuropixel_brainwide_01')))\""
+modeling:
+  recommended_tasks:
+    - brain_wide_distributed_coding_audit
+    - bayesian_prior_vs_sensory_decoding
+    - movement_confound_orthogonalization
+    - multi_region_foundation_pretraining
+  standard_splits: "Contiguous block/trial cross-validation respecting the 20:80 / 80:20 block-prior transitions (`50-90` trials/block; NEVER random trial splits when decoding prior belief!) + cross-session / cross-lab holdouts."
+  noise_ceiling_or_repeat_structure: "Minimum >=2 independent probe insertions per brain region across independent mice/labs + standardized passive replay control period at the end of every recording session."
+  key_pitfalls:
+    - "SPURIOUS CORRELATION WITH SLOW BLOCK PRIORS (`Harris 2020 / Elber-Dorozko & Loewenstein`): Block prior (`p_left` switching every ~50-90 trials) is strongly autocorrelated across trials while slow neural drift also fluctuates over minutes! NEVER test block-prior decoding significance via standard i.i.d. trial permutation—you MUST use **pseudosessions** (synthetic Markov block sequences drawn from the exact generative task process)!"
+    - "Uninstructed body movements (whisking, paw, licking, wheel micro-motions captured by 3-camera Lightning Pose) permeate almost all 279 brain areas—include pose/wheel kinematics in reduced-rank/GLM models before claiming purely cognitive coding."
+    - "Filter units using the official IBL `label == 1.0` (IBL sliding-RP + amplitude + noise cutoff composite QC metric) rather than raw Kilosort `good` labels."
+citations:
+  primary_bib_keys:
+    - ibl2025brainwidemap
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-025-09235-0"
+card_path: "cards/rodent_circuits_population/ibl_brain_wide_map.md"
+last_verified: "2026-11-25"

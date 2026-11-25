@@ -1,0 +1,59 @@
+id: lpp_multilingual
+name: "Le Petit Prince (LPP) Multilingual Audiobook fMRI Corpus"
+short_name: "LPP"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - natural_speech
+  - multilingual
+year: 2022
+summary_en: "Cross-linguistic 3T multi-echo fMRI corpus of 112 native speakers (49 English, 35 Mandarin Chinese, 28 French) listening to the complete ~100-minute Little Prince audiobook with prosodic, syntactic, and LLM annotations."
+summary_zh: "跨语言自然叙事 3T 多回波 fMRI 语料库（112 名母语者：英语 49 人、中文 35 人、法语 28 人完整收听约 100 分钟《小王子》有声书），附带韵律、依存/成分句法树及词向量标注。"
+scale:
+  n_subjects: 112
+  hours_per_subject: 1.7
+  total_hours: 185.0
+  n_stimuli: 9
+  n_channels_or_voxels: "3T multi-echo EPI (3.75 × 3.75 × 3.8 mm, ME-ICA denoised in MNI space)"
+  sampling_rate_or_tr: "TR = 2.0 s (9 audiobook runs × ~11 min per subject)"
+brain_regions:
+  - STG_STS
+  - IFG_Triangularis_Opercularis
+  - Angular_Gyrus_ATL
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - TextGrid_TSV
+  - Parquet_CSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds003643"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds003643"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds003643.git"
+modeling:
+  recommended_tasks:
+    - cross_lingual_representation_alignment
+    - syntactic_parsing_incremental_complexity
+    - multilingual_llm_encoding
+  standard_splits: "9-fold leave-one-run-out across the 9 chapter runs (~11 min each), or cross-lingual transfer across EN / ZH / FR aligned at sentence/chapter level."
+  noise_ceiling_or_repeat_structure: "Within-language leave-one-subject-out ISC across N=49 (EN), N=35 (ZH), and N=28 (FR) cohorts."
+  key_pitfalls:
+    - "Translation timelines are NOT TR-synchronous across English, Chinese, and French audio recordings—align cross-lingual representations at matched sentence/clause boundaries rather than raw TR index."
+    - "Multi-echo EPI (3 echoes) was denoised with ME-ICA; avoid re-running aggressive global signal regression or duplicate motion scrubbing on already ME-ICA denoised derivatives."
+    - "Tokenization granularity differs fundamentally between Mandarin characters/words and English/French whitespace words—control for syllable/phoneme rate and acoustic F0/intensity in all three languages."
+citations:
+  primary_bib_keys:
+    - li2022lpp
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-022-01625-7"
+card_path: "cards/human_language_speech/lpp_multilingual.md"
+last_verified: "2026-11-25"

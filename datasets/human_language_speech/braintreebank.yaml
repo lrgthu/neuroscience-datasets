@@ -1,0 +1,60 @@
+id: braintreebank
+name: "Brain Treebank (Large-Scale Multimodal Movie Intracranial sEEG)"
+short_name: "BrainTreebank"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - sEEG
+  - Structural_MRI
+domains:
+  - natural_movies
+  - natural_speech
+  - multimodal
+year: 2024
+summary_en: "Large-scale stereo-EEG (sEEG) dataset (N=10 patients, ~1,688 depth electrodes, ~43 cumulative hours across 21-26 Hollywood movies) with manual word-onset alignments and Universal Dependencies syntactic parse trees."
+summary_zh: "大规模多模态好莱坞电影立体定向颅内脑电（sEEG）数据集（10 名受试者、近 1,700 个深部电极、累计约 43 小时观影记录，覆盖 38,000+ 句人工校验词起点与 Universal Dependencies 句法树）。"
+scale:
+  n_subjects: 10
+  hours_per_subject: 4.3
+  total_hours: 43.3
+  n_stimuli: 21
+  n_channels_or_voxels: "~1,688 intracranial sEEG depth contacts (~168 electrodes/subject with MNI/DKT atlas labels)"
+  sampling_rate_or_tr: "2,048 Hz high-resolution sEEG"
+brain_regions:
+  - Superior_Middle_Inferior_Temporal
+  - Insula_Hippocampus_Amygdala
+  - Inferior_Frontal_Prefrontal
+  - Occipitotemporal
+data_formats:
+  - HDF5_MAT
+  - Parquet_CSV
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: BrainTreebank
+  accession_ids:
+    - "BrainTreebank:v1"
+  urls:
+    homepage: "https://braintreebank.dev/"
+    code: "https://github.com/BrainTreebank"
+  download_cli: "# Download HDF5 neural recordings and UD transcript JSONs directly from https://braintreebank.dev/"
+modeling:
+  recommended_tasks:
+    - intracranial_language_and_syntax_probing
+    - deep_subcortical_cortical_lag_dynamics
+    - multimodal_speech_vision_decoding
+  standard_splits: "Contiguous movie segment splits (~5-10 min chunks) or held-out movie runs per subject (note: different subjects watched partially overlapping subsets of Hollywood films)."
+  noise_ceiling_or_repeat_structure: "Multi-hour per-subject recordings (~4.3 hours / ~223,000 total words across cohort) enable high-sample within-electrode cross-validated R^2 and ROC-AUC probing."
+  key_pitfalls:
+    - "sEEG vs. subdural ECoG geometry: stereotactic depth shafts densely sample sulci, insula, white-matter boundaries, hippocampus, and amygdala—always use bipolar referencing (adjacent shaft contacts) to suppress distant volume-conducted potentials!"
+    - "Different subjects watched different Hollywood films (e.g., Avengers, Toy Story, Spider-Man, Incredibles); cross-subject alignment requires stimulus-general encoding models rather than direct timepoint-by-timepoint ISC."
+    - "Movie dialogue is embedded in background music, sound effects, and rapid camera cuts—include audio spectrogram and visual scene-cut regressors alongside UD syntactic features."
+citations:
+  primary_bib_keys:
+    - wang2024braintreebank
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.52202/079017-3060"
+card_path: "cards/human_language_speech/braintreebank.md"
+last_verified: "2026-11-25"

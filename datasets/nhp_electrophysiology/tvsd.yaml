@@ -1,0 +1,60 @@
+id: tvsd
+name: "THINGS Ventral-Stream Spiking Dataset (TVSD)"
+short_name: "TVSD"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Utah_Array
+  - Eye_Tracking
+domains:
+  - natural_images
+  - object_recognition
+year: 2025
+summary_en: "Simultaneous 1,024-channel chronic Utah array recordings across macaque V1, V4, and IT in 2 monkeys viewing >22,000 natural THINGS images (1,854 concepts + 30-repeat test set), directly aligned with human THINGS-data."
+summary_zh: "猕猴腹侧视觉通路大规模同步微电极阵列基准（2 只恒河猴同步植入 16 块共 1,024 通道 Utah 阵列覆盖 V1、V4 与 IT，观看 >22,000 张 THINGS 自然图像），与人类 THINGS-fMRI/MEG/EEG 精确共享图像概念。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 15.0
+  total_hours: 30.0
+  n_stimuli: 22348
+  n_channels_or_voxels: "1,024 chronic intracortical channels per monkey (16 × 64-ch arrays simultaneously in V1, V4, IT)"
+  sampling_rate_or_tr: "30 kHz raw broadband; 1,000 Hz normalized envelope multi-unit activity (MUAe)"
+brain_regions:
+  - Macaque_V1
+  - Macaque_V4
+  - Macaque_IT
+data_formats:
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "G-Node GIN"
+  accession_ids:
+    - "GIN:10.12751/g-node.hc7zlv"
+    - "OSF:10.17605/OSF.IO/jum2f"
+  urls:
+    homepage: "https://gin.g-node.org/paolo_papale/TVSD"
+    doi: "https://doi.gin.g-node.org/10.12751/g-node.hc7zlv/"
+  download_cli: "datalad install https://gin.g-node.org/paolo_papale/TVSD.git"
+modeling:
+  recommended_tasks:
+    - inter_areal_causal_feedforward_feedback_dynamics
+    - ventral_stream_spatiotemporal_encoding
+    - cross_species_macaque_human_alignment
+    - sustained_vs_transient_visual_representations
+  standard_splits: "22,248 single-repeat training images (1,854 THINGS concepts × 12 images) + 100 disjoint test images repeated 30 times each (~660 trials/session across multiple days)."
+  noise_ceiling_or_repeat_structure: "30 repetitions on each of the 100 held-out test images plus SNR/oracle reliability filtering per electrode (`SNR >= 2.0` or split-half Spearman-Brown ceiling at millisecond bins)."
+  key_pitfalls:
+    - "Multi-day chronic drift: the 22,248 training images were recorded across multiple sessions; apply session-wise baseline/SD normalization (using spontaneous prestimulus intervals or released normalized MUAe) before fitting cross-session encoders!"
+    - "Fast 100 ms ON / 100 ms OFF presentation (`5 Hz` rapid fixation paradigm): response windows after `+200 ms` overlap with the onset of the next stimulus in the 4-image trial burst—account for preceding/succeeding image interference when analyzing late (`150-300 ms`) sustained/feedback V1-V4-IT activity!"
+    - "Retinotopic eccentricity differs across array implants: V1 and V4 arrays have localized parafoveal receptive fields (`pRF` maps included in GIN repo), whereas IT neurons exhibit broader spatial invariance—use pRF masks or spatially localized readouts!"
+citations:
+  primary_bib_keys:
+    - papale2025tvsd
+  related_bib_keys:
+    - hebart2023things
+  primary_doi_or_arxiv: "10.1016/j.neuron.2024.12.003"
+card_path: "cards/nhp_electrophysiology/tvsd.md"
+last_verified: "2026-11-25"

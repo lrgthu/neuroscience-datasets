@@ -1,0 +1,75 @@
+id: things_data
+name: "THINGS-data (THINGS-fMRI, THINGS-MEG, THINGS-EEG2)"
+short_name: "THINGS-data"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - MEG
+  - EEG
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_images
+  - object_recognition
+year: 2023
+summary_en: "Multimodal human neuroimaging suite built on the 1,854-concept THINGS object database, pairing 3T fMRI (N=3), 275-ch CTF MEG (N=4), 64-ch RSVP EEG2 (N=10), and 4.7M behavioral odd-one-out judgments."
+summary_zh: "基于 1,854 个物体概念 THINGS 图库的跨模态人类视觉数据集家族，统一覆盖 3T fMRI（N=3）、275 通道 MEG（N=4）、64 通道高速 EEG2（N=10）及大规模行为相似度，并与猕猴 TVSD 直接对齐。"
+scale:
+  n_subjects: 17
+  hours_per_subject: 12.0
+  total_hours: 120.0
+  n_stimuli: 26107
+  n_channels_or_voxels: "3T 2 mm iso fMRI; 275-ch CTF MEG; 64-ch BrainVision EEG"
+  sampling_rate_or_tr: "fMRI TR = 1.5 s; MEG 1,200 Hz; EEG2 1,000 Hz (10 Hz RSVP)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - LOC_FFA_PPA
+  - Ventral_Temporal_Cortex
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - FIF_MNE
+  - BrainVision_EDF
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds004192"
+    - "OpenNeuro:ds004212"
+    - "OSF:10.17605/OSF.IO/jum2f"
+    - "OSF:3jk45"
+  urls:
+    homepage: "https://things-initiative.org/"
+    fmri: "https://openneuro.org/datasets/ds004192"
+    meg: "https://openneuro.org/datasets/ds004212"
+    eeg2: "https://osf.io/3jk45/"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds004192.git && datalad install https://github.com/OpenNeuroDatasets/ds004212.git"
+modeling:
+  recommended_tasks:
+    - voxelwise_encoding
+    - spatiotemporal_fusion_rsa
+    - zero_shot_concept_decoding
+    - cross_species_alignment_with_tvsd
+  standard_splits: "THINGS-fMRI: 8,640 single-trial train images (720 concepts × 12 exemplars) + 100 separate test images (12 repeats each). THINGS-MEG: 22,248 single-trial train images (1,854 concepts × 12) + 200 test images (12 repeats). THINGS-EEG2: 16,540 train images (4 repeats) + 200 zero-shot test images (80 repeats)."
+  noise_ceiling_or_repeat_structure: "Dedicated multi-repeat test sets (12 repeats in fMRI/MEG; 80 repeats in EEG2) enable unbiased upper/lower RSA and encoding noise ceilings on held-out object categories."
+  key_pitfalls:
+    - "Ensure zero concept-level leakage: test images come from held-out THINGS object concepts—do not mix exemplars of the same concept across train and validation folds when claiming zero-shot category decoding."
+    - "THINGS-EEG2 uses 100 ms SOA (10 Hz RSVP); late ERPs (>150 ms) overlap temporally with subsequent image onsets and require linear deconvolution or trial-averaged test conditions."
+    - "Cross-species alignment with Macaque TVSD shares the exact 1,854-concept image pool—verify exact image filenames when pairing human MEG/fMRI with macaque V1/V4/IT."
+citations:
+  primary_bib_keys:
+    - hebart2023things
+    - gifford2022thingseeg
+  related_bib_keys:
+    - papale2025tvsd
+  primary_doi_or_arxiv: "10.7554/eLife.82580"
+card_path: "cards/human_vision_multimodal/things_data.md"
+last_verified: "2026-11-25"

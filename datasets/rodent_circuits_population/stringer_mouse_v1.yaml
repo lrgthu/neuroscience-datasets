@@ -1,0 +1,56 @@
+id: stringer_mouse_v1
+name: "Stringer & Pachitariu 10,000-Neuron Mouse V1 Population Geometry Dataset"
+short_name: "Stringer-10k"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Two_Photon
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_images
+year: 2019
+summary_en: "Simultaneous 11-plane 2-photon calcium imaging of ~10,000 mouse V1 neurons viewing 2,800 natural images (2 repeats each), establishing the high-dimensional 1/n^alpha power-law eigenspectrum benchmark."
+summary_zh: "同时记录约 10,000 个小鼠初级视觉皮层（V1）神经元的 11 平面双光子钙成像经典数据集（7 只小鼠观看 2,800 张自然图像 × 2 次重复），奠定了群体编码谱幂律（~1/n^α, α≈1）与高维平滑流形几何基准。"
+scale:
+  n_subjects: 7
+  hours_per_subject: 2.5
+  total_hours: 20.0
+  n_stimuli: 2800
+  n_channels_or_voxels: "~10,000 simultaneously imaged V1 L2/3 excitatory neurons per recording (Suite2p deconvolved) + 500-D face motion SVDs"
+  sampling_rate_or_tr: "2.5 Hz multi-plane volume rate (11 planes; 500 ms image ON + 300-500 ms ISI)"
+brain_regions:
+  - Mouse_VISp_V1_Layer2_3
+data_formats:
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: Figshare
+  accession_ids:
+    - "Figshare:10.25378/janelia.6845348"
+  urls:
+    homepage: "https://doi.org/10.25378/janelia.6845348"
+    code: "https://github.com/MouseLand/stringer-pachitariu-et-al-2018b"
+  download_cli: "# Download clean .mat recordings directly from Janelia Figshare: https://doi.org/10.25378/janelia.6845348"
+modeling:
+  recommended_tasks:
+    - cross_validated_pca_eigenspectrum_estimation
+    - high_dimensional_population_geometry
+    - spontaneous_arousal_subspace_subtraction
+    - kernel_alignment_spectral_bias_analysis
+  standard_splits: "2,800 natural images presented TWICE (`rep 1` vs `rep 2`) for cross-validated PCA (`cvPCA`), plus low-dimensional grating/sparse-noise/whitened control stimulus sessions."
+  noise_ceiling_or_repeat_structure: "Exact 2-repeat stimulus pairing (`X_1, X_2` of shape `2800 × ~10,000`) enables unbiased cross-covariance eigenspectrum estimation (`cvPCA`) free from single-trial shot-noise eigenvalue floors."
+  key_pitfalls:
+    - "NEVER estimate population eigenspectra with standard un-cross-validated PCA on single trials or trial averages: finite-sample Marchenko-Pastur trial noise flattens the tail! Always use **cvPCA** (`projecting Repeat 2 onto singular vectors learned on Repeat 1`) after subtracting the spontaneous behavioral subspace!"
+    - "Ongoing spontaneous/face-motion fluctuations (~32-128 dimensions correlated with whisking, sniffing, and pupil) are orthogonal or weakly aligned to sensory dimensions—project out spontaneous/face-SVD dimensions measured during gray-screen intervals before estimating sensory power laws."
+    - "Compute eigenspectra in `float64` (never `float32`/`float16`), as tail modes `n = 500..2800` span 3-4 orders of magnitude below the leading eigenvalue."
+citations:
+  primary_bib_keys:
+    - stringer2019highdim
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-019-1346-5"
+card_path: "cards/rodent_circuits_population/stringer_mouse_v1.md"
+last_verified: "2026-11-25"

@@ -1,0 +1,56 @@
+id: majaj_hong_2015
+name: "Majaj-Hong Macaque V4 & IT Core Object Recognition Benchmark"
+short_name: "MajajHong2015"
+category: nhp_electrophysiology
+species:
+  - macaque
+modalities:
+  - Utah_Array
+  - Behavior
+domains:
+  - object_recognition
+year: 2015
+summary_en: "Foundational Brain-Score ventral-stream benchmark recording 256 public multi-unit sites (88 V4, 168 IT) in 2 macaques viewing 5,760 rendered 3D object images under controlled pose, scale, and background variation."
+summary_zh: "Brain-Score 最核心的猕猴腹侧通路物体识别基准（2 只猕猴 V4 区 88 通道、IT 区 168 通道共 256 个神经位点，观看 64 个三维物体在复杂背景下的姿态/尺度/位置变化图像，共 5,760 张 × ~28-50 次重复）。"
+scale:
+  n_subjects: 2
+  hours_per_subject: 20.0
+  total_hours: 40.0
+  n_stimuli: 5760
+  n_channels_or_voxels: "256 standard public neural sites (88 V4 + 168 IT across Monkeys Chabo & Tito; 3,200 images in public Brain-Score assembly)"
+  sampling_rate_or_tr: "Time-averaged firing rates in [70, 170] ms post-stimulus window (100 ms rapid presentation)"
+brain_regions:
+  - Macaque_V4
+  - Macaque_IT
+data_formats:
+  - NWB
+  - Zarr_NPZ
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Brain-Score / DANDI"
+  accession_ids:
+    - "BrainScore:MajajHong2015.public"
+  urls:
+    homepage: "https://www.brain-score.org/"
+    code: "https://github.com/brain-score/vision"
+  download_cli: "uv run python -c \"import brainscore_vision; print(brainscore_vision.load_dataset('MajajHong2015.public'))\""
+modeling:
+  recommended_tasks:
+    - ventral_stream_pls_ridge_alignment
+    - transformation_tolerance_analysis
+    - cka_rsa_identifiability_benchmarking
+  standard_splits: "10-fold cross-validation stratified by object identity (holding out whole 3D objects, not random pose renders of the same object!) across the 3,200 public (or 5,760 full) High-Variation (HV) images."
+  noise_ceiling_or_repeat_structure: "High repeat count (~28–50 presentations per image) yields very tight split-half Spearman-Brown internal consistency (~0.80–0.90 median r in IT)."
+  key_pitfalls:
+    - "OBJECT-IDENTITY vs. IMAGE-RANDOM SPLITS: Each of the 64 3D objects appears ~50-90 times across different positions/rotations/backgrounds—random image splits leak exact 3D mesh identity and inflate IT encoding scores relative to true object-holdout generalization!"
+    - "Synthetic composite renders (3D Grayscale meshes pasted onto random natural sunrise/landscape backgrounds without cast shadows) lack natural scene context and ecological color cues—pair with natural-image datasets (TVSD / NSD) before generalizing claims!"
+    - "Standard Brain-Score PLS (`n_components=25`) vs. Ridge CV vs. linear CKA rank models differently under high-dimensional feature spaces—always lock and report the exact regression/similarity estimator."
+citations:
+  primary_bib_keys:
+    - majaj2015ventral
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1523/jneurosci.5181-14.2015"
+card_path: "cards/nhp_electrophysiology/majaj_hong_2015.md"
+last_verified: "2026-11-25"

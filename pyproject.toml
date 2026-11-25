@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.24.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "neuro-datasets"
+version = "0.1.0"
+description = "Curated, machine-readable, and citation-verified knowledge base of neuroscience datasets for neural encoding, decoding, and population modeling."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+  { name = "Ruogu Lin" },
+]
+dependencies = [
+  "pyyaml>=6.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.6.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/neuro_datasets"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+src = ["src", "scripts", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "D"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+single-line-exclusions = ["collections.abc", "typing", "typing_extensions"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["D103"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

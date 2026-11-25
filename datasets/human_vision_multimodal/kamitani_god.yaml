@@ -1,0 +1,63 @@
+id: kamitani_god
+name: "Generic Object Decoding (Kamitani ImageNet Perception & Imagery fMRI)"
+short_name: "GOD"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+domains:
+  - natural_images
+  - object_recognition
+  - mental_imagery
+year: 2017
+summary_en: "Foundational 3T fMRI dataset (N=5) pairing visual perception of 1,200 ImageNet training images (150 categories), 50 high-repeat test images (35 repeats), and cued mental imagery."
+summary_zh: "经典的零样本视觉语义解码与心理表象 3T fMRI 基准（5 名被试，150 类共 1,200 张 ImageNet 训练图 + 50 张各重复 35 次的高信噪比测试图 + 想象任务）。"
+scale:
+  n_subjects: 5
+  hours_per_subject: 14.0
+  total_hours: 70.0
+  n_stimuli: 1250
+  n_channels_or_voxels: "3.0 mm isotropic visual cortex ROIs (V1, V2, V3, V4, LOC, FFA, PPA; ~4,500 visual voxels/subj)"
+  sampling_rate_or_tr: "TR = 3.0 s (9.0 s stimulus block = 3 TRs averaged per trial)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - LOC
+  - FFA
+  - PPA
+data_formats:
+  - BIDS
+  - NIfTI
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds001246"
+  urls:
+    homepage: "https://github.com/KamitaniLab/GenericObjectDecoding"
+    openneuro: "https://openneuro.org/datasets/ds001246"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds001246.git"
+modeling:
+  recommended_tasks:
+    - zero_shot_visual_decoding
+    - perception_to_imagery_transfer
+    - image_reconstruction
+  standard_splits: "Train on 1,200 images (150 ImageNet synsets × 8 images, 5 repeats = 6,000 trials); evaluate zero-shot perception decoding on 50 disjoint ImageNet categories (1 image × 35 repeats = 1,750 trials) and mental imagery on 10–25 categories."
+  noise_ceiling_or_repeat_structure: "35 block-design repeats (9 s flashing presentation per trial) on the 50 test images yield exceptionally clean trial-averaged test vectors."
+  key_pitfalls:
+    - "With only 50 test images, top-1 retrieval variance is large (1 image = 2 percentage points); report pairwise identification accuracy (all 1,225 pairs) alongside top-1/top-5 accuracy and bootstrap CIs."
+    - "Train and test synsets are strictly disjoint ImageNet categories—verify ImageNet-pretrained encoders do not leak exact test synset class labels if using supervised final-layer logits."
+    - "9 s flashing block presentation (2 Hz) drives strong sustained V1-V4 responses that differ in temporal dynamics from brief 300-500 ms event-related datasets."
+citations:
+  primary_bib_keys:
+    - horikawa2017god
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/ncomms15037"
+card_path: "cards/human_vision_multimodal/kamitani_god.md"
+last_verified: "2026-11-25"

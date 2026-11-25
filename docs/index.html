@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neuroscience Datasets Knowledge Base</title>
+  <meta name="description" content="Curated, citation-verified knowledge base of neuroscience datasets for neural encoding, decoding, representation alignment, and population dynamics." />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="brand-badge">KB</span>
+        <div>
+          <h1 id="ui-title">Neuroscience Datasets Knowledge Base</h1>
+          <p id="ui-subtitle">Citation-verified catalog for neural encoding, decoding, alignment &amp; circuit dynamics</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="lang-toggle" class="btn btn-ghost" type="button" aria-label="Switch language">中文</button>
+        <button id="theme-toggle" class="btn btn-ghost" type="button" aria-label="Toggle dark mode">Dark</button>
+        <a class="btn btn-outline" href="https://github.com/lrgthu/neuroscience-datasets" target="_blank" rel="noopener">GitHub Repo ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="kpi-strip" id="kpi-strip" aria-label="Catalog statistics"></section>
+
+    <section class="controls-panel" aria-label="Search and filters">
+      <div class="search-row">
+        <input
+          id="search-input"
+          class="search-input"
+          type="search"
+          placeholder="Search by dataset (NSD, TVSD, MEG-MASC), brain region (V4, STG, IFG), accession (ds004078, DANDI:000409), or pitfall..."
+        />
+        <select id="sort-select" class="select-box" aria-label="Sort order">
+          <option value="year_desc">Sort: Newest First</option>
+          <option value="subjects_desc">Sort: Subjects (N) ↓</option>
+          <option value="hours_desc">Sort: Hours / Subj ↓</option>
+          <option value="name_asc">Sort: Name (A → Z)</option>
+        </select>
+        <button id="reset-btn" class="btn btn-ghost" type="button">Reset</button>
+      </div>
+
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label for="category-select" id="lbl-category">Category</label>
+          <select id="category-select" class="select-box"></select>
+        </div>
+        <div class="filter-group">
+          <label for="species-select" id="lbl-species">Species</label>
+          <select id="species-select" class="select-box"></select>
+        </div>
+        <div class="filter-group">
+          <label for="modality-select" id="lbl-modality">Modality</label>
+          <select id="modality-select" class="select-box"></select>
+        </div>
+        <div class="filter-group">
+          <label for="access-select" id="lbl-access">Access Tier</label>
+          <select id="access-select" class="select-box"></select>
+        </div>
+      </div>
+    </section>
+
+    <div id="compare-bar" class="compare-bar hidden">
+      <span id="compare-summary"></span>
+      <div class="compare-actions">
+        <button id="open-compare-btn" class="btn btn-primary" type="button">Compare Selected</button>
+        <button id="clear-compare-btn" class="btn btn-ghost" type="button">Clear</button>
+      </div>
+    </div>
+
+    <section id="cards-grid" class="cards-grid" aria-live="polite"></section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>Maintained at <a href="https://github.com/lrgthu/neuroscience-datasets" target="_blank" rel="noopener">lrgthu/neuroscience-datasets</a> · Machine-readable exports: <code>catalog/datasets.json</code> &amp; <code>catalog/datasets.csv</code></span>
+      <span id="footer-hash"></span>
+    </div>
+  </footer>
+
+  <div id="detail-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span id="modal-badges" class="badge-row"></span>
+          <h2 id="modal-title"></h2>
+        </div>
+        <button id="modal-close" class="btn btn-ghost" type="button" aria-label="Close modal">✕</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="./catalog_data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

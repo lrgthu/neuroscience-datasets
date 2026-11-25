@@ -1,0 +1,54 @@
+id: broderick_speech_eeg
+name: "Broderick Naturalistic Audiobook & Cocktail-Party 128-Ch EEG Suite"
+short_name: "Broderick-EEG"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - EEG
+domains:
+  - natural_speech
+year: 2018
+summary_en: "Canonical 128-channel BioSemi scalp EEG suite (core N=19 audiobook + cocktail-party, speech-in-noise, and time-reversed speech cohorts; ~100+ total subjects across 5 experiments) for linear/nonlinear TRF speech and semantic N400 modeling."
+summary_zh: "经典的 128 通道头皮脑电（EEG）自然语音与鸡尾酒会注意追踪基准（核心有声书《老人与海》N=19，另含双说话人选择性注意、噪声语音与倒放语音共 5 组对照实验），是 mTRF 声学包络与语义 N400 编码的标准试金石。"
+scale:
+  n_subjects: 19
+  hours_per_subject: 1.0
+  total_hours: 90.0
+  n_stimuli: 20
+  n_channels_or_voxels: "128 scalp EEG channels + 2 mastoid reference channels (BioSemi ActiveTwo)"
+  sampling_rate_or_tr: "512 Hz raw / 128 Hz preprocessed MAT files"
+brain_regions:
+  - Centro_Parietal_N400_Scalp
+  - Fronto_Central_Auditory_Scalp
+  - Whole-Scalp_128Ch
+data_formats:
+  - HDF5_MAT
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: Dryad
+  accession_ids:
+    - "Dryad:10.5061/dryad.070jc"
+  urls:
+    homepage: "https://datadryad.org/dataset/doi:10.5061/dryad.070jc"
+  download_cli: "# Download directly via Dryad API / curl: https://datadryad.org/dataset/doi:10.5061/dryad.070jc"
+modeling:
+  recommended_tasks:
+    - temporal_response_function_trf
+    - auditory_attention_decoding_aad
+    - lexical_surprisal_semantic_dissimilarity_n400
+  standard_splits: "Leave-one-trial-out cross-validation across the 20 contiguous ~180 s audiobook trials (`trial01`..`trial20`) per subject."
+  noise_ceiling_or_repeat_structure: "Group-level leave-one-subject-out TRF generalization vs. individualized within-subject 20-fold CV across 19 subjects (plus time-reversed unintelligible speech negative control!)."
+  key_pitfalls:
+    - "WORD ONSET IMPULSE CONFOUND: Any dense embedding vector assigned at word onset carries implicit word-onset timing energy unless a unit impulse regressor (`1` at every word onset) and acoustic envelope + envelope derivative are simultaneously fit!"
+    - "Low-frequency scalp EEG filter sensitivity: N400 semantic TRFs peak in the delta/theta band (`0.5–8 Hz`, `250–450 ms` lag); aggressive high-pass filtering (`>2 Hz`) wipes out most semantic variance."
+    - "Use the built-in time-reversed speech and unattended cocktail-party stream cohorts in Dryad `10.5061/dryad.070jc` as strong falsification controls ($H_0$): genuine semantic features must drop to zero on unattended/reversed speech while acoustic envelope persists."
+citations:
+  primary_bib_keys:
+    - broderick2018speech
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.cub.2018.01.080"
+card_path: "cards/human_language_speech/broderick_speech_eeg.md"
+last_verified: "2026-11-25"

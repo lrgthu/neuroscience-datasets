@@ -1,0 +1,61 @@
+id: meg_masc
+name: "MEG-MASC (Millisecond Naturalistic Speech MEG Corpus)"
+short_name: "MEG-MASC"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - MEG
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_speech
+year: 2023
+summary_en: "High-SNR 208-channel KIT MEG dataset (N=27, 2 repeated ~1-hour sessions/subject) listening to 4 naturalistic stories with millisecond-aligned phoneme, word, morphological, and syntactic annotations."
+summary_zh: "高时间分辨率自然语音 208 通道 MEG 基准（27 名被试，大多完成 2 次完全重复的约 1 小时故事收听 session），提供毫秒级音素、词法与句法对齐，是语音层级动态编码与解码的核心数据集。"
+scale:
+  n_subjects: 27
+  hours_per_subject: 2.0
+  total_hours: 50.0
+  n_stimuli: 4
+  n_channels_or_voxels: "208 axial gradiometer MEG channels + 3 reference channels + T1w MRI surfaces"
+  sampling_rate_or_tr: "1,000 Hz (raw BIDS FIF/CON; commonly bandpassed 0.5-30/40 Hz at 100-200 Hz for TRF/decoding)"
+brain_regions:
+  - Bilateral_Auditory_Cortex
+  - STG_STS
+  - IFG_Sensorimotor
+  - Whole-Head_MEG
+data_formats:
+  - BIDS
+  - FIF_MNE
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds004078"
+    - "OSF:ag3kj"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds004078"
+    osf: "https://osf.io/ag3kj/"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds004078.git"
+modeling:
+  recommended_tasks:
+    - temporal_response_function_trf
+    - phoneme_word_speech_decoding
+    - acoustic_phonetic_lexical_hierarchy
+    - dynamical_state_space_modeling
+  standard_splits: "Story-level or contiguous non-overlapping audio segment splits (never random phoneme/word epoch splits!). Session 1 vs. Session 2 repeats enable clean within-subject reliability checks."
+  noise_ceiling_or_repeat_structure: "22 of 27 subjects completed TWO full sessions (`ses-0` and `ses-1`) listening to the exact same 4 stories (~1 hour per session), providing rare single-subject test-retest noise ceilings for continuous MEG!"
+  key_pitfalls:
+    - "EPOCH OVERLAP LEAKAGE TRAP: Phonemes occur every ~70-90 ms while MEG responses span [-200, +800 ms]. Random train/test splitting of phoneme or word epochs leaks identical continuous sensor windows across train and test (inflating accuracy dramatically)—ALWAYS split by story or contiguous multi-second audio blocks with >=2 s guard bands!"
+    - "Baseline correction (`baseline=(-0.2, 0.0)`) on fast phoneme epochs injects pre-onset activity from the preceding phoneme into the entire post-onset window; prefer high-pass filtering (0.5 Hz) on continuous runs before epoching without pre-stimulus baseline subtraction."
+    - "Co-registration shifts between `ses-0` and `ses-1`: head position relative to fixed helmet sensors changes across days—align via MNE Maxwell/head-position transformation or source-space projection (`fsaverage`) before averaging sensor channels across sessions."
+citations:
+  primary_bib_keys:
+    - gwilliams2023megmasc
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-023-02752-5"
+card_path: "cards/human_language_speech/meg_masc.md"
+last_verified: "2026-11-25"
