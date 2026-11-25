@@ -1,0 +1,63 @@
+id: libribrain
+name: "LibriBrain & LibriBrain100 (50-100+ Hour Deep Speech Decoding MEG)"
+short_name: "LibriBrain"
+category: human_language_speech
+species:
+  - human
+modalities:
+  - MEG
+  - Structural_MRI
+domains:
+  - natural_speech
+year: 2026
+summary_en: "Deepest non-invasive speech electrophysiology corpus in history: >50 hours (LibriBrain) scaled to >100 hours (LibriBrain100: ~80 h single-subject depth + 32-subject transfer cohort) of 306-channel Elekta MEG listening to Sherlock Holmes audiobooks."
+summary_zh: "迄今单被试采样最深的无创语音脑磁图（MEG）基准：从 LibriBrain（单被试 >50 小时）扩展至 LibriBrain100（总计 >100 小时：核心被试 ~80 小时深度采集 + 32 名多被试迁移队列），使用 306 通道全头 MEG 连续收听《福尔摩斯探案集》有声书。"
+scale:
+  n_subjects: 33
+  hours_per_subject: 52.0
+  total_hours: 102.0
+  n_stimuli: 7
+  n_channels_or_voxels: "306-channel MEGIN/Elekta Triux Neo whole-head MEG (102 magnetometers + 204 planar gradiometers)"
+  sampling_rate_or_tr: "1,000 Hz raw / 250 Hz serialized HDF5 (with phoneme & word forced alignments)"
+brain_regions:
+  - Bilateral_Auditory_STG_STS
+  - Perisylvian_Language_Cortex
+  - Whole-Head_306Ch_MEG
+data_formats:
+  - HDF5_MAT
+  - BIDS
+  - FIF_MNE
+  - TextGrid_TSV
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Hugging Face"
+  accession_ids:
+    - "HuggingFace:pnpl/LibriBrain"
+  urls:
+    homepage: "https://libribrain.com/"
+    huggingface: "https://huggingface.co/datasets/pnpl/LibriBrain"
+    code: "https://github.com/neural-processing-lab/pnpl"
+    paper: "https://arxiv.org/abs/2608.25204"
+  download_cli: "uv run --with pnpl python -c \"import pnpl; print(pnpl.__name__)\" && uvx --from huggingface_hub hf download pnpl/LibriBrain README.md --repo-type dataset"
+modeling:
+  recommended_tasks:
+    - non_invasive_brain_to_speech_and_phoneme_decoding
+    - neural_scaling_laws_from_1h_to_80h
+    - cross_subject_meg_adapter_transfer
+    - speech_detection_and_word_retrieval
+  standard_splits: "Official NeurIPS LibriBrain competition split: Train on contiguous Sherlock Holmes books/chapters (`~50-80 h`), validate and test on strictly held-out unseen chapters/stories (zero overlapping audio or sliding-window bleed!) + few-shot adaptation on the 32 multi-subject cohort."
+  noise_ceiling_or_repeat_structure: "Dedicated repeated Sherlock story runs across longitudinal sessions quantify cross-day sensor/source stability and single-subject decoding ceilings from 1 hour up to 80 hours."
+  key_pitfalls:
+    - "CROSS-SESSION HEAD POSITION DRIFT OVER 50-100 HOURS: Across dozens of separate scanning days, head placement inside the rigid 306-sensor MEG helmet varies—always apply Signal Space Separation (`MaxFilter` `SSS/tSSS` head-position standardization to a reference run) before pooling sessions!"
+    - "Overlapping phoneme/word windows (`[-0.2, +0.8 s]`): NEVER shuffle individual phoneme epochs randomly across train/val/test—strictly use the official chapter/session splits in the `pnpl` library!"
+    - "Single-narrator acousticprosodic specialization: Most deep hours come from a primary LibriVox *Sherlock Holmes* reader—test out-of-speaker generalization before claiming speaker-invariant semantic decoding."
+citations:
+  primary_bib_keys:
+    - ozdogan2025libribrain
+    - mantegna2026libribrain100
+  related_bib_keys:
+    - gwilliams2023megmasc
+  primary_doi_or_arxiv: "10.52202/085713-0511"
+card_path: "cards/human_language_speech/libribrain.md"
+last_verified: "2026-11-25"

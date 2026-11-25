@@ -1,0 +1,55 @@
+id: tuh_eeg
+name: "Temple University Hospital EEG Corpus (TUEG & Labeled Clinical Benchmarks)"
+short_name: "TUEG"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - EEG
+domains:
+  - clinical_lifespan
+  - resting_state
+year: 2016
+summary_en: "Largest clinical scalp EEG pretraining archive (>26,000-69,000 EDF sessions from >14,000 patients, >25,000 hours + neurologist reports & downstream benchmarks TUAB, TUSZ, TUEV, TUAR), serving as the primary self-supervised corpus for EEG foundation models (LaBraM, BIOT, BENDR, CBraMod)."
+summary_zh: "全球规模最大的临床头皮脑电（EEG）自监督预训练语料库（逾 1.4 万名患者、2.6 万–6.9 万次临床 EDF 记录、累计超 2.5 万小时，附带神经科诊断报告及 TUAB/TUSZ/TUEV/TUAR 标准评测子集），是 LaBraM、BIOT、CBraMod 等 EEG 基础模型的核心底座。"
+scale:
+  n_subjects: 14987
+  hours_per_subject: 1.8
+  total_hours: 27000.0
+  n_stimuli: 6
+  n_channels_or_voxels: "19 to 36+ clinical 10-20 scalp EEG channels (heterogeneous unipolar Average Reference `AR` & Linked-Ears `LE` montages)"
+  sampling_rate_or_tr: "250 Hz / 256 Hz / 400 Hz / 512 Hz heterogeneous clinical EDFs (commonly resampled to 200 Hz)"
+brain_regions:
+  - Whole-Scalp_Clinical_10_20
+data_formats:
+  - BrainVision_EDF
+access:
+  tier: registered
+  license: "NEDC TUH EEG Free Research Registration (Email Automated Credentials)"
+  primary_portal: "Temple University NEDC"
+  accession_ids:
+    - "NEDC:tuh_eeg"
+    - "NEDC:tuh_eeg_abnormal"
+    - "NEDC:tuh_eeg_seizure"
+  urls:
+    homepage: "https://isip.piconepress.com/projects/nedc/html/tuh_eeg/"
+    paper: "https://doi.org/10.3389/fnins.2016.00196"
+  download_cli: "# Register free academic email at isip.piconepress.com/projects/nedc/html/tuh_eeg/ then rsync:\n# rsync -auxvL nedc-tuh-eeg@www.isip.piconepress.com:data/tuh_eeg/ ./tuh_eeg/"
+modeling:
+  recommended_tasks:
+    - eeg_foundation_model_pretraining_labram_biot_cbramod
+    - abnormal_eeg_screening_tuab
+    - seizure_and_event_detection_tusz_tuev
+  standard_splits: "Pretrain on `TUEG` AFTER removing all patient IDs appearing in downstream evaluation test sets (`TUAB` N=2,329, `TUSZ`, `TUEV`, `TUSL`, `TUAR`)! Always evaluate on official patient-disjoint `eval` splits of `TUAB` / `TUEV` / `TUSZ`."
+  noise_ceiling_or_repeat_structure: "Inter-rater neurologist κ reliability on `TUAB` (`~99%+` clinician consensus on clean normal/abnormal benchmark subset) and multi-session longitudinal recordings per patient."
+  key_pitfalls:
+    - "SEVERE PATIENT-ID OVERLAP BETWEEN `TUEG` AND `TUAB`/`TUSZ`/`TUEV`! `TUAB`, `TUEV`, and `TUSZ` are curated **subsets** of `TUEG`! Pretraining on unfiltered `TUEG` leaks exact test patients (and even exact test EDF recordings!) into self-supervised pretraining—ALWAYS strip every `subject_id` present in `TUAB/TUEV/TUSZ` test/val splits before pretraining!"
+    - "Montage & reference heterogeneity (`01_tcp_ar` Average Reference vs. `02_tcp_le` Linked Ears vs. `03_tcp_ar_a` + longitudinal TCP bipolar chains): standardize channel names, convert consistently to standard `19`-channel `10-20` bipolar or common-average montage, notch-filter `60 Hz` US powerline noise, and resample to a single rate (`200 Hz`)."
+    - "Clinical pathology & ICU/medication artifacts: `TUEG` reflects hospital epilepsy/neurology referrals rather than healthy cognitive controls—combine with `HBN` / `THINGS-EEG` / `Cam-CAN` when targeting healthy cognitive decoding."
+citations:
+  primary_bib_keys:
+    - obeid2016tueg
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.3389/fnins.2016.00196"
+card_path: "cards/human_resting_connectomics/tuh_eeg.md"
+last_verified: "2026-11-25"

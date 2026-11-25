@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0.0",
-  "generated_at_utc": "2026-11-25T20:26:55.069273+00:00",
-  "git_commit_sha": "fa0371114728b0f5c857f569604575edb5102453",
+  "generated_at_utc": "2026-11-25T20:48:55.299758+00:00",
+  "git_commit_sha": "1e239086f8beb09e83e3f9adae17e76fff2a5160",
   "git_is_dirty": true,
   "python_version": "3.13.16",
-  "dataset_count": 21,
-  "verified_bibtex_key_count": 27,
-  "input_sha256": "2028304f0a1f03b45142bd959293b3d9ecc6a92352d3f95acf8180fb06f2b5f0"
+  "dataset_count": 39,
+  "verified_bibtex_key_count": 54,
+  "input_sha256": "dc214b030c6f33106f79191642bc97252ab90392ae40cfa505d675272c5dd94b"
 }

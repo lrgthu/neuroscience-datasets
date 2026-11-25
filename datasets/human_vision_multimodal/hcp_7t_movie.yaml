@@ -1,0 +1,67 @@
+id: hcp_7t_movie
+name: "Human Connectome Project 7T Movie-Watching & Retinotopy Dataset"
+short_name: "HCP-7T-Movie"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_7T
+  - Eye_Tracking
+  - Structural_MRI
+  - Diffusion_MRI
+domains:
+  - natural_movies
+  - retinotopy
+  - resting_state
+  - multimodal
+year: 2018
+summary_en: "Ultra-high-field 7T whole-brain fMRI cohort (N=184 young adults, 1.6 mm isotropic, TR=1.0 s) combining ~1 hour of audiovisual Hollywood & CC movies (with repeated validation clip), 30 min of pRF retinotopy (N=181), and 1 hour of 7T resting-state."
+summary_zh: "大规模超高场 7T 人类群体视觉与多模态电影基准（184 名青年被试，1.6 mm 等体素、TR = 1.0 s 高速采样），每位被试同时拥有约 1 小时好莱坞/独立电影观影（含跨 run 重复验证片段）、30 分钟群体感受野（pRF）视网膜拓扑（N=181）与 1 小时 7T 静息态。"
+scale:
+  n_subjects: 184
+  hours_per_subject: 2.5
+  total_hours: 450.0
+  n_stimuli: 14
+  n_channels_or_voxels: "1.6 mm isotropic whole-brain (CIFTI 59k / 91k / 170k high-res fsLR grayordinates + ICA-FIX denoised)"
+  sampling_rate_or_tr: "TR = 1.0 s (multiband 5, 7T Siemens Magnetom) + EyeLink 1,000 Hz gaze & pupillometry"
+brain_regions:
+  - V1_V2_V3_hV4_LO_TO_IPS_pRF_Maps
+  - Auditory_STG_STS
+  - Default_Mode_TPJ_PMC
+  - Whole-Brain
+data_formats:
+  - CIFTI_GIfTI
+  - NIfTI
+access:
+  tier: registered
+  license: "HCP Open Access Data Use Terms (Free ConnectomeDB / AWS S3 Registration)"
+  primary_portal: "ConnectomeDB / AWS Open Data"
+  accession_ids:
+    - "AWS:s3://hcp-openaccess"
+    - "OSF:e7dhv"
+  urls:
+    homepage: "https://www.humanconnectome.org/study/hcp-young-adult"
+    retinotopy_osf: "https://osf.io/bw9ec/"
+    paper: "https://doi.org/10.1167/18.13.23"
+  download_cli: "# Configure HCP AWS credentials from ConnectomeDB, then sync 7T MOVIE ICA-FIX CIFTI files:\naws s3 ls s3://hcp-openaccess/HCP_1200/100610/MNINonLinear/Results/tfMRI_MOVIE1_7T_AP/"
+modeling:
+  recommended_tasks:
+    - large_cohort_7t_movie_encoding
+    - retinotopic_prf_constrained_vision_models
+    - twin_heritability_of_naturalistic_representations
+    - gaze_and_cortical_timescale_hierarchy
+  standard_splits: "Movie runs `MOVIE1`..`MOVIE4` (`~15 min` each; `MOVIE1/3` Creative Commons independent films, `MOVIE2/4` Hollywood excerpts): train on 3 runs (`MOVIE1-3`) and test on `MOVIE4`, OR evaluate on the identical `83 s` validation clip (`testretest`) appended to the end of EVERY movie run (`4` repeats/subject!). Cross-subject CV MUST keep twin/sibling families together!"
+  noise_ceiling_or_repeat_structure: "Built-in `83 s` validation clip repeated at the end of all 4 runs (`4` repeats × `184` subjects!) + leave-one-subject-out ISC across up to 184 synchronized brains!"
+  key_pitfalls:
+    - "TWIN & SIBLING FAMILY LEAKAGE: HCP-7T subjects are monozygotic/dizygotic twins and siblings from HCP-YA—NEVER split subjects randomly across train/test folds; always group CV splits by `Family_ID`!"
+    - "Shared `83 s` validation clip (`last ~83 TRs` of `MOVIE1`, `MOVIE2`, `MOVIE3`, and `MOVIE4`): if holding out `MOVIE4` as a test run while training on full `MOVIE1-3`, you MUST strip the final validation clip + `20 s` rest blocks from `MOVIE1-3`, otherwise the exact same `83 s` clip leaks into training 3 times!"
+    - "Phase-encoding distortion polarity (`AP` vs. `PA`): `MOVIE1/3` use `AP` while `MOVIE2/4` use `PA`—always use the `MSMAll` + `ICA-FIX` denoised surface CIFTI (`*Atlas_MSMAll_hp2000_clean.dtseries.nii`) rather than unaligned raw volumes."
+citations:
+  primary_bib_keys:
+    - benson2018hcpretinotopy
+    - vanessen2013hcp
+  related_bib_keys:
+    - glasser2013hcppipelines
+  primary_doi_or_arxiv: "10.1167/18.13.23"
+card_path: "cards/human_vision_multimodal/hcp_7t_movie.md"
+last_verified: "2026-11-25"

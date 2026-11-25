@@ -1,0 +1,63 @@
+id: ibc
+name: "Individual Brain Charting (IBC — 67-Task Deep Cognitive Cartography fMRI)"
+short_name: "IBC"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - multimodal
+  - natural_movies
+  - natural_speech
+  - decision_making
+  - retinotopy
+year: 2018
+summary_en: "Broadest within-subject multi-task human neuroimaging atlas (N=13 subjects completing ~50+ hours of 1.5 mm 3T fMRI across 67 cognitive, perceptual, linguistic, mathematical, motor, and movie-watching tasks)."
+summary_zh: "单被试跨任务广度之最的人脑功能图谱库（13 名被试每人累计扫描逾 50 小时 1.5 mm 高清 3T fMRI，覆盖 67 项视觉、听觉、语言、数学推理、运动控制及完整电影任务）。"
+scale:
+  n_subjects: 13
+  hours_per_subject: 50.0
+  total_hours: 600.0
+  n_stimuli: 67
+  n_channels_or_voxels: "1.5 mm isotropic whole-brain (3T Siemens Prisma; MNI152 + fsaverage7 surface GLM contrast maps & raw time-series)"
+  sampling_rate_or_tr: "TR = 2.0 s (multiband 3; AP + PA matched phase-encoding pairs)"
+brain_regions:
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: "OpenNeuro / EBRAINS"
+  accession_ids:
+    - "OpenNeuro:ds002685"
+    - "NeuroVault:2138"
+  urls:
+    homepage: "https://project.inria.fr/IBC/"
+    openneuro: "https://openneuro.org/datasets/ds002685"
+    paper: "https://doi.org/10.1038/sdata.2018.105"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds002685.git"
+modeling:
+  recommended_tasks:
+    - multi_task_cognitive_ontology_mapping
+    - task_general_individual_parcellation
+    - controlled_localizers_vs_naturalistic_movies
+  standard_splits: "Leave-one-task-battery-out (testing zero-shot cognitive contrast prediction across 400+ GLM contrasts!) or leave-one-run-out (`AP` vs `PA`) within individual subjects."
+  noise_ceiling_or_repeat_structure: "Paired `AP` and `PA` runs per task + shared HCP, ARCHI, RSVP-language, retinotopy, and naturalistic movie batteries (`Raiders of the Lost Ark`, `The Good, the Bad and the Ugly`) inside the same 13 brains."
+  key_pitfalls:
+    - "Not all 13 subjects completed every late-release battery (`sub-01, 04..09, 11..15`; 12 core completers across most batteries)—inspect subject-by-task completion matrices before running balanced tensor factorizations."
+    - "Every functional paradigm is acquired with paired `AP` and `PA` phase encoding; combine `Topup` distortion-corrected `AP + PA` pairs rather than analyzing a single phase-encoding direction."
+    - "Ideal ground-truth antidote to reverse-inference pitfalls: instead of guessing what an 'language' or 'MDN' voxel computes from one dataset, query all >400 GLM contrasts across 67 tasks in the exact same voxel via NeuroVault/OpenNeuro!"
+citations:
+  primary_bib_keys:
+    - pinho2018ibc
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/sdata.2018.105"
+card_path: "cards/human_resting_connectomics/ibc.md"
+last_verified: "2026-11-25"

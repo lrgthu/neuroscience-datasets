@@ -1,0 +1,58 @@
+id: midnight_scan_club
+name: "Midnight Scan Club (MSC — 10-Session Precision Functional Mapping fMRI)"
+short_name: "MSC"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - resting_state
+  - connectomics
+  - decision_making
+year: 2017
+summary_en: "Foundational precision functional mapping dataset scanning 10 individuals across 10 consecutive midnight sessions each (~5 hours rs-fMRI + ~6 hours across 4 task domains + 4 T1w + 4 T2w + MRA/MRV per subject)."
+summary_zh: "个体化精准脑功能图谱（Precision Functional Mapping）奠基数据集：10 名受试者每人连续完成 10 次午夜扫描 session（每人累计 5 小时静息态 fMRI + 6 小时四类任务态 fMRI + 高信噪比 T1/T2 髓鞘与脑血管像）。"
+scale:
+  n_subjects: 10
+  hours_per_subject: 11.0
+  total_hours: 110.0
+  n_stimuli: 4
+  n_channels_or_voxels: "4.0 mm isotropic 3T EPI (mapped to individualized 32k fsLR CIFTI surfaces + Gordon/individualized network parcels)"
+  sampling_rate_or_tr: "TR = 2.2 s (10 × 30 min resting-state runs + motor, coherence, memory, & semantic/dot-coherence mixed tasks)"
+brain_regions:
+  - Whole-Brain_Individualized_Networks
+data_formats:
+  - BIDS
+  - CIFTI_GIfTI
+  - NIfTI
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds000224"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds000224"
+    paper: "https://doi.org/10.1016/j.neuron.2017.07.011"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds000224.git"
+modeling:
+  recommended_tasks:
+    - individualized_cortical_network_parcellation
+    - session_to_session_connectome_stability
+    - state_vs_trait_functional_connectivity_variance_partitioning
+  standard_splits: "Split-half longitudinal sessions (`ses-func01..05` = 2.5 h train vs. `ses-func06..10` = 2.5 h test per subject) to evaluate single-subject connectome convergence curves (`5 min -> 150 min`)."
+  noise_ceiling_or_repeat_structure: "10 independent 30-minute resting-state sessions per subject reveal that whole-cortex individual connectome reliability plateaus around ~45-90 minutes of clean post-scrubbed data."
+  key_pitfalls:
+    - "SUBJECT `MSC08` DROWSINESS/MOTION OUTLIER: `sub-MSC08` exhibited severe head motion and self-reported sleep during scanning (retaining far fewer low-FD frames than `MSC01-07, 09-10`)—always check sensitivity analyses with and without `MSC08`!"
+    - "Circadian state (`midnight` 12:00 AM start time): scans were acquired late at night for scanner cost reduction; vigilance/arousal fluctuations (`drowsiness`) are stronger than daytime cohorts—strict `FD < 0.2 mm` scrubbing (`tmask`) provided in `derivatives/` is essential!"
+    - "Spatial resolution (`4 mm` isotropic single-band `3T` Trio) is coarser than `7T` NSD (`1.8 mm`) or `HCP` (`2 mm`), trading voxel size for high temporal SNR and 10-session longitudinal stability."
+citations:
+  primary_bib_keys:
+    - gordon2017msc
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.neuron.2017.07.011"
+card_path: "cards/human_resting_connectomics/midnight_scan_club.md"
+last_verified: "2026-11-25"

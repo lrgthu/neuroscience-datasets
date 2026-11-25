@@ -1,0 +1,69 @@
+id: cneuromod_things
+name: "CNeuroMod-THINGS (Deep Longitudinal Continuous-Recognition 3T fMRI + Gaze)"
+short_name: "CNeuroMod-THINGS"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Eye_Tracking
+  - Behavior
+  - Structural_MRI
+domains:
+  - natural_images
+  - object_recognition
+year: 2026
+summary_en: "Bridge dataset uniting Courtois NeuroMod and THINGS: 4 deeply phenotyped CNeuroMod subjects (who also watched ~80h of Friends/Movie10) completed 33-36 sessions (~16.4 h/subj) of continuous recognition across 4,320 THINGS images (720 concepts × 6 × 3 repeats) with eye-tracking and autonomic physiology."
+summary_zh: "打通 CNeuroMod 与 THINGS 两大生态的桥梁级数据集：4 名拥有上百小时《老友记》/电影数据的 CNeuroMod 核心被试，另行完成 33–36 个 session（每人约 16.4 小时）的连续识别任务，观看 720 个物体概念共 4,320 张 THINGS 图像（× 3 次重复），同步采集眼动与心电/呼吸/皮电生理信号。"
+scale:
+  n_subjects: 4
+  hours_per_subject: 16.4
+  total_hours: 65.6
+  n_stimuli: 4320
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain (co-registered to CNeuroMod Friends/Movie10/HCP native & CIFTI 91k spaces; GLMsingle betas)"
+  sampling_rate_or_tr: "TR = 1.49 s (multiband 4); in-scanner eye-tracking + ECG/respiration/PPG/EDA"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - Ventral_Temporal_Cortex
+  - Medial_Temporal_Memory
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+  - HDF5_MAT
+access:
+  tier: registered
+  license: "Custom DUA (Courtois NeuroMod Data Access) / CC0-1.0 code"
+  primary_portal: CNeuroMod
+  accession_ids:
+    - "CNeuroMod:things"
+  urls:
+    homepage: "https://github.com/courtois-neuromod/cneuromod-things"
+    cneuromod: "https://docs.cneuromod.ca/"
+    paper: "https://doi.org/10.1038/s41597-026-06591-y"
+  download_cli: "datalad install git@github.com:courtois-neuromod/things.git"
+modeling:
+  recommended_tasks:
+    - static_image_to_dynamic_movie_transfer
+    - within_subject_cross_paradigm_identifiability
+    - visual_recognition_memory_and_pupil_dynamics
+    - cross_dataset_alignment_with_things_fmri_and_tvsd
+  standard_splits: "Hold out disjoint THINGS object concepts (among the 720 sampled concepts, which match THINGS-fMRI's 720-concept subset!) for static visual evaluation, OR train on CNeuroMod Friends/Movie10 dynamic video and evaluate zero-shot on CNeuroMod-THINGS static object betas in the EXACT SAME 4 BRAINS!"
+  noise_ceiling_or_repeat_structure: "Every one of the 4,320 unique images is presented 3 times across sessions (18 trials per concept; 12,960 trials/subject), providing per-voxel `ncsnr` maps identical in spirit to NSD."
+  key_pitfalls:
+    - "UNIQUE SCIENTIFIC LEVER & LEAKAGE GUARD: Subjects `sub-01, sub-02, sub-03, sub-06` are the SAME individuals as CNeuroMod `friends`/`movie10`/`hcptrt`—ideal for testing static-image vs. naturalistic-video encoding divergence within identical voxels, provided sessions are z-scored separately!"
+    - "Continuous recognition memory + confidence grading (`sure/unsure old/new`) induces systematic repetition-suppression and confidence-related parietal/MTL responses between Repeat 1 and Repeats 2-3."
+    - "Physiological arousal (`PPG`, `respiration`, `EDA`, `pupil`) covaries with recognition memory hits/misses—use the synchronized physio/eye-tracking streams to separate autonomic BOLD fluctuations from object tuning."
+citations:
+  primary_bib_keys:
+    - stlaurent2026cneuromodthings
+  related_bib_keys:
+    - gifford2025algonauts
+    - hebart2023things
+  primary_doi_or_arxiv: "10.1038/s41597-026-06591-y"
+card_path: "cards/human_vision_multimodal/cneuromod_things.md"
+last_verified: "2026-11-25"

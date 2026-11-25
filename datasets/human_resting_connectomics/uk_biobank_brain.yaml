@@ -1,0 +1,62 @@
+id: uk_biobank_brain
+name: "UK Biobank Multimodal Population Brain Imaging Cohort"
+short_name: "UK-Biobank"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - resting_state
+  - clinical_lifespan
+  - connectomics
+year: 2016
+summary_en: "World's largest single-protocol multimodal brain imaging cohort (>45,000-100,000 middle-to-older adults aged 40-80+, 3T multiband TR=0.735 s rfMRI, Hariri emotion tfMRI, dMRI, T1/T2-FLAIR/SWI, genomics, and EHR) serving as the primary gated pretraining corpus for fMRI foundation models."
+summary_zh: "全球规模最大的统一协议多模态人群脑影像队列（>4.5 万至 10 万名中老年受试者，3T 多频带 TR=0.735 s 静息态/情绪任务态 fMRI、dMRI、结构像与全基因组/电子病历），是 BrainLM、Brain-JEPA、SwiFT 等脑基础模型的核心受控预训练语料。"
+scale:
+  n_subjects: 45000
+  hours_per_subject: 0.2
+  total_hours: 9000.0
+  n_stimuli: 2
+  n_channels_or_voxels: "2.4 mm isotropic whole-brain (FSL FIX-cleaned volumes, ICA-25/100 parcellations, & custom Schaefer/AAL/Glasser derivatives)"
+  sampling_rate_or_tr: "TR = 0.735 s (multiband 8; ~6 min 490-volume rfMRI + ~4 min 332-volume Hariri faces/shapes tfMRI)"
+brain_regions:
+  - Whole-Brain
+data_formats:
+  - NIfTI
+  - CIFTI_GIfTI
+  - Parquet_CSV
+access:
+  tier: credentialed
+  license: "UK Biobank Material Transfer Agreement (Approved Research Application + Access Fee)"
+  primary_portal: "UK Biobank Research Analysis Platform (RAP)"
+  accession_ids:
+    - "UKBiobank:Category-100003"
+  urls:
+    homepage: "https://www.ukbiobank.ac.uk/"
+    imaging_docs: "https://biobank.ctsu.ox.ac.uk/crystal/crystal/docs/brain_mri.pdf"
+    paper: "https://doi.org/10.1038/nn.4393"
+  download_cli: "# Access bulk NIfTI/IDP tables inside UK Biobank Research Analysis Platform (DNAnexus `dx` CLI):\n# dx ls 'Bulk/Brain MRI/rfMRI/'"
+modeling:
+  recommended_tasks:
+    - large_scale_fmri_foundation_pretraining
+    - brain_age_and_phenotype_prediction
+    - imaging_genetics_gwas
+    - longitudinal_pre_post_disease_biomarkers
+  standard_splits: "Stratified subject-level train/val/test splits (respecting imaging center Cheadle/Newcastle/Reading/Bristol, repeat-visit longitudinal pairs, and genetic kinship!)."
+  noise_ceiling_or_repeat_structure: "Repeat-imaging sub-cohort (`>5,000+` participants scanned a second time 2-7 years later) enables longitudinal test-retest reliability and aging-trajectory modeling."
+  key_pitfalls:
+    - "CONFIRMATORY CONFOUND INFLATION AT N = 40,000 (`Alfaro-Almagro et al., NeuroImage, 2021`): Head size, head motion (`rfMRI motion`), scanner site, table position, time-of-day, age, and sex drive highly significant correlations with thousands of non-neural phenotypes—ALWAYS deconfound (`confound regression fitted inside training folds only!`) before interpreting small $r \\approx 0.05-0.15$ brain-behavior associations!"
+    - "Short per-subject scan duration (`~6 min` rest + `~4 min` single Hariri face/shape task) and older age skew (`44-82` years): high subject breadth (`N > 45k`) does NOT substitute for multi-hour naturalistic task diversity—complement with `Open-fMIND` (`429` tasks) or `CNeuroMod`/`NSD`."
+    - "Strict redistribution prohibition: individual-level UKB scans/timeseries may NEVER be re-hosted publicly (only trained model weights after verifying zero subject memorization per UKB policy)."
+citations:
+  primary_bib_keys:
+    - miller2016ukbiobank
+    - alfaroalmagro2017ukbqc
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/nn.4393"
+card_path: "cards/human_resting_connectomics/uk_biobank_brain.md"
+last_verified: "2026-11-25"

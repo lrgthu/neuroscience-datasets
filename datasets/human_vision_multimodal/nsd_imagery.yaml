@@ -1,0 +1,64 @@
+id: nsd_imagery
+name: "NSD-Imagery (7T Visual Mental Imagery Cross-Decoding Benchmark)"
+short_name: "NSD-Imagery"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_7T
+  - Behavior
+domains:
+  - mental_imagery
+  - natural_images
+  - object_recognition
+year: 2025
+summary_en: "7T fMRI extension in all 8 NSD participants performing cued visual mental imagery across Simple shapes, Complex natural scenes/artworks, and Conceptual word prompts (18 targets, multiple repeats) for zero-shot perception-to-imagery reconstruction and retrieval."
+summary_zh: "全部 8 名 NSD 被试参与的 7T 视觉心理表象扩展基准（覆盖简单几何形状、复杂自然场景/艺术画作与概念词三类共 18 个目标刺激的多轮重复想象），用于评测基于 NSD 视觉感知训练的图像重建/解码模型向内部心理表象的零样本迁移。"
+scale:
+  n_subjects: 8
+  hours_per_subject: 1.2
+  total_hours: 9.6
+  n_stimuli: 18
+  n_channels_or_voxels: "1.8 mm isotropic whole-brain (aligned 1:1 to core NSD func1pt8mm & nsdgeneral ROI)"
+  sampling_rate_or_tr: "TR = 1.6 s (auditory-cued perception + mental imagery runs with GLMsingle betas)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - Ventral_Temporal_Cortex
+  - Parietal_Frontoparietal_Imagery
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+  - HDF5_MAT
+access:
+  tier: registered
+  license: "CC-BY-NC-4.0 (NSD Data Access Terms)"
+  primary_portal: "AWS Open Data"
+  accession_ids:
+    - "AWS:s3://natural-scenes-dataset/nsddata_betas/ppdata"
+  urls:
+    homepage: "https://naturalscenesdataset.org/"
+    paper: "https://doi.org/10.1109/cvpr52734.2025.02687"
+  download_cli: "aws s3 ls --no-sign-request s3://natural-scenes-dataset/nsddata_betas/ppdata/subj01/func1pt8mm/nsdimagerybetas_fithrf_GLMdenoise_RR/"
+modeling:
+  recommended_tasks:
+    - perception_to_imagery_cross_decoding
+    - mental_imagery_reconstruction
+    - early_vs_high_visual_cortex_imagery_snr
+  standard_splits: "Train fMRI-to-CLIP/diffusion decoders (`MindEye2`, `Brain-Diffuser`, ridge decoders) strictly on core NSD visual perception trials (excluding any overlapping shared1000 target image if testing zero-shot!) and evaluate zero-shot on trial-averaged NSD-Imagery betas across Simple (6), Complex (6), and Conceptual (6) stimulus sets."
+  noise_ceiling_or_repeat_structure: "8 imagery repetitions per target stimulus (~144 imagery trials/subj alongside matched perception reference trials) averaged after run-wise z-scoring."
+  key_pitfalls:
+    - "TARGET LEAKAGE CHECK: A subset of Complex imagery targets comes from NSD `shared1000`—verify those exact target images are excluded from perception decoder training if claiming unseen-stimulus imagery reconstruction!"
+    - "V1-V2 vs. VTC SNR asymmetry: Voluntary mental imagery has weak/noisy low-level retinotopic V1 drive compared to high-level semantic VTC drive; perception decoders heavily weighted on V1 pixel/VAE latents fail on imagery unless semantic/CLIP pathways or V1 dropout are used."
+    - "Auditory cue confound: Imagery trials are triggered by spoken/auditory cues—restrict decoding masks to visual cortex (`nsdgeneral` / `V1-VTC`) so auditory STG cue responses do not artificially inflate pairwise identification!"
+citations:
+  primary_bib_keys:
+    - kneeland2025nsdimagery
+  related_bib_keys:
+    - allen2021nsd
+  primary_doi_or_arxiv: "10.1109/cvpr52734.2025.02687"
+card_path: "cards/human_vision_multimodal/nsd_imagery.md"
+last_verified: "2026-11-25"

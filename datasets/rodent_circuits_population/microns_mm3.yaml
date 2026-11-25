@@ -1,0 +1,67 @@
+id: microns_mm3
+name: "MICrONS Functional Connectomics & Digital-Twin Foundation Dataset (Cortical MM³)"
+short_name: "MICrONS"
+category: rodent_circuits_population
+species:
+  - mouse
+modalities:
+  - Two_Photon
+  - EM_Connectomics
+  - Eye_Tracking
+  - Behavior
+domains:
+  - natural_movies
+  - connectomics
+  - synthetic_ood
+year: 2025
+summary_en: "Landmark cubic-millimeter functional connectomics & visual foundation-model resource pairing 2-photon calcium responses of ~75,000 mouse visual cortex neurons (V1, LM, AL, RL) to natural movies with petascale 8-nm electron microscopy (>120,000 cells, ~500 million synapses)."
+summary_zh: "里程碑级立方毫米功能连接组学与“数字孪生”视觉基础模型数据集：在同一块小鼠视觉皮层（V1、LM、AL、RL）中将约 75,000 个神经元的双光子自然视频钙成像响应与 8 纳米级电镜突触连接组（>12 万细胞、约 5 亿个突触）精确配准。"
+scale:
+  n_subjects: 12
+  hours_per_subject: 2.0
+  total_hours: 24.0
+  n_stimuli: 500
+  n_channels_or_voxels: "~75,000 2P neurons in primary 1.3 × 0.87 × 0.82 mm³ EM-matched mouse + multi-mouse foundation-model cohort (~135,000+ neurons) + ~500M EM synapses"
+  sampling_rate_or_tr: "Two-Photon ~6.3–9.7 Hz multi-plane scan; 30 Hz treadmill & pupil tracking; 4 × 4 × 40 nm serial-section EM"
+brain_regions:
+  - Mouse_VISp_V1_Layers2_to_6
+  - Mouse_VISlm_VISal_VISrl
+data_formats:
+  - NWB
+  - HDF5_MAT
+  - Parquet_CSV
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "MICrONS Explorer / BossDB / DANDI / AWS Open Data"
+  accession_ids:
+    - "DANDI:000402"
+    - "AWS:s3://iarpa-microns"
+    - "BossDB:microns"
+  urls:
+    homepage: "https://www.microns-explorer.org/"
+    dandi: "https://dandiarchive.org/dandiset/000402"
+    paper: "https://doi.org/10.1038/s41586-025-08790-w"
+    foundation_model: "https://doi.org/10.1038/s41586-025-08829-y"
+  download_cli: "uvx dandi download DANDI:000402 && aws s3 ls --no-sign-request s3://iarpa-microns/minnie/minnie65/"
+modeling:
+  recommended_tasks:
+    - neural_digital_twin_foundation_models
+    - synaptic_connectivity_vs_functional_tuning_like_to_like
+    - out_of_distribution_stimulus_generalization
+    - excitatory_inhibitory_cell_type_circuit_inference
+  standard_splits: "Train shared recurrent/transformer core (`Wang et al., Nature, 2025`) on natural movie clips (live-action *Mad Max* / sports / nature clips + Parametric Monet/Trippy stimuli) and evaluate on held-out repeated Oracle movie clips (`6` clips × `10` repeats) + strictly OOD synthetic stimuli (drifting gratings, coherent dots, noise, static images)."
+  noise_ceiling_or_repeat_structure: "Repeated `Oracle` natural video clips (`10` repeats per session) quantify single-neuron `FEV` / `CC_max` oracle ceilings across ~75,000+ neurons."
+  key_pitfalls:
+    - "Partial EM-to-2P proofread coverage: while ~75,000 functional 2P ROIs are co-registered into the `minnie65` EM volume, human/automated axonal & dendritic proofreading completeness varies by neuron—always query the `CAVEclient` proofreading status table (`proofreading_status_and_strategy`) before assuming missing synapses = true zero connection!"
+    - "Volume boundary truncation: long-range axons and basal/apical dendrites near the borders of the `1.3 × 0.87 × 0.82 mm³` EM block exit the volume—restrict degree/motif statistics to centrally located soma (`distance_to_boundary` filter)."
+    - "Behavioral modulation (`pupil radius`, `pupil x/y gaze`, `treadmill velocity`) is an indispensable input channel to MICrONS digital-twin foundation models (`Wang et al. 2025`); omitting gaze shifts degrades V1 receptive-field alignment sharply."
+citations:
+  primary_bib_keys:
+    - bae2025microns
+    - wang2025micronsfm
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41586-025-08790-w"
+card_path: "cards/rodent_circuits_population/microns_mm3.md"
+last_verified: "2026-11-25"

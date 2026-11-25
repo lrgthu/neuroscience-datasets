@@ -70,6 +70,10 @@ citations:
     - gifford2022thingseeg
   related_bib_keys:
     - papale2025tvsd
+    - grootswagers2022thingseeg1
+    - stlaurent2026cneuromodthings
+    - hebart2020spose
+    - xu2025alljoined16m
   primary_doi_or_arxiv: "10.7554/eLife.82580"
 card_path: "cards/human_vision_multimodal/things_data.md"
 last_verified: "2026-11-25"

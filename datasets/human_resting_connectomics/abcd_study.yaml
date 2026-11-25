@@ -1,0 +1,64 @@
+id: abcd_study
+name: "Adolescent Brain Cognitive Development (ABCD) Longitudinal Study"
+short_name: "ABCD"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - resting_state
+  - clinical_lifespan
+  - connectomics
+  - decision_making
+year: 2018
+summary_en: "Largest US pediatric neurodevelopmental longitudinal cohort enrolling 11,878 children aged 9-10 across 21 sites (Siemens, GE, Philips 3T scanners) with biennial 2.4 mm TR=0.8 s rs-fMRI, MID/SST/EN-Back task fMRI, dMRI, genomics, and mental-health assessments."
+summary_zh: "全美最大规模青少年纵向神经发育多站点影像队列（21 个站点跨越三大 MRI 厂商，基线入组 11,878 名 9–10 岁儿童并每两年随访），采集 TR=0.8 s 静息态与奖赏/抑制/情绪记忆任务态 fMRI、dMRI 及认知临床表型。"
+scale:
+  n_subjects: 11878
+  hours_per_subject: 0.8
+  total_hours: 18000.0
+  n_stimuli: 4
+  n_channels_or_voxels: "2.4 mm isotropic whole-brain (ABCD-BIDS Community Collection ABCC CIFTI 91k / Gordon / Schaefer parcellations)"
+  sampling_rate_or_tr: "TR = 0.80 s (multiband 6; ~20 min rs-fMRI + MID, Stop-Signal, & Emotional N-Back tasks)"
+brain_regions:
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - CIFTI_GIfTI
+  - NIfTI
+  - Parquet_CSV
+access:
+  tier: credentialed
+  license: "NIH NDA Data Use Certification (Institutional Signing Official Required)"
+  primary_portal: "NIH NIMH Data Archive (NDA)"
+  accession_ids:
+    - "NDA:2573"
+    - "NDA:3165"
+  urls:
+    homepage: "https://abcdstudy.org/"
+    nda: "https://nda.nih.gov/abcd"
+    paper: "https://doi.org/10.1016/j.dcn.2018.03.001"
+  download_cli: "# Requires approved NIH NDA Data Use Certification (see NDA Collection 3165 for ABCD-BIDS ABCC derivatives)"
+modeling:
+  recommended_tasks:
+    - developmental_brain_foundation_modeling
+    - multi_site_scanner_harmonization_combat
+    - reproducible_brain_wide_association_studies_bwas
+    - longitudinal_neurodevelopmental_trajectories
+  standard_splits: "Leave-one-site-out (`21` sites) or site- & family-stratified `ABCD Reproducible Matched Samples` (`ARMS-1` vs. `ARMS-2`, `N ~ 5,000` each from NDA Collection 3165, keeping twins/siblings together!)."
+  noise_ceiling_or_repeat_structure: "Four 5-minute rs-fMRI runs per visit + biennial longitudinal waves (`Baseline`, `Year 2`, `Year 4`, `Year 6+`) across ~11,878 participants."
+  key_pitfalls:
+    - "SMALL-SAMPLE BWAS REPLICABILITY LESSON (`Marek et al., Nature, 2022`): Cross-sectional brain-behavior correlations in ABCD typically have true effect sizes $|r| \\le 0.06-0.16$, requiring thousands of subjects for stable discovery—never select ROIs or tune models on small sub-samples without out-of-site validation!"
+    - "Multi-vendor scanner & pediatric head motion: ABCD spans Siemens Prisma, GE MR750, and Philips Achieva/Ingenia across 21 sites, and 9-10 year-olds exhibit substantially higher head motion + respiratory pseudomotion (`0.2-0.4 Hz` notch filter required on multiband motion parameters!) than young adults—enforce strict `FD < 0.2 mm` censoring (`>= 5-8 min` clean data)!"
+    - "Twin/sibling & site clustering: ABCD contains ~2,100 twin/triplet participants plus siblings—always group splits by both `rel_family_id` and `site_id_l`."
+citations:
+  primary_bib_keys:
+    - casey2018abcd
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.dcn.2018.03.001"
+card_path: "cards/human_resting_connectomics/abcd_study.md"
+last_verified: "2026-11-25"

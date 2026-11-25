@@ -1,0 +1,64 @@
+id: cam_can
+name: "Cam-CAN Lifespan Multimodal Dataset (Ages 18-88 Paired 3T fMRI & 306-Ch MEG)"
+short_name: "Cam-CAN"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - MEG
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - clinical_lifespan
+  - natural_movies
+  - resting_state
+  - connectomics
+year: 2015
+summary_en: "Uniformly stratified adult lifespan cohort (N=653, ~100 subjects per decade from age 18 to 88) pairing 3T fMRI (rest, Hitchcock naturalistic movie, sensorimotor) AND 306-channel Elekta Neuromag MEG in the same individuals."
+summary_zh: "全成人生命周期均衡分层双模态标杆库（653 名 18–88 岁健康受试者，每 10 岁约 100 人），在同一批人身上同步采集 3T fMRI（静息态 + 希区柯克悬疑短片自然观影 + 感觉运动）与 306 通道全头 MEG（支撑 MEG-GPT 等电生理基础模型）。"
+scale:
+  n_subjects: 653
+  hours_per_subject: 1.8
+  total_hours: 1150.0
+  n_stimuli: 3
+  n_channels_or_voxels: "3T 3 mm multi-echo/EPI fMRI + 306-ch Elekta Neuromag VectorView MEG (102 magnetometers + 204 planar gradiometers) + T1w/T2w/DKI/MT"
+  sampling_rate_or_tr: "Movie multi-echo fMRI TR = 2.47 s (rest TR = 1.97 s); MEG 1,000 Hz"
+brain_regions:
+  - Whole-Brain
+  - Whole-Head_306Ch_MEG
+data_formats:
+  - BIDS
+  - NIfTI
+  - FIF_MNE
+access:
+  tier: registered
+  license: "Cam-CAN Data Access Agreement (Free Academic Registration)"
+  primary_portal: "Cam-CAN Data Portal"
+  accession_ids:
+    - "CamCAN:Stage2-CC700"
+  urls:
+    homepage: "https://camcan-archive.mrc-cbu.cam.ac.uk/dataaccess/"
+    paper: "https://doi.org/10.1016/j.neuroimage.2015.09.018"
+  download_cli: "# Register academic project at camcan-archive.mrc-cbu.cam.ac.uk for SFTP / BIDS download credentials"
+modeling:
+  recommended_tasks:
+    - meg_foundation_model_pretraining_meg_gpt
+    - lifespan_brain_age_and_neurovascular_decoupling
+    - naturalistic_movie_event_segmentation_across_aging
+    - multimodal_fmri_meg_fusion
+  standard_splits: "Age-decade-stratified 5- or 10-fold subject cross-validation (`18-27`, `28-37`, ..., `78-88`) so every fold spans the full 70-year adult age distribution."
+  noise_ceiling_or_repeat_structure: "Synchronized 8-minute Alfred Hitchcock movie (`Bang! You're Dead`) across ~640 subjects enables age-stratified inter-subject correlation (ISC) and HMM event-boundary reliability."
+  key_pitfalls:
+    - "NEUROVASCULAR COUPLING CONFOUND IN AGING (`Why Paired MEG + fMRI Matters!`): Vascular reactivity and HRF shape degrade systematically from age 20 to 88! Apparent 'neural decline' in 3T BOLD amplitude or FC often reflects vascular stiffening rather than synaptic loss—always cross-check age effects against the paired 306-ch MEG data (`Tsvetanov et al.`)!"
+    - "Movie fMRI uses 5-echo multi-echo EPI (`TR = 2.47 s`), whereas resting-state fMRI uses single-echo EPI (`TR = 1.97 s`)—never assume identical `TR` or thermal noise profiles across Cam-CAN rest and movie runs."
+    - "Elekta MEG mixes 102 magnetometers (`Tesla`) and 204 planar gradiometers (`Tesla/m`) with 2-3 orders of magnitude numerical scale difference—whiten via baseline noise covariance (`MNE` / `MaxFilter tSSS`) before feeding neural networks!"
+citations:
+  primary_bib_keys:
+    - taylor2015camcan
+    - shafto2014camcan
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1016/j.neuroimage.2015.09.018"
+card_path: "cards/human_resting_connectomics/cam_can.md"
+last_verified: "2026-11-25"

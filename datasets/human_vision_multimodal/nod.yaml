@@ -1,0 +1,63 @@
+id: nod
+name: "Natural Object Dataset (NOD — 30-Subject 57,120-Image 3T fMRI)"
+short_name: "NOD"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - Structural_MRI
+  - Behavior
+domains:
+  - natural_images
+  - object_recognition
+  - retinotopy
+year: 2023
+summary_en: "Hybrid depth-and-breadth 3T fMRI dataset (N=30 subjects, 57,120 natural images across ImageNet & MS-COCO) combining a 9-subject deep cohort (>4,000 images/subj + pRF + fLoc) and a 21-subject broad cohort (1,000 shared ImageNet images/subj)."
+summary_zh: "兼顾个体深度与群体广度的自然图像 3T fMRI 大规模基准（30 名被试观看 57,120 张 ImageNet 与 MS-COCO 自然图像：9 名深度采样被试各完成 >4,000 张 + 视网膜拓扑/功能定位，21 名广度采样被试各完成 1,000 张共享图）。"
+scale:
+  n_subjects: 30
+  hours_per_subject: 4.5
+  total_hours: 105.0
+  n_stimuli: 57120
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain (CIFTI 59k/91k fsLR grayordinates via fMRIPrep + ciftify)"
+  sampling_rate_or_tr: "TR = 2.0 s (multiband 3; fast ImageNet runs + slow MS-COCO multi-repeat runs)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - Ventral_Temporal_Cortex
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - CIFTI_GIfTI
+  - NIfTI
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds004496"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds004496"
+    paper: "https://doi.org/10.1038/s41597-023-02471-x"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds004496.git"
+modeling:
+  recommended_tasks:
+    - individual_vs_population_visual_encoding
+    - cross_subject_hyperalignment_on_1000_shared_imagenet
+    - imagenet_vs_coco_domain_generalization
+  standard_splits: "Within-subject (`sub-01..sub-09`): Train on 4,000 single-trial ImageNet images (`1,000` categories × 4) and evaluate on the 120 MS-COCO multi-repeat images (`10` repeats each). Population-wide (`sub-01..sub-30`): 1,000 shared ImageNet categories across `sub-10..sub-30` for inter-subject alignment."
+  noise_ceiling_or_repeat_structure: "In `sub-01..sub-09`, 120 MS-COCO images are repeated 10 times each (`1,200` trials/subj) for single-subject `ncsnr`; across `sub-10..sub-30`, shared ImageNet stimuli enable leave-one-subject-out ISC ceilings."
+  key_pitfalls:
+    - "TWO DISTINCT COHORT DESIGNS INSIDE `ds004496`: `sub-01..09` have 4 sessions of ImageNet (`4,000` unique images, `4 s` SOA) + 1 session of MS-COCO (`120` images × `10` repeats) + `pRF` + `fLoc`; `sub-10..30` ONLY have 1 session of `1,000` ImageNet images—do not blindly loop identical session scripts over all 30 subjects!"
+    - "Stimulus timing differs between ImageNet runs (`1.0 s` ON + `3.0 s` ISI = `4.0 s` rapid event-related) and COCO runs (`2.0 s` ON + `6.0 s` ISI)—fit separate GLM / HRF design matrices per paradigm."
+    - "Preprocessed `ciftify` GLM betas are included directly under `derivatives/ciftify` on OpenNeuro (`59k`/`91k` CIFTI `.dscalar.nii`)."
+citations:
+  primary_bib_keys:
+    - gong2023nod
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/s41597-023-02471-x"
+card_path: "cards/human_vision_multimodal/nod.md"
+last_verified: "2026-11-25"

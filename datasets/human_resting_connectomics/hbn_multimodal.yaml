@@ -1,0 +1,66 @@
+id: hbn_multimodal
+name: "Child Mind Institute Healthy Brain Network (HBN — Open 3T Movie fMRI & 128-Ch EEG)"
+short_name: "HBN"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - EEG
+  - fMRI_3T
+  - Eye_Tracking
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - clinical_lifespan
+  - natural_movies
+  - resting_state
+  - connectomics
+year: 2017
+summary_en: "Massive open-access (zero-DUA imaging/EEG) developmental cohort of >3,500-4,500 youth (ages 5-21) pairing 128-channel high-density EEG + eye-tracking AND 3T naturalistic movie-watching (Despicable Me, The Present) + resting-state fMRI."
+summary_zh: "免受控协议（影像/脑电直接开放下载）的超大规模儿童青少年多模态神经队列（>3,500–4,500 名 5–21 岁受试者），在同一人群中采集 128 通道高密度 EEG + 眼动以及 3T 自然动画电影（《神偷奶爸》《The Present》）与静息态 fMRI（支撑 NeurIPS 2025 EEG 基础模型挑战赛）。"
+scale:
+  n_subjects: 3800
+  hours_per_subject: 1.5
+  total_hours: 5500.0
+  n_stimuli: 6
+  n_channels_or_voxels: "128-channel EGI HydroCel Geodesic EEG (500 Hz) + 3T 2.4 mm multiband TR=0.8 s fMRI"
+  sampling_rate_or_tr: "EEG 500 Hz + Eye-Tracking; 3T fMRI TR = 0.80 s (multiband 6)"
+brain_regions:
+  - Whole-Brain
+  - Whole-Scalp_128Ch_EGI
+data_formats:
+  - BIDS
+  - NIfTI
+  - BrainVision_EDF
+  - FIF_MNE
+access:
+  tier: open
+  license: "CC-BY-NC-SA-4.0 (Open AWS S3 imaging & BIDS-EEG; deeper clinical phenotypes require free DUA)"
+  primary_portal: "AWS Open Data / NEMAR / OpenNeuro"
+  accession_ids:
+    - "AWS:s3://fcp-indi/data/Projects/HBN"
+    - "NEMAR:HBN-EEG"
+  urls:
+    homepage: "https://fcon_1000.projects.nitrc.org/indi/cmi_healthy_brain_network/"
+    eeg_bids: "https://nemar.org/"
+    paper: "https://doi.org/10.1038/sdata.2017.181"
+  download_cli: "aws s3 ls --no-sign-request s3://fcp-indi/data/Projects/HBN/BIDS_EEG/ && aws s3 ls --no-sign-request s3://fcp-indi/data/Projects/HBN/MRI/"
+modeling:
+  recommended_tasks:
+    - cross_task_and_cross_subject_eeg_foundation_modeling
+    - naturalistic_movie_fmri_and_eeg_development
+    - pediatric_transdiagnostic_biomarker_transfer
+  standard_splits: "Site-stratified (`Staten Island`, `Midtown`, `Harlem`, `CUNY`) subject splits across Releases 1-11+ (`HBN-EEG` BIDS releases curating >3,000 subjects across 6 passive & active EEG paradigms)."
+  noise_ceiling_or_repeat_structure: "Shared naturalistic animated films (*Despicable Me* 10 min clip, *The Present* 3.4 min short, *Diary of a Wimpy Kid*, *Funhouse*) watched in BOTH 3T fMRI and 128-ch EEG + eye-tracking!"
+  key_pitfalls:
+    - "Multi-site scanner & acquisition evolution (`Staten Island` `1.5T` Avanto vs. `RUBIC/CBIC/CUNY` `3T` Prisma!): NEVER pool `Staten Island 1.5T` MRI scans with `3T` multiband scans without explicit site/field-strength harmonization!"
+    - "128-channel EGI saline-sponge outer-ring neck/face channels (`E125-E128` & peripheral rim) carry heavy pediatric EMG/ocular artifacts—subset to clean scalp channels or apply automated `PREP` / `ICLabel` denoising."
+    - "Community-referred transdiagnostic enrichment: ~80%+ of HBN youth meet criteria for at least one neurodevelopmental condition (ADHD, ASD, anxiety, dyslexia)—do not treat HBN as a purely neurotypical normative baseline."
+citations:
+  primary_bib_keys:
+    - alexander2017hbn
+  related_bib_keys: []
+  primary_doi_or_arxiv: "10.1038/sdata.2017.181"
+card_path: "cards/human_resting_connectomics/hbn_multimodal.md"
+last_verified: "2026-11-25"

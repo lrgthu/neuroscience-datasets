@@ -1,0 +1,61 @@
+id: alljoined_eeg
+name: "Alljoined1 & Alljoined-1.6M (NSD & THINGS Million-Trial EEG Suite)"
+short_name: "Alljoined-1.6M"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - EEG
+domains:
+  - natural_images
+  - object_recognition
+year: 2025
+summary_en: "Large-scale visual EEG suite bridging both NSD and THINGS: Alljoined1 (N=8, 64-ch research EEG on ~10k NSD/MS-COCO scenes, >46k epochs) and Alljoined-1.6M (N=20, 32-ch consumer wet-EEG spanning >1.67 million THINGS RSVP trials)."
+summary_zh: "同时衔接 NSD 与 THINGS 生态的超大规模视觉脑电套件：包含 Alljoined1（8 名被试、64 通道科研级 EEG 观看 NSD/COCO 自然场景，>4.6 万试次）与 Alljoined-1.6M（20 名被试、32 通道低成本湿电极 EEG 采集逾 167 万次 THINGS 图像试次）。"
+scale:
+  n_subjects: 28
+  hours_per_subject: 10.0
+  total_hours: 240.0
+  n_stimuli: 26107
+  n_channels_or_voxels: "Alljoined1: 64-ch BioSemi research EEG; Alljoined-1.6M: 32-ch Emotiv FLEX wet-electrode EEG (~83,000+ trials/subject)"
+  sampling_rate_or_tr: "512 Hz (Alljoined1, 300 ms presentation) / 256 Hz (Alljoined-1.6M RSVP)"
+brain_regions:
+  - Occipital_Parietal_Visual_Scalp
+  - Whole-Scalp_32Ch_64Ch
+data_formats:
+  - Parquet_CSV
+  - BrainVision_EDF
+  - WebDataset_Tar
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: "Hugging Face"
+  accession_ids:
+    - "HuggingFace:Alljoined/Alljoined-1.6M"
+    - "HuggingFace:Alljoined/05_125"
+  urls:
+    homepage: "https://huggingface.co/datasets/Alljoined/Alljoined-1.6M"
+    paper_16m: "https://arxiv.org/abs/2508.18571"
+    paper_v1: "https://arxiv.org/abs/2404.05553"
+  download_cli: "uvx --from huggingface_hub hf download Alljoined/Alljoined-1.6M README.md --repo-type dataset"
+modeling:
+  recommended_tasks:
+    - eeg_to_image_retrieval_and_reconstruction
+    - cross_modal_eeg_nsd_fmri_alignment
+    - consumer_vs_research_bci_scaling_laws
+  standard_splits: "Alljoined1: NSD `shared1000` overlap subset for cross-modal fMRI-EEG alignment vs. subject-unique MS-COCO train trials. Alljoined-1.6M: Train on 16,540 THINGS images (1,654 concepts) and evaluate zero-shot retrieval on the 200 disjoint THINGS test concepts (high-repeat test partition, matching THINGS-EEG2!)."
+  noise_ceiling_or_repeat_structure: "Massive per-subject trial counts (~83k trials/subject in Alljoined-1.6M) with high-repeat held-out 200-image test blocks enable empirical scaling-law curves across trials, subjects, and hardware SNR."
+  key_pitfalls:
+    - "Hardware SNR trade-off (`Alljoined-1.6M` 32-ch Emotiv FLEX vs. `THINGS-EEG2` 64-ch BrainVision actiCHamp): single-trial SNR is lower on consumer wet hardware—do not compare unnormalized retrieval accuracy across hardware tiers without accounting for channel count, sampling rate (`256 Hz`), and trial averaging!"
+    - "Block/session temporal autocorrelation Trap (`Li et al. TPAMI 2021` classic EEG pitfall): ensure images from the same concept or contiguous RSVP block never straddle train and test splits; strictly use the official 200 disjoint test concepts!"
+    - "Cross-modal NSD + Alljoined1 alignment: match exact `nsdId` / `cocoId` crop coordinates—cropped NSD square scenes (`8.4°`) differ from uncropped full-aspect COCO frames."
+citations:
+  primary_bib_keys:
+    - xu2025alljoined16m
+    - xu2024alljoined1
+  related_bib_keys:
+    - allen2021nsd
+    - gifford2022thingseeg
+  primary_doi_or_arxiv: "arXiv:2508.18571"
+card_path: "cards/human_vision_multimodal/alljoined_eeg.md"
+last_verified: "2026-11-25"

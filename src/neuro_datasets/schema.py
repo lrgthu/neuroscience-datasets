@@ -56,6 +56,11 @@ ALLOWED_DOMAINS: frozenset[str] = frozenset(
         "multimodal",
         "resting_state",
         "videogames",
+        "synthetic_ood",
+        "retinotopy",
+        "clinical_lifespan",
+        "connectomics",
+        "behavioral_similarity",
     }
 )
 

@@ -64,7 +64,10 @@ modeling:
 citations:
   primary_bib_keys:
     - allen2021nsd
-  related_bib_keys: []
+  related_bib_keys:
+    - gifford2026nsdsynthetic
+    - kneeland2025nsdimagery
+    - xu2024alljoined1
   primary_doi_or_arxiv: "10.1038/s41593-021-00962-x"
 card_path: "cards/human_vision_multimodal/nsd.md"
 last_verified: "2026-11-25"

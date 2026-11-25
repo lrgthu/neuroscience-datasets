@@ -1,0 +1,65 @@
+id: nsd_synthetic
+name: "NSD-Synthetic (7T Out-of-Distribution Visual Modeling Benchmark)"
+short_name: "NSD-Synthetic"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - fMRI_7T
+  - Eye_Tracking
+  - Behavior
+domains:
+  - synthetic_ood
+  - object_recognition
+  - natural_images
+year: 2026
+summary_en: "Complementary 7T fMRI benchmark in the exact same 8 NSD subjects viewing 284 controlled artificial/synthetic stimuli (line drawings, Mooney images, gratings/spirals, words, color/noise manipulations) for strict out-of-distribution (OOD) testing of NSD-trained vision encoders."
+summary_zh: "与主 NSD 完全共享 8 名被试的 7T 分布外（OOD）人工合成图像基准（284 张精细受控刺激：线条画、Mooney 双色调图、光栅螺旋、文字与色彩/噪声操控），专门用于检验在自然场景上训练的视觉编码模型在 OOD 刺激下的失效机制。"
+scale:
+  n_subjects: 8
+  hours_per_subject: 1.5
+  total_hours: 12.0
+  n_stimuli: 284
+  n_channels_or_voxels: "1.8 mm isotropic whole-brain (co-registered 1:1 with each subject's core NSD func1pt8mm & fsaverage space)"
+  sampling_rate_or_tr: "TR = 1.6 s (single-trial GLMsingle b3 betas aligned to core NSD)"
+brain_regions:
+  - V1
+  - V2
+  - V3
+  - hV4
+  - Ventral_Temporal_Cortex
+  - Whole-Brain
+data_formats:
+  - BIDS
+  - NIfTI
+  - CIFTI_GIfTI
+  - HDF5_MAT
+access:
+  tier: registered
+  license: "CC-BY-NC-4.0 (NSD Data Access Terms)"
+  primary_portal: "AWS Open Data"
+  accession_ids:
+    - "AWS:s3://natural-scenes-dataset/nsddata_stimuli/stimuli/nsdsynthetic"
+  urls:
+    homepage: "https://naturalscenesdataset.org/"
+    paper: "https://doi.org/10.1038/s41467-026-69345-9"
+  download_cli: "aws s3 ls --no-sign-request s3://natural-scenes-dataset/nsddata_betas/ppdata/subj01/func1pt8mm/nsdsynthetic_betas_fithrf_GLMdenoise_RR/"
+modeling:
+  recommended_tasks:
+    - out_of_distribution_visual_encoding
+    - natural_to_synthetic_domain_shift
+    - supervised_vs_ssl_representation_stress_test
+  standard_splits: "PURE ZERO-SHOT OOD TEST SET: Fit voxelwise readout weights strictly on core NSD natural scenes (`unique9000` / `27,000` trials per subject) and evaluate frozen encoders + frozen voxel readouts directly on the 284 NSD-Synthetic stimuli without fine-tuning!"
+  noise_ceiling_or_repeat_structure: "Multiple trial repetitions per synthetic stimulus across the dedicated NSD-Synthetic scan session provide per-voxel OOD `ncsnr` noise ceilings."
+  key_pitfalls:
+    - "NEVER fine-tune linear readouts on NSD-Synthetic when claiming OOD generalization: the benchmark's diagnostic power comes from freezing both the backbone and the NSD-learned voxelwise regression weights!"
+    - "Session z-scoring alignment: NSD-Synthetic was acquired in a separate post-NSD scan session—apply within-session standardization carefully and inspect baseline mean/gain shifts between natural-scene runs and sparse grayscale/line-drawing synthetic runs."
+    - "Task difference: NSD-Synthetic includes both fixation-task runs and memory-task runs (`1-back`), which modulate attentional gain in extrastriate and frontoparietal cortex."
+citations:
+  primary_bib_keys:
+    - gifford2026nsdsynthetic
+  related_bib_keys:
+    - allen2021nsd
+  primary_doi_or_arxiv: "10.1038/s41467-026-69345-9"
+card_path: "cards/human_vision_multimodal/nsd_synthetic.md"
+last_verified: "2026-11-25"

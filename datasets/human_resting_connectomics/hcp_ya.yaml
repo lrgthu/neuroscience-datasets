@@ -1,0 +1,67 @@
+id: hcp_ya
+name: "Human Connectome Project Young Adult (HCP-YA S1200 3T & MEG)"
+short_name: "HCP-YA"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - MEG
+  - Structural_MRI
+  - Diffusion_MRI
+  - Behavior
+domains:
+  - resting_state
+  - connectomics
+  - multimodal
+  - decision_making
+year: 2013
+summary_en: "Cornerstone high-resolution connectomics & multi-task benchmark (N=1,206 twins/siblings aged 22-35; 1 hour 3T multiband TR=0.72 s rs-fMRI, 7 task fMRI domains, multi-shell dMRI, T1w/T2w myelin maps, and N=95 248-ch MEG)."
+summary_zh: "现代人类连接组学与脑基础模型评测的黄金标准（S1200 发布版含 1,206 名 22–35 岁双胞胎/同胞受试者；每人 1 小时 TR=0.72 s 高清 3T 静息态 fMRI、7 大任务态 fMRI、多壳层 dMRI、髓鞘图及 95 人 MEG），定义了 CIFTI 灰质坐标与 Glasser MMP1.0 360 脑区图谱。"
+scale:
+  n_subjects: 1206
+  hours_per_subject: 2.0
+  total_hours: 2200.0
+  n_stimuli: 7
+  n_channels_or_voxels: "2.0 mm isotropic whole-brain (`91,282` CIFTI 32k fsLR grayordinates + Glasser 360 MMP1.0 + 248-ch Magnes 3600 MEG in N=95)"
+  sampling_rate_or_tr: "3T fMRI TR = 0.72 s (multiband 8; 4 × 15 min rest + 7 tasks); MEG 2,034 Hz"
+brain_regions:
+  - Whole-Brain_91k_Grayordinates
+  - Glasser_360_Cortical_Areas
+  - Subcortical_19_Structures
+data_formats:
+  - CIFTI_GIfTI
+  - NIfTI
+  - FIF_MNE
+access:
+  tier: registered
+  license: "HCP Open Access Data Use Terms ( Tier 1 Open / Tier 2 Restricted Family/Twin IDs )"
+  primary_portal: "ConnectomeDB / AWS Open Data"
+  accession_ids:
+    - "AWS:s3://hcp-openaccess"
+  urls:
+    homepage: "https://www.humanconnectome.org/study/hcp-young-adult"
+    aws: "https://registry.opendata.aws/hcp-openaccess/"
+    paper: "https://doi.org/10.1016/j.neuroimage.2013.05.041"
+  download_cli: "# With ConnectomeDB AWS credentials configured:\naws s3 ls s3://hcp-openaccess/HCP_1200/"
+modeling:
+  recommended_tasks:
+    - downstream_brain_foundation_model_probing
+    - connectome_fingerprinting_and_cognition_krr
+    - multi_task_glm_decoding
+    - structural_to_functional_connectome_mapping
+  standard_splits: "Family-aware 10-fold nested cross-validation (`Ooi et al. 2022` / `Kong et al.`: ALL monozygotic/dizygotic twins and non-twin siblings sharing `Family_ID` MUST stay in the same fold!) or use the official `100 Unrelated Subjects` subset for zero-kinship analyses."
+  noise_ceiling_or_repeat_structure: "4 × 15 min (`1,200` frames each = `4,800` frames/subject) resting-state across 2 days (`REST1` Day 1 vs `REST2` Day 2) + dedicated `Test-Retest` cohort (`N = 45` subjects completely re-scanned months later!)."
+  key_pitfalls:
+    - "CRITICAL FAMILY LEAKAGE BUG: Over ~75% of HCP-YA subjects have at least one twin or sibling in the cohort (`~420+` families). Naive random subject `KFold` leaks heritable connectome & behavioral variance across train and test, inflating fluid intelligence / trait $r$ by 30-100%!"
+    - "`LR` vs. `RL` phase-encoding asymmetry: Every rest and task run is acquired once `Left-to-Right` and once `Right-to-Left`, causing asymmetric lateralized EPI distortion—always demean/z-score `LR` and `RL` runs separately and average/concatenate balanced `LR + RL` pairs!"
+    - "Use `MSMAll` + `ICA-FIX` cleaned resting-state (`rfMRI_REST*_Atlas_MSMAll_hp2000_clean.dtseries.nii`); note that `ICA-FIX` was NOT applied by default to the short task fMRI runs."
+citations:
+  primary_bib_keys:
+    - vanessen2013hcp
+    - glasser2013hcppipelines
+  related_bib_keys:
+    - benson2018hcpretinotopy
+  primary_doi_or_arxiv: "10.1016/j.neuroimage.2013.05.041"
+card_path: "cards/human_resting_connectomics/hcp_ya.md"
+last_verified: "2026-11-25"

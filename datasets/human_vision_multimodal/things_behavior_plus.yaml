@@ -1,0 +1,63 @@
+id: things_behavior_plus
+name: "THINGS Core Database, 4.7M Behavioral Odd-One-Out (SPoSE) & THINGSplus Norms"
+short_name: "THINGS-Behavior+"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - Behavior
+  - Eye_Tracking
+domains:
+  - behavioral_similarity
+  - object_recognition
+  - natural_images
+year: 2023
+summary_en: "Semantic-perceptual backbone of the THINGS ecosystem: 26,107 curated object images across 1,854 concepts paired with 4.70 million human triplet odd-one-out similarity judgments (N=12,340 participants, 49/66-D interpretable SPoSE embeddings), THINGSplus norms, and image-level memorability scores."
+summary_zh: "整个 THINGS 跨物种神经生态的刺激与人类认知表征基石：覆盖 1,854 个具体概念的 26,107 张自然图像、12,340 名受试者完成的 470 万次三元组异类判别（产出可解释的 49/66 维 SPoSE 人类心理维度）、THINGSplus 语义属性常模与全图记忆度（Memorability）实测分。"
+scale:
+  n_subjects: 12340
+  hours_per_subject: null
+  total_hours: null
+  n_stimuli: 26107
+  n_channels_or_voxels: "49-D / 66-D sparse non-negative human similarity dimensions (SPoSE) + 1,854 × 1,854 full behavioral RDM + 53+ THINGSplus norms"
+  sampling_rate_or_tr: "4,701,960 behavioral triplet odd-one-out trials + continuous recognition memorability hit/FA rates"
+brain_regions:
+  - Human_Behavioral_Conceptual_Space
+data_formats:
+  - Parquet_CSV
+  - HDF5_MAT
+  - Zarr_NPZ
+access:
+  tier: open
+  license: CC-BY-4.0
+  primary_portal: OSF
+  accession_ids:
+    - "OSF:10.17605/OSF.IO/jum2f"
+  urls:
+    homepage: "https://things-initiative.org/"
+    osf: "https://osf.io/jum2f/"
+    code: "https://github.com/ViCCo-Group/THINGSvision"
+  download_cli: "uvx osfclient -p jum2f list"
+modeling:
+  recommended_tasks:
+    - human_aligned_vision_model_tuning_dreamsim_gLocal
+    - interpretable_sparse_voxel_encoding_spose
+    - memorability_vs_ventral_it_magnitude_modeling
+    - semantic_vs_visual_variance_partitioning
+  standard_splits: "4.53M training triplets + independent 10% fully-sampled validation sub-RDM (48 concepts, all 17,296 triplets repeated >=20 times for exact human behavioral noise ceiling!)."
+  noise_ceiling_or_repeat_structure: "Repeated odd-one-out triplets on the 48-concept dense validation set establish a human behavioral choice accuracy ceiling of ~67.2% (matching SPoSE ~64.6%)."
+  key_pitfalls:
+    - "Concept-level vs. image-level granularity: the 4.70M odd-one-out SPoSE embeddings are defined at the **1,854 concept level** (1 representative image or pooled exemplars per concept), whereas **THINGS-Memorability (`Kramer et al. 2023`)** provides **image-level** memorability scores across all `26,107` individual exemplars!"
+    - "Raw image copyright redistribution: THINGS image arrays may be downloaded for academic research via OSF (`jum2f`), while public web demos must use the dedicated CC0 subset (`THINGSplus` includes 1,854 CC0 public-domain replacement images!)."
+    - "When using SPoSE dimensions as an encoding feature space on `THINGS-fMRI` / `THINGS-MEG` / `TVSD`, hold out test concepts BEFORE fitting SPoSE if testing strict zero-shot concept generalization, so behavioral triplets on test concepts do not leak human category labels."
+citations:
+  primary_bib_keys:
+    - hebart2020spose
+    - stoinski2023thingsplus
+    - kramer2023memorability
+  related_bib_keys:
+    - hebart2019thingsdb
+    - hebart2023things
+  primary_doi_or_arxiv: "10.1038/s41562-020-00951-3"
+card_path: "cards/human_vision_multimodal/things_behavior_plus.md"
+last_verified: "2026-11-25"

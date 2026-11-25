@@ -1,0 +1,61 @@
+id: things_eeg1
+name: "THINGS-EEG1 (50-Subject Rapid 10 Hz RSVP Object Recognition EEG)"
+short_name: "THINGS-EEG1"
+category: human_vision_multimodal
+species:
+  - human
+modalities:
+  - EEG
+  - Behavior
+domains:
+  - natural_images
+  - object_recognition
+year: 2022
+summary_en: "Broad-cohort 64-channel RSVP EEG dataset (N=50 subjects, 1,000 Hz) recording neural responses to 22,248 THINGS images across all 1,854 object concepts (50 ms ON / 50 ms OFF) plus 200 multi-repeat validation images."
+summary_zh: "大样本群体级 THINGS 快速序列视觉呈现（RSVP）64 通道脑电基准（50 名被试，50 ms 呈现 / 50 ms 间隔，完整覆盖全部 1,854 个物体概念共 22,248 张自然图像 + 200 张 12 次重复测试图），与深度单被试版 THINGS-EEG2 形成广度—深度互补。"
+scale:
+  n_subjects: 50
+  hours_per_subject: 1.0
+  total_hours: 50.0
+  n_stimuli: 22448
+  n_channels_or_voxels: "64-channel BrainVision actiCHamp scalp EEG (10-10 layout)"
+  sampling_rate_or_tr: "1,000 Hz raw BrainVision BIDS (10 Hz RSVP: 50 ms image ON + 50 ms blank ISI)"
+brain_regions:
+  - Occipitotemporal_Visual_Scalp
+  - Whole-Scalp_64Ch
+data_formats:
+  - BIDS
+  - BrainVision_EDF
+  - HDF5_MAT
+access:
+  tier: open
+  license: CC0-1.0
+  primary_portal: OpenNeuro
+  accession_ids:
+    - "OpenNeuro:ds003825"
+    - "OSF:hd6zk"
+  urls:
+    homepage: "https://openneuro.org/datasets/ds003825"
+    osf: "https://osf.io/hd6zk/"
+    things: "https://things-initiative.org/"
+  download_cli: "datalad install https://github.com/OpenNeuroDatasets/ds003825.git"
+modeling:
+  recommended_tasks:
+    - cross_subject_eeg_decoding
+    - time_resolved_rsa_object_dynamics
+    - breadth_vs_depth_scaling_comparison_with_things_eeg2
+  standard_splits: "Train on 22,248 single-trial images (1,854 concepts × 12 images, 1 repeat/subject) and evaluate on 200 separate validation images (12 repeats/subject = 2,400 test trials/subject), or leave-N-subjects-out across the 50-subject cohort."
+  noise_ceiling_or_repeat_structure: "12 repetitions per validation image within each of the 50 subjects + 50-subject group-level RSA upper/lower noise ceilings across all 1,854 concepts."
+  key_pitfalls:
+    - "THINGS-EEG1 vs. THINGS-EEG2 distinction: THINGS-EEG1 (`ds003825`, Grootswagers et al. 2022) prioritizes **subject breadth (`N = 50`, 1 session/subj, 50 ms ON / 50 ms OFF, 1 repeat/train image)**, whereas THINGS-EEG2 (`OSF:3jk45`, Gifford et al. 2022) prioritizes **within-subject depth (`N = 10`, 4 sessions/subj, 100 ms ON / 100 ms OFF, 4 repeats/train image & 80 repeats/test image)**—never conflate accuracy numbers across the two!"
+    - "Ultra-brief 50 ms exposure + 100 ms SOA causes forward/backward visual masking and overlapping late ERPs (`>150 ms`) from subsequent RSVP frames."
+    - "Orthogonal target detection task: subjects monitored streams for upside-down/rotated catch images—exclude catch trials and post-button-press motor-contaminated epochs (`events.tsv`)."
+citations:
+  primary_bib_keys:
+    - grootswagers2022thingseeg1
+  related_bib_keys:
+    - hebart2023things
+    - gifford2022thingseeg
+  primary_doi_or_arxiv: "10.1038/s41597-021-01102-7"
+card_path: "cards/human_vision_multimodal/things_eeg1.md"
+last_verified: "2026-11-25"
