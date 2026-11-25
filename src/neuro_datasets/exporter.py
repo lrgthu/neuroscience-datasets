@@ -24,7 +24,7 @@ CATEGORY_TITLES_EN: Mapping[str, str] = {
     "human_language_speech": "Human Language, Speech & Intracranial (fMRI / MEG / EEG / iEEG)",
     "nhp_electrophysiology": "Non-Human Primate Multi-Area Electrophysiology",
     "rodent_circuits_population": "Rodent Large-Scale Circuits & Population Recordings",
-    "human_resting_connectomics": "Human Connectomics & Population Cohorts",
+    "human_resting_connectomics": "Human Foundation Corpora, Connectomics & Cohorts",
     "bci_motor_prosthetics": "Brain-Computer Interfaces & Motor/Speech Prosthetics",
 }
 
@@ -33,7 +33,7 @@ CATEGORY_TITLES_ZH: Mapping[str, str] = {
     "human_language_speech": "人类自然语言、语音与颅内记录（fMRI / MEG / EEG / iEEG-ECoG）",
     "nhp_electrophysiology": "非人灵长类多脑区阵列电生理（NHP Arrays）",
     "rodent_circuits_population": "啮齿类大规模神经环路与群体记录（Neuropixels / 2P）",
-    "human_resting_connectomics": "人类连接组与大规模群体队列",
+    "human_resting_connectomics": "人类脑基础模型语料库、连接组与群体队列",
     "bci_motor_prosthetics": "脑机接口与运动/语音神经假体",
 }
 

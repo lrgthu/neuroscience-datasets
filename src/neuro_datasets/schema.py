@@ -75,6 +75,7 @@ ALLOWED_FORMATS: frozenset[str] = frozenset(
         "TextGrid_TSV",
         "BrainVision_EDF",
         "Parquet_CSV",
+        "WebDataset_Tar",
     }
 )
 

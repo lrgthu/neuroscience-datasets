@@ -60,6 +60,12 @@
 | **Allen-Vis**<br><sub>Allen Brain Observatory: Visual Coding (Neuropixels & Two-Photon)</sub> | 2021 | mouse<br>`Neuropixels`, `Two_Photon`, `Eye_Tracking` | `N=500`, ~3 h/subj, 118 stim | `open` · [DANDI / AWS Open Data](https://portal.brain-map.org/circuits-behavior/visual-coding) (DANDI:000021) | [卡片](./cards/rodent_circuits_population/allen_visual_coding.md) · [`10.1038/s41586-020-03171-x`](https://doi.org/10.1038/s41586-020-03171-x) |
 | **Stringer-10k**<br><sub>Stringer & Pachitariu 10,000-Neuron Mouse V1 Population Geometry Dataset</sub> | 2019 | mouse<br>`Two_Photon`, `Eye_Tracking`, `Behavior` | `N=7`, ~2.5 h/subj, 2,800 stim | `open` · [Figshare](https://doi.org/10.25378/janelia.6845348) (Figshare:10.25378/janelia.6845348) | [卡片](./cards/rodent_circuits_population/stringer_mouse_v1.md) · [`10.1038/s41586-019-1346-5`](https://doi.org/10.1038/s41586-019-1346-5) |
 
+### 人类脑基础模型语料库、连接组与群体队列 (`1`)
+
+| 数据集 | 年份 | 物种 / 模态 | 被试数 ($N$) & 规模 | 开放级别 / 入口 | 深度卡片 & 文献 |
+| :--- | :---: | :--- | :--- | :--- | :--- |
+| **Open-fMIND**<br><sub>Open-fMIND (Open-Access Multi-Atlas fMRI Corpus for Brain Foundation Models)</sub> | 2026 | human<br>`fMRI_3T`, `fMRI_7T` | `N=11379`, ~0.53 h/subj, 429 stim | `open` · [Hugging Face](https://huggingface.co/datasets/cbarbano/open-fmind) (HuggingFace:cbarbano/open-fmind) | [卡片](./cards/human_resting_connectomics/open_fmind.md) · [`arXiv:2611.21215`](https://arxiv.org/abs/2611.21215) |
+
 <!-- CATALOG:END -->
 
 ---

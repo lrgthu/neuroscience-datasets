@@ -1,0 +1,66 @@
+id: open_fmind
+name: "Open-fMIND (Open-Access Multi-Atlas fMRI Corpus for Brain Foundation Models)"
+short_name: "Open-fMIND"
+category: human_resting_connectomics
+species:
+  - human
+modalities:
+  - fMRI_3T
+  - fMRI_7T
+domains:
+  - resting_state
+  - multimodal
+  - natural_movies
+  - natural_speech
+  - decision_making
+year: 2026
+summary_en: "Massive uniformly preprocessed fMRI pretraining corpus pooling 322 OpenNeuro studies (11,379 subjects, 45,731 runs, 6,044 hours; 81% task / 19% rest across 429 task labels) parcellated across 52 brain atlases (~2.4M ROI timeseries) in WebDataset format."
+summary_zh: "面向脑基础模型自监督预训练的大规模开放 fMRI 语料库（聚合 322 个 OpenNeuro 数据集、11,379 名被试、45,731 个扫描 run、6,044 小时，含 81% 任务态与 19% 静息态），统一经 fMRIPrep 25.2.3 处理并投影至 14 大家族 52 套脑图谱（约 240 万条 ROI 时间序列）。"
+scale:
+  n_subjects: 11379
+  hours_per_subject: 0.53
+  total_hours: 6044.0
+  n_stimuli: 429
+  n_channels_or_voxels: "52 brain atlases across 14 families (10 to 1,024 cortical & subcortical ROIs from 2 mm MNI152NLin2009cAsym)"
+  sampling_rate_or_tr: "Source-native TR recorded in JSON sidecars (commonly resampled to TR = 2.0 s for sequence pretraining)"
+brain_regions:
+  - Whole-Brain_52_Atlases
+  - Cortical_Schaefer_Yan_Glasser_DiFuMo
+  - Subcortical_Tian_Pauli_HarvardOxford
+data_formats:
+  - BIDS
+  - WebDataset_Tar
+  - NIfTI
+  - Parquet_CSV
+access:
+  tier: open
+  license: "Source-inherited OpenNeuro licenses (251 CC0-1.0, 34 PDDL-1.0, 30 unstated/CC0, 3 CC-BY-SA-4.0, 2 CC-BY-4.0, 1 CC-BY-NC-4.0; see LICENSES.tsv)"
+  primary_portal: "Hugging Face"
+  accession_ids:
+    - "HuggingFace:cbarbano/open-fmind"
+  urls:
+    homepage: "https://huggingface.co/datasets/cbarbano/open-fmind"
+    code: "https://github.com/carloalbertobarbano/open-fmind"
+    paper: "https://arxiv.org/abs/2611.21215"
+  download_cli: "uvx --from huggingface_hub hf download cbarbano/open-fmind index/preproc_timeseries.parquet LICENSES.tsv atlases.tsv --repo-type dataset"
+modeling:
+  recommended_tasks:
+    - self_supervised_fmri_foundation_pretraining
+    - multi_atlas_contrastive_representation_learning
+    - functional_connectome_fingerprinting
+    - parcellation_sensitivity_benchmarking
+  standard_splits: "Pretrain self-supervised encoders on Open-fMIND (`quasiraw` or `preproc`, holding out any target OpenNeuro accession IDs!) and evaluate frozen/fine-tuned representations on external cohorts (e.g., HCP-YA family-aware CV, ABIDE, ADHD-200) or held-out OpenNeuro studies."
+  noise_ceiling_or_repeat_structure: "1,649 multi-visit subjects (2,192 query visits across 57 datasets) enable longitudinal connectome fingerprinting (`72.0%` corpus-wide top-1 accuracy vs. `0.06%` chance; differential identifiability `I_diff = 25.5`), plus cross-atlas consistency (`median r = 0.939` within-family)."
+  key_pitfalls:
+    - "DOWNSTREAM BENCHMARK OVERLAP LEAKAGE: Open-fMIND pools 322 OpenNeuro studies—including `ds000113` (StudyForrest), `ds002345` (Narratives), `ds001132` (Sherlock), `ds002322` (Alice), `ds002837` (NNDb), and `ds004718` (LPP-Cantonese)! Always filter out target `dataset` accessions via the Parquet index before pretraining if evaluating on any OpenNeuro benchmark!"
+    - "`preproc` SCRUBS FRAMES & BREAKS STIMULUS TIMELINE ALIGNMENT: The `preproc` split censors `FD > 0.5 mm` volumes (`58.4%` of runs drop >=1 frame) and applies a `0.01-0.1 Hz` bandpass filter—never align `preproc` directly to rapid task `events.tsv`/word timestamps; use `quasiraw` + `confounds` for stimulus-locked encoding!"
+    - "HETEROGENEOUS TRs & SCANNER SITE EFFECTS: Runs retain native repetition times (`RepetitionTime` in JSON sidecars; resample explicitly before feeding fixed-rate transformers) and exhibit substantial study/scanner fingerprints (`median omega^2 = 0.082`, 268-way site accuracy `60.3%` vs `0.37%` chance) plus modest residual short-range motion (`median QC-FC r = +0.033`)."
+    - "MULTI-ATLAS SAMPLING SKEW & EFFECTIVE N: Schaefer (14) and Yan (12) constitute 50% of all 52 atlases, and all 52 views are deterministic projections of the same BOLD run (`N_eff = 11,379` subjects, NOT 2.4M independent samples)—sample atlas family first, then variant, and group splits strictly by `(dataset, subject)`."
+    - "NON-UNIFORM SOURCE LICENSES (`LICENSES.tsv`): Although ~97% of studies are CC0/PDDL, 3 studies carry ShareAlike (`CC-BY-SA-4.0`: `ds001439`, `ds001722`, `ds001748`) and 1 carries Non-Commercial (`CC-BY-NC-4.0`: `ds001338`)—filter shards via `LICENSES.tsv` when strict commercial/permissive licensing is required."
+citations:
+  primary_bib_keys:
+    - barbano2026openfmind
+  related_bib_keys: []
+  primary_doi_or_arxiv: "arXiv:2611.21215"
+card_path: "cards/human_resting_connectomics/open_fmind.md"
+last_verified: "2026-11-25"

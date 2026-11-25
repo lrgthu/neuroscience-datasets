@@ -71,9 +71,17 @@ def test_tidy_csv_roundtrip_and_missing_values() -> None:
 
 def test_live_repository_catalog_integrity_and_sync() -> None:
     catalog = loader.load_repository_catalog(REPO_ROOT)
-    assert len(catalog.records) >= 20
+    assert len(catalog.records) >= 21
     seen_ids = {r.id for r in catalog.records}
-    assert {"nsd", "things_data", "meg_masc", "podcast_ecog", "tvsd", "ibl_brain_wide_map"} <= seen_ids
+    assert {
+        "nsd",
+        "things_data",
+        "meg_masc",
+        "podcast_ecog",
+        "tvsd",
+        "ibl_brain_wide_map",
+        "open_fmind",
+    } <= seen_ids
 
     json_path = REPO_ROOT / "catalog" / "datasets.json"
     csv_path = REPO_ROOT / "catalog" / "datasets.csv"

@@ -11,7 +11,7 @@
       human_language_speech: "Human Language, Speech & iEEG",
       nhp_electrophysiology: "NHP Multi-Area Electrophysiology",
       rodent_circuits_population: "Rodent Circuits & Population",
-      human_resting_connectomics: "Human Connectomics & Cohorts",
+      human_resting_connectomics: "Human Foundation Corpora & Cohorts",
       bci_motor_prosthetics: "BCI & Motor/Speech Prosthetics",
     },
     zh: {
@@ -20,7 +20,7 @@
       human_language_speech: "人类语言、语音与颅内脑电",
       nhp_electrophysiology: "非人灵长类多脑区电生理",
       rodent_circuits_population: "啮齿类大规模神经环路",
-      human_resting_connectomics: "人类连接组与群体队列",
+      human_resting_connectomics: "人类脑基础模型语料与群体队列",
       bci_motor_prosthetics: "脑机接口与神经假体",
     },
   };
