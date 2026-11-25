@@ -178,11 +178,14 @@
 uv sync --extra dev
 uv run pytest -v
 
-# 2. 终端快速检索数据集（支持按物种、模态或关键词过滤）
-uv run python scripts/build_catalog.py --species macaque
-uv run python scripts/build_catalog.py --modality MEG --query "speech"
+# 2. 毫秒级多维检索、防泄漏坑位审计与已校验 BibTeX 导出（支持同义词扩展）
+python3 scripts/query_kb.py --species human,macaque --query "THINGS visual" --pitfalls
+python3 scripts/query_kb.py --ids nsd,things_data,tvsd --bibtex
 
-# 3. 新增数据集脚手架（自动生成 YAML 模板与 Markdown 卡片）
+# 3. 一键挂载到 AI Research Agents（同步安装 Antigravity 插件 + Claude Code + Codex CLI Skill）
+uv run python scripts/install_agent_skill.py --targets all
+
+# 4. 新增数据集脚手架（自动生成 YAML 模板与 Markdown 卡片）
 uv run python scripts/new_dataset.py \
   --id hcp_7t_movie \
   --category human_vision_multimodal \

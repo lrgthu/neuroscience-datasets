@@ -1,0 +1,15 @@
+{
+  "name": "neuroscience-datasets",
+  "displayName": "Neuroscience Datasets Knowledge Base",
+  "version": "1.0.0",
+  "author": "lrgthu",
+  "homepage": "https://lrgthu.github.io/neuroscience-datasets/",
+  "repository": "https://github.com/lrgthu/neuroscience-datasets",
+  "description": "Curated, citation-verified knowledge base of 112+ neuroscience datasets across 8 species and 19 modalities for NeuroAI, brain encoding/decoding, BCI, population dynamics, and connectomics, with zero-latency CLI search, leakage/pitfall guards, and verified auto-backfill.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Compare human 7T fMRI, MEG/EEG, and macaque electrophysiology datasets sharing natural image or video stimuli, and check their test-split leakage pitfalls",
+    "Find open multi-area Neuropixels or 2-photon datasets for studying representational drift and latent population geometry, and output verified BibTeX keys",
+    "Audit our NeuroAI experiment plan against the Neuroscience Datasets Knowledge Base for confound traps, noise-ceiling formulas, and foundation-model pretraining overlap"
+  ]
+}

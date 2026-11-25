@@ -28,10 +28,15 @@ neuroscience-datasets/
 │   ├── datasets.csv                   # Tidy CSV (`1 row = 1 dataset`, atomic numeric columns)
 │   └── datasets_provenance.json       # SHA-256 input digest & git provenance sidecar
 ├── docs/                              # Zero-dependency EN/ZH interactive explorer (GitHub Pages + offline file://)
+├── plugin.json                        # Native Antigravity plugin manifest (`neuroscience-datasets`)
+├── rules/AGENTS.md                    # Domain-scoped auto-activation & verified writeback rules
+├── skills/neuroscience-datasets/      # Portable Agent Skill (`SKILL.md` + <25ms `query_kb.py` CLI)
 ├── local/mirrors.example.yaml         # Template for gitignored private cluster cache paths (`*.local.yaml`)
-├── src/neuro_datasets/                # Typed schema validator (`NaN`-safe), loader, and exporters
+├── src/neuro_datasets/                # Typed schema validator (`NaN`-safe), loader, query engine, and exporters
 └── scripts/
     ├── build_catalog.py               # Validates & compiles JSON, CSV, README tables, and Pages data
+    ├── query_kb.py                    # Multi-facet ranked search, split/pitfall audit, and BibTeX exporter
+    ├── install_agent_skill.py         # 1-command installer for Antigravity, Claude Code, and Codex CLI
     └── new_dataset.py                 # 1-command scaffolder for adding new datasets
 ```
 
@@ -199,11 +204,14 @@ neuroscience-datasets/
 uv sync --extra dev
 uv run pytest -v
 
-# 2. Query datasets from the terminal (by keyword, modality, or species)
-uv run python scripts/build_catalog.py --species human --modality ECoG
-uv run python scripts/build_catalog.py --query "THINGS"
+# 2. Query datasets, canonical splits/pitfalls, and verified BibTeX (<25ms CLI)
+python3 scripts/query_kb.py --species human,macaque --query "THINGS visual" --pitfalls
+python3 scripts/query_kb.py --ids nsd,things_data,tvsd --bibtex
 
-# 3. Scaffold a new dataset entry, edit YAML + Card + references.bib, and rebuild all artifacts
+# 3. Auto-mount into AI Research Agents (Antigravity Plugin + Claude Code + Codex CLI)
+uv run python scripts/install_agent_skill.py --targets all
+
+# 4. Scaffold a new dataset entry, edit YAML + Card + references.bib, and rebuild all artifacts
 uv run python scripts/new_dataset.py \
   --id hcp_7t_movie \
   --category human_vision_multimodal \

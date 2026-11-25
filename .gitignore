@@ -14,6 +14,7 @@ build/
 # Environment & private local cluster overlays (NEVER commit internal hosts/paths)
 .env
 .env.*
+.kb_root
 local/*.local.yaml
 local/*.local.json
 

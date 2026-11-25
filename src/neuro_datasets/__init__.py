@@ -2,5 +2,5 @@
 
 from __future__ import annotations
 
-__all__ = ["exporter", "loader", "schema"]
-__version__ = "0.1.0"
+__all__ = ["exporter", "loader", "query", "schema"]
+__version__ = "0.2.0"

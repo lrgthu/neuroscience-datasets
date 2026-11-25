@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none">
+  <!-- 12.5% outer margin (32px) with high-contrast dual-theme badge -->
+  <rect x="28" y="28" width="200" height="200" rx="44" fill="#0F172A" stroke="#38BDF8" stroke-width="6"/>
+  <!-- Stylized cortical hemispheres & connectome nodes -->
+  <path d="M124 66C95 66 72 88 72 117C64 125 62 141 70 153C77 172 97 186 124 186V66Z" stroke="#38BDF8" stroke-width="7" stroke-linejoin="round" fill="#0EA5E9" fill-opacity="0.14"/>
+  <path d="M132 66C161 66 184 88 184 117C192 125 194 141 186 153C179 172 159 186 132 186V66Z" stroke="#A78BFA" stroke-width="7" stroke-linejoin="round" fill="#8B5CF6" fill-opacity="0.14"/>
+  <!-- Cross-modal alignment edges -->
+  <line x1="98" y1="104" x2="158" y2="104" stroke="#F8FAFC" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 6"/>
+  <line x1="92" y1="138" x2="164" y2="138" stroke="#F8FAFC" stroke-width="4" stroke-linecap="round"/>
+  <line x1="98" y1="104" x2="92" y2="138" stroke="#38BDF8" stroke-width="4"/>
+  <line x1="158" y1="104" x2="164" y2="138" stroke="#A78BFA" stroke-width="4"/>
+  <!-- Verified data nodes -->
+  <circle cx="98" cy="104" r="9" fill="#38BDF8" stroke="#F8FAFC" stroke-width="3"/>
+  <circle cx="158" cy="104" r="9" fill="#A78BFA" stroke="#F8FAFC" stroke-width="3"/>
+  <circle cx="92" cy="138" r="9" fill="#34D399" stroke="#F8FAFC" stroke-width="3"/>
+  <circle cx="164" cy="138" r="9" fill="#FBBF24" stroke="#F8FAFC" stroke-width="3"/>
+  <!-- Catalog bar at bottom -->
+  <rect x="76" y="198" width="104" height="10" rx="5" fill="#38BDF8"/>
+</svg>
